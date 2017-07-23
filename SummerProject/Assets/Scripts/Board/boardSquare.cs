@@ -1,22 +1,24 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿//Written By Christopher Cooke
+//Gem Quest Board Square
+//Contains all the data about an individual square, including gem data
+//Contains trigger events, clear, destroy gem, & upgrade gem
 using UnityEngine;
 
 public class boardSquare : MonoBehaviour
 {
     //Public Variables
     public bool isStaticSquare = false;
-    public GameObject gem;
+    GameObject gem;
     public GameObject gemPrefab;
     public int gemX, gemY;
     
     //Private
     [SerializeField, HideInInspector]
     baseGem gemScript;
-    public bool comboable = false;
-    public bool destructable = false;
-    public bool animPlaying = false;
-    public bool occupied = false;
+    bool comboable = false;
+    bool destructable = false;
+    bool animPlaying = false;
+    bool occupied = false;
     //bool empty = false;
 
     //Properties

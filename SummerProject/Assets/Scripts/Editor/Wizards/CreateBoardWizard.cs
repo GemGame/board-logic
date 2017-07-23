@@ -1,8 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿//Written By Christopher Cooke
+//Gem Quest Board Creation Wizard
+//Declare your dimensions and this wizard will create you a serialized board
+//Board will be created from random prefabs from selected resource folder
+//Initializes most necessary game objects
 using UnityEngine;
 using UnityEditor;
-using UnityEngine.Windows;
 
 public class CreateBoardWizard : ScriptableWizard {
 

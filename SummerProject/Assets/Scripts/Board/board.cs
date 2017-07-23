@@ -1,8 +1,10 @@
-﻿//A board is a pretty public thing
+﻿//Written By Christopher Cooke
+//Gem Quest Board Class
+//Holds arrays of boardSquares and contains methods to initialize & spawn everything
+//A board is a pretty public thing
 using UnityEngine;
-using System.Collections.Generic;
 
-public struct boardStruct
+public struct boardStruct   //Retrieves all board square arrays
 {
     //Intended to be designed out to hold all relevant data about a board without having to pass methods as well
     boardSquare[] structCoreSquare;    
@@ -135,7 +137,7 @@ public class board : MonoBehaviour  {
         {
             emptySquare.Gem = gemSquare.Gem;
             emptySquare.gemPrefab = gemSquare.gemPrefab;
-            emptySquare.gem.transform.parent = emptySquare.transform;
+            emptySquare.Gem.transform.parent = emptySquare.transform;
             gemSquare.Gem = null;
             gemSquare.gemPrefab = null;
             return true;
@@ -189,7 +191,6 @@ public class board : MonoBehaviour  {
     public void InitializeOuterRows()   //Outside core squares
     {
         //Width dependent
-        //topSquares = CreateInstance < boardSquare[boardWidth * numRows] > ();
         topSquares = new boardSquare[width];
         bottomSquares = new boardSquare[width];
         //Height dependent
@@ -200,9 +201,6 @@ public class board : MonoBehaviour  {
         {
             for (int y = 0; y < rowCount; y++)
             {
-                int topIndex = Get1DIndexFrom2D(x, y, width);
-                int botIndex = Get1DIndexFrom2D(x, y, width);
-                //boardsquare = initialize(boardsquare, x, y, parent)
                 topSquares[x] = InitializeSquare(topSquares[x], x, y + height + offset, tSquaresGO);
                 bottomSquares[x] = InitializeSquare(bottomSquares[x], x, -y-1 - offset, bSquaresGO);                
             }

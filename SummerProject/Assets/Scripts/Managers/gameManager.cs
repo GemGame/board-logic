@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿//Written By Christopher Cooke
+//Gem Quest Game Manager
+//The master manager through which all other managers are interacted with. 
+//Contains the main game loop & controls the flow / updating of the game
 using UnityEngine;
 
 [System.Serializable]
 public class gameManager : MonoBehaviour
 {
-
-    //Public Variables
-    
     //Private variables
     [SerializeField, HideInInspector]
     boardManager boardManager;
@@ -27,7 +26,6 @@ public class gameManager : MonoBehaviour
         animationManager = this.gameObject.AddComponent<animationManager>();
         animationManager.GemFallingSpeed = boardManager.board.gemFallingSpeed;
         inputManager.AnimationManager = animationManager;
-        //Debug.Log(board + " start");        
     }
     private void Update()   //Main game loop
     {
@@ -55,6 +53,5 @@ public class gameManager : MonoBehaviour
     public void CreateBMInstance()  //Board Manager is needed during editor mode when creating new boards
     {
         boardManager = this.gameObject.AddComponent<boardManager>();
-    }
-   
+    }   
 }

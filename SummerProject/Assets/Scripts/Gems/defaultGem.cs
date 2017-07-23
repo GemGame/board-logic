@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿//Written By Christopher Cooke
+//Gem Quest Default Gem
+//The default gem inheriting from base gem
+//No special functionality built in. 
+//Methods declared just to make class functional.
 
 [System.Serializable]
 public class defaultGem : baseGem {

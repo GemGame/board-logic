@@ -1,7 +1,8 @@
-﻿using System.Collections;
+﻿//Written By Christopher Cooke
+//Gem Quest Gem Pool
+//Gathers gems from directory and allows game objects to be spawned as copies at random
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
 public class gemPool : MonoBehaviour {
 
@@ -12,6 +13,7 @@ public class gemPool : MonoBehaviour {
     //Properties
     public List<GameObject> Gems { get { return gems; } }
     
+    //Methods
     public void LoadGemsAtPath(string path) //Set gems list
     {
         gems = new List<GameObject>();
@@ -23,7 +25,6 @@ public class gemPool : MonoBehaviour {
             gems.Add((GameObject)gem);
         }
     }
-
     public GameObject GetRandomGem(Transform parent)
     {
         int randomIndex = Random.Range(0, gems.Count);

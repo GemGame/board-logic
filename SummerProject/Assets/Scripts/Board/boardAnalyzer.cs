@@ -1,11 +1,13 @@
-﻿using System.Collections;
+﻿//Written By Christopher Cooke
+//Gem Quest Board Analyzer
+//Interperets board object to identify combos, adjacent squares, & falling gems
+//Loaded with recursion & double recursion
 using System.Collections.Generic;
 using UnityEngine;
 
 public class boardAnalyzer
 {
-
-    //Public Variables
+    //Public Variables -- Laziness on the properties
     public const int yCoordIndex = 1, xCoordIndex = 0, dirCount = 4;
     public enum directionIndex { down = 0, right = 1, left = 2, up = 3 };
     public int[,] directions = { { 0, -1 }, { 1, 0 }, { -1, 0 }, { 0, 1 } };
@@ -28,7 +30,7 @@ public class boardAnalyzer
         currentDirection = direction;
     }
 
-    
+    //Utility Methods
     public bool CheckSquaresEqual(boardSquare original, boardSquare nextSquare)
     {
         if (original.gemPrefab == nextSquare.gemPrefab && original.gemPrefab != null)
@@ -204,27 +206,13 @@ public class boardAnalyzer
             //return nextSquare.Targetable;
         }
     }
-
-    void RecurseDirection(int x, int y, int dirX, int dirY)  //Template method
-    {
-        if ((x + dirX < board.Width && x + dirX >= 0)
-            && (y + dirY < board.Height && y + dirY >= 0))
-        {
-            Debug.Log("Next square is still on the board. Recursing again...");
-            RecurseDirection(x + dirX, y + dirY, dirX, dirY);
-            Debug.Log("Returned to square : " + x + ", " + y);
-        }
-        else
-        {
-            Debug.Log("Recursion ended at square : " + x + ", " + y);
-        }
-
-    }
+    
+    //Gem Falling   
     public boardSquare RecurseToNextGem(int x, int y, int dirX, int dirY)   //Recurse in opposite direction to square with gem
     {
         boardSquare square = board.GetBoardStruct().StructCoreSquare[board.Get1DIndexFrom2D(x, y, board.Width)];
 
-        if (square.gem == null)
+        if (square.Gem == null)
         {
             //Debug.Log("Next square has no gem : " + x + ", " + y);
             if ((x - dirX < board.Width && x - dirX >= 0) 

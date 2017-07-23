@@ -1,33 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿//Written By Christopher Cooke
+//Gem Quest Base Gem Class
+//Contains all the most basic funtionality of a gem
+//Pre & Post Destroy must be overridden
 using UnityEngine;
 
 [System.Serializable]
-public abstract class baseGem : MonoBehaviour //: ScriptableObject 
+public abstract class baseGem : MonoBehaviour  
 {
-
     //Public Variables
-    [SerializeField]
     public GameObject UpgradedPrefab;
+
     //Private Variables
     [SerializeField]   
-    GameObject gemGO;
-
-    //[SerializeField]
-    //public static int uniqueID = 0;
+    GameObject gemGO;    
 
     //Properties
     public GameObject GemGO { get { return gemGO; } set { gemGO = value; } }
     public int X { get { return (int)transform.position.x; } }
     public int Y { get { return (int)transform.position.y; } }
 
-    private void Start()
-    {
-        //Debug.Log(uniqueID++);
-        //gemGO = this.gameObject;
-    }
-   
-
+    //Methods
     public void SetGemProperties(Vector3 position, GameObject gem)   //Use before spawning
     {
        // location = position;

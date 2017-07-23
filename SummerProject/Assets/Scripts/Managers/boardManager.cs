@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿//Written By Christopher Cooke
+//Gem Quest Board Manager
+//Creates board & utilizes of board analyzer to make decisions on & about the board
+using UnityEngine;
 using System.Collections.Generic;
 
 public class boardManager : MonoBehaviour {
@@ -155,14 +158,6 @@ public class boardManager : MonoBehaviour {
                 UpdateComboableSquares();
         }
     }
-    bool DestroyComboableGem(boardSquare square) //Prevent wizard from creating a board with combos
-    {
-        if (square.Comboable && square.Destructable)
-            square.GemScript.DestroyGem();
-        square.Comboable = false;
-        square.Destructable = false;
-        //Debug.Log("Destroyed a square");
-        return square.Destructable;
-    }
+   
     
 } 

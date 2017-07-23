@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿//Written By Christopher Cooke
+//Gem Quest Custom Inspector - Game Manager
+//Nifty dropdown menu to choose block falling direction
 using UnityEditor;
 
 [CustomEditor(typeof(gameManager))]
@@ -13,9 +13,7 @@ public class gameManagerScriptEditor : Editor {
         gameManager gm = (gameManager)target;
 
         EditorGUILayout.LabelField("Current Falling Direction");
-        gm.BoardManager.CurrentDirection = EditorGUILayout.IntPopup(gm.BoardManager.CurrentDirection, directions, values);
-        //myTarget.experience = EditorGUILayout.IntField("Experience", myTarget.experience);
-        
+        gm.BoardManager.CurrentDirection = EditorGUILayout.IntPopup(gm.BoardManager.CurrentDirection, directions, values);        
     }
 }
 

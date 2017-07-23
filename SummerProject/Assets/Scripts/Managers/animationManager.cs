@@ -1,8 +1,12 @@
-﻿using System.Collections;
+﻿//Written By Christopher Cooke
+//Gem Quest Animation Manager
+//Controls gems falling to empty squares
+//Sets board square flags
 using System.Collections.Generic;
 using UnityEngine;
 
 public class animationManager : MonoBehaviour {
+     
     //Public Variables
     float gemFallingSpeed = 0.5f;
 
@@ -12,10 +16,8 @@ public class animationManager : MonoBehaviour {
 
     //Properties
     public float GemFallingSpeed { set { gemFallingSpeed = value; } }
-    //public bool AnimationsPlaying { get { return playingAnims; } }
-
-   
-
+    
+    //Methods
     public bool CheckAnimationsPlaying()
     {
         if(animationsPlaying != null)
