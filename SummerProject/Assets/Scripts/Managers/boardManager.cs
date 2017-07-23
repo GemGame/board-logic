@@ -65,7 +65,7 @@ public class boardManager : MonoBehaviour {
                 if (bs != square)
                 {
                     TryDestroyGem(bs);
-                    //Debug.Log(bs);
+                    Debug.Log(bs);
                 }
             }
         }

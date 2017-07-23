@@ -8,11 +8,12 @@ public class boardSquare : MonoBehaviour
 {
     //Public Variables
     public bool isStaticSquare = false;
-    GameObject gem;
     public GameObject gemPrefab;
     public int gemX, gemY;
-    
+
     //Private
+    [SerializeField, HideInInspector]
+    GameObject gem;
     [SerializeField, HideInInspector]
     baseGem gemScript;
     bool comboable = false;
