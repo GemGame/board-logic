@@ -3,6 +3,7 @@
 //Creates board & utilizes of board analyzer to make decisions on & about the board
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class boardManager : MonoBehaviour {
 
@@ -37,6 +38,7 @@ public class boardManager : MonoBehaviour {
     {
         boardAnalyzer bA = new boardAnalyzer(board, currentDirection);
         board = bA.CheckAllSquaresForCombo();
+        moveList = new List<List<boardSquare>>();
         moveList = bA.MovesList;
         //Debug.Log("Finished Updating Targetable Squares");
     }
@@ -46,7 +48,7 @@ public class boardManager : MonoBehaviour {
         {
             square.GemScript.DestroyGem();
             square.Clear();
-            Debug.Log("Destroyed a square");
+            //Debug.Log("Destroyed a square");
         }
         return square.Destructable;
     }
@@ -94,13 +96,64 @@ public class boardManager : MonoBehaviour {
             }
         }
         return fallingSquares;
-    }    
+    }
+    List<boardSquare> RemoveListDuplicates(List<boardSquare> move)
+    {
+        List<boardSquare> distinctMove = new List<boardSquare>();
+        distinctMove = move.Distinct().ToList();
+        
+        return distinctMove;
+    }      
+    public void OptimizeMoveList()
+    {        
+        //Clean up individual elements
+        if (moveList.Count > 0)
+        {
+            for (int x = 0; x < moveList.Count; x++)
+            {
+                moveList[x] = RemoveListDuplicates(moveList[x]);
+            }
+            /*
+            List<List<boardSquare>> movesToRemove = new List<List<boardSquare>>();
+            for (int x = 0; x < moveList.Count; x++)
+                foreach (List<boardSquare> move in moveList)
+            {
+                    if(moveList.IndexOf(move) != x)
+                    {
+                        bool hasAll = true;
+                        foreach(boardSquare bs in move)
+                        {
+                            if (!moveList[x].Contains(bs))
+                            {
+                                hasAll = false;
+                            }
+                        }
+                        if (hasAll && moveList[x].Count > move.Count)
+                        {
+                            movesToRemove.Add(move);
+                        }
+                    }
+            }
+            foreach(List<boardSquare> move in movesToRemove)
+            {
+                moveList.Remove(move);
+            }
+            */
+        }
+        
+        
+    }
+    public bool ContainsAllItems(List<boardSquare> a, List<boardSquare> b)
+    {        
+        return !b.Except(a).Any();
+    }
     public void DestroyComboableSquares()
     {
-        foreach(List<boardSquare> move in moveList)
+        OptimizeMoveList();
+        foreach (List<boardSquare> move in moveList)
         {
             bool listMoving = false;
-            foreach(boardSquare bs in move)
+            foreach (boardSquare bs in move)
             {
                 if (bs.AnimPlaying)
                 {
@@ -109,26 +162,19 @@ public class boardManager : MonoBehaviour {
             }
             if (!listMoving)
             {
-                foreach(boardSquare bs in move)
+                foreach (boardSquare bs in new upgradeController().GetRandomUpgradedGemList(move))
                 {
+                   // Debug.Log("Attempting to upgrade " + bs);
+                    bs.UpgradeGem();
+                    move.Remove(bs);
+                }
+                foreach (boardSquare bs in move)
+                {
+                    //Debug.Log("Attempting to destroy " + bs);
                     TryDestroyGem(bs);
                 }
             }
         }
-        /*
-        boardSquare[] Board = board.GetBoardStruct().StructCoreSquare;
-        foreach(boardSquare bs in Board)
-        {
-            if(bs.Comboable)
-            {
-                TryDestroyGem(bs);
-            }
-        }
-        foreach(boardSquare bs in Board)
-        {
-            DestroyAdjacentSquares(bs);
-        }
-        */
     }
     public void DestroyComboableSquares(bool onCreate)  //Prevent wizard from creating a board with combos
     {

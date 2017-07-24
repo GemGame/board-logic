@@ -34,6 +34,7 @@ public class gameManager : MonoBehaviour
     }
     void UpdateBoard()
     {
+        //boardManager.OptimizeMoveList();
         boardManager.UpdateComboableSquares();
         if (boardManager.Board.DetectComboableSquares())
             boardManager.DestroyComboableSquares();

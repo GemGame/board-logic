@@ -85,6 +85,7 @@
     <Compile Include="Assets\Scripts\Managers\boardManager.cs" />
     <Compile Include="Assets\Scripts\Managers\gameManager.cs" />
     <Compile Include="Assets\Scripts\Managers\inputManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\upgradeController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\UtensilMediaTools\README.txt" />

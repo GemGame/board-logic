@@ -16,10 +16,10 @@ public class boardSquare : MonoBehaviour
     GameObject gem;
     [SerializeField, HideInInspector]
     baseGem gemScript;
-    bool comboable = false;
-    bool destructable = false;
-    bool animPlaying = false;
-    bool occupied = false;
+    public bool comboable = false;
+    public bool destructable = false;
+    public bool animPlaying = false;
+    public bool occupied = false;
     //bool empty = false;
 
     //Properties
@@ -97,13 +97,17 @@ public class boardSquare : MonoBehaviour
     }
     public void UpgradeGem()
     {
-        if (comboable && gemScript.UpgradedPrefab != null)
-        {
-            Debug.Log(this.transform.position + " upgraded gem");
-            gemScript.DestroyGem();
-            Gem = gemScript.SpawnGemCopy(this.transform, gemScript.UpgradedPrefab);
-            gemScript.SetGemProperties(this.transform.position, gem);
-        }
+       // Debug.Log(gem);
+
+        if (gemScript != null)
+
+            if (/*comboable &&*/ gemScript.UpgradedPrefab != null)
+            {
+                //Debug.Log(this.transform.position + " upgraded gem");
+                gemScript.DestroyGem();
+                Gem = gemScript.SpawnGemCopy(this.transform, gemScript.UpgradedPrefab);
+                gemScript.SetGemProperties(this.transform.position, gem);
+            }
     }
     public void DestroyGem()
     {

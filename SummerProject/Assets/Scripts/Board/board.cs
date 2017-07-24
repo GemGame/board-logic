@@ -133,10 +133,10 @@ public class board : MonoBehaviour  {
     }
     public bool TrySwapSquareGems(boardSquare emptySquare, boardSquare gemSquare)
     {
-        Debug.Log("Attempted to swap gems");
+        //Debug.Log("Attempted to swap gems");
         if (gemSquare.Gem != null)
         {
-            Debug.Log("Moved " + gemSquare + "to " + emptySquare);
+            //Debug.Log("Moved " + gemSquare + "to " + emptySquare);
             emptySquare.Gem = gemSquare.Gem;
             emptySquare.gemPrefab = gemSquare.gemPrefab;
             emptySquare.Gem.transform.parent = emptySquare.transform;

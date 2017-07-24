@@ -28,7 +28,9 @@ public abstract class baseGem : MonoBehaviour
     }
     public GameObject SpawnGemCopy(Transform parent, GameObject gemPrefab)  //Spawns Gem Game Object
     {
-        return Instantiate(gemPrefab, parent.position, parent.rotation, parent);
+        if (gemPrefab != null)
+            return Instantiate(gemPrefab, parent.position, parent.rotation, parent);
+        return null;
     }
     public void DestroyGem()    //Includes pre and post
     {

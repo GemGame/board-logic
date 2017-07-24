@@ -14,7 +14,7 @@ public class inputManager : MonoBehaviour {
 
     //Methods
     public boardSquare GetSquareOnClick()
-    {
+    {        
         if (Input.GetMouseButtonDown(0) && !animationManager.CheckAnimationsPlaying())
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
