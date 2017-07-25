@@ -61,7 +61,7 @@ public class PauseMenus : MonoBehaviour {
         curMenu = CurMenu.Pause;
         //just to avoid any null references for the static variable, we're going to find the audio source
         _audio = gameObject.GetComponent<AudioSource>();
-        AudioSource music = GameObject.Find("Game Manager/Music").GetComponent<AudioSource>();
+        AudioSource music = GameObject.Find("AudioManager/Music").GetComponent<AudioSource>();
         MusicScript.auSource = music;
 
         //setting defaults
@@ -99,6 +99,8 @@ public class PauseMenus : MonoBehaviour {
                 pause.SetActive(false);
                 pauseButton.SetActive(true);
                 Time.timeScale = scaleTime;
+                Transform t = GameObject.Find("Canvas/HUDButtons/PauseButton").GetComponent<Transform>();
+                t.transform.localScale = new Vector3(1, 1, 1);
             }
             _audio.pitch = 1.2f;
             _audio.PlayOneShot(select, SFXvolume);
@@ -186,8 +188,9 @@ public class PauseMenus : MonoBehaviour {
 
     public void Mute()
     {
-        AudioSource sounds = GameObject.Find("Game Manager/Sound").GetComponent<AudioSource>();
-        AudioSource music = GameObject.Find("Game Manager/Music").GetComponent<AudioSource>();
+        AudioSource sounds = GameObject.Find("AudioManager/Sound").GetComponent<AudioSource>();
+        AudioSource sounds2 = GameObject.Find("Canvas/HUDButtons/Mute").GetComponent<AudioSource>();
+        AudioSource music = GameObject.Find("AudioManager/Music").GetComponent<AudioSource>();
         Image image = GameObject.Find("Canvas/HUDButtons/Mute").GetComponent<Image>();
 
         if (mute)
@@ -196,16 +199,27 @@ public class PauseMenus : MonoBehaviour {
             gameObject.GetComponent<AudioSource>().mute = mute;
             _audio.pitch = 1.2f;
             _audio.PlayOneShot(select, SFXvolume);
-            image.sprite = Resources.Load<Sprite>("Art/HUD/Sounds/Unmute");
+            image.sprite = Resources.Load<Sprite>("Art/HUD/Buttons/normal/volume");
         }
         else
         {
             mute = true;
-            gameObject.GetComponent<AudioSource>().mute = true;
-            image.sprite = Resources.Load<Sprite>("Art/HUD/Sounds/Mute");
+            gameObject.GetComponent<AudioSource>().mute = true;     
+            image.sprite = Resources.Load<Sprite>("Art/HUD/Buttons/lock/volume");
         }
         sounds.mute = mute;
+        sounds2.mute = mute;
         music.mute = mute;
+    }
+    public void HoveroffMute()
+    {
+        Transform t = GameObject.Find("Canvas/HUDButtons/Mute").GetComponent<Transform>();
+        t.localScale = new Vector3(1,1,1);
+    }
+    public void HoverOnMute()
+    {
+        Transform t = GameObject.Find("Canvas/HUDButtons/Mute").GetComponent<Transform>();
+        t.localScale = new Vector3(1.05f, 1.05f, 1.05f);
     }
 
     public void ResetLevel()
@@ -324,6 +338,16 @@ public class PauseMenus : MonoBehaviour {
                 print("The game should reset current level"); //application.quit should be applied here
             }
         }
+    }
+    public void MainMenuOn()
+    {
+        Transform t = GameObject.Find("Canvas/HUDButtons/PauseButton").GetComponent<Transform>();
+        t.transform.localScale = new Vector3(1.05f, 1.05f, 1.05f);
+    }
+    public void MainMenuOff()
+    {
+        Transform t = GameObject.Find("Canvas/HUDButtons/PauseButton").GetComponent<Transform>();
+        t.transform.localScale = new Vector3(1, 1, 1);
     }
 
     //change difficulty
