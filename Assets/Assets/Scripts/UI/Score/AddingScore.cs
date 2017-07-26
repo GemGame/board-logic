@@ -1,4 +1,8 @@
-﻿using System.Collections;
+﻿/* 11 errors -- Missing Reference -- CC
+ * 
+ * 
+ * 
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -78,3 +82,4 @@ public class AddingScore : MonoBehaviour {
         }
     }
 }
+*/
