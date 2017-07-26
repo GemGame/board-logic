@@ -117,17 +117,20 @@ public class boardAnalyzer
                     List<boardSquare> newMove = new List<boardSquare>();
                     foreach (boardSquare bs in RecurseComboCheck(x, y, (int)directions[tempDir, xCoordIndex], (int)directions[tempDir, yCoordIndex], tempBoard.StructCoreSquare[board.Get1DIndexFrom2D(x, y, board.Width)], tempBoard))
                     {
-                        newMove.Add(bs);
+                        if (!newMove.Contains(bs))
+                            newMove.Add(bs);
                         foreach(boardSquare adjSq in CheckSquareForAdjacency(bs))
                         {
-                            newMove.Add(adjSq);
+                            if (!newMove.Contains(adjSq))
+                                newMove.Add(adjSq);
                         }
                         combosExisting++;
                          //Debug.Log("Combos found so far : " + combosExisting);
                         bs.Comboable = true;    //10 million calls... why?
                         bs.Destructable = true;
                     }
-                    movesLists.Add(newMove);              
+                    if (!movesLists.Contains(newMove))
+                        movesLists.Add(newMove);              
                 }
             }
         }
@@ -141,7 +144,7 @@ public class boardAnalyzer
 
         //Check next space on board
         if ((x + dirX < board.Width && x + dirX >= 0)
-            && (y + dirY < board.Height && y + dirY >= 0))
+            && (y + dirY < board.Height && y + dirY >= 0) && !originalSquare.Comboable)
         {
             if (CheckSquaresEqual(originalSquare, nextSquare))
             {
@@ -156,13 +159,15 @@ public class boardAnalyzer
             }
             //Debug.Log("Gems do not match. Counted " + counter + " matching gems.");
             //nextSquare.Targetable = false; 
+            validSquares.Clear();
             return validSquares;   //Squares do not match
         }
         else
         {
             //Debug.Log("Recursion ended due to leaving board at square : " + x + ", " + y);
             //nextSquare.Targetable = false;
-            return validSquares;   //Out of range
+            validSquares.Clear();   //Out of range
+            return validSquares;
         }
         //return nextSquare.Targetable;
 
