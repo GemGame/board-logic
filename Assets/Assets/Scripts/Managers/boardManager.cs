@@ -110,39 +110,94 @@ public class boardManager : MonoBehaviour
         //Clean up individual elements
         if (moveList.Count > 0)
         {
+            moveList = SortMultiList(moveList);
             for (int x = 0; x < moveList.Count; x++)
             {
                 moveList[x] = RemoveListDuplicates(moveList[x]);
             }
-            /*
-            List<List<boardSquare>> movesToRemove = new List<List<boardSquare>>();
-            for (int x = 0; x < moveList.Count; x++)
-                foreach (List<boardSquare> move in moveList)
-            {
-                    if(moveList.IndexOf(move) != x)
-                    {
-                        bool hasAll = true;
-                        foreach(boardSquare bs in move)
-                        {
-                            if (!moveList[x].Contains(bs))
-                            {
-                                hasAll = false;
-                            }
-                        }
-                        if (hasAll && moveList[x].Count > move.Count)
-                        {
-                            movesToRemove.Add(move);
-                        }
-                    }
-            }
-            foreach(List<boardSquare> move in movesToRemove)
-            {
-                moveList.Remove(move);
-            }
-            */
+            moveList = RemoveListsDuplicates(moveList);
         }
 
 
+    }
+    bool ListConstainsList(List<boardSquare> origList, List<boardSquare> listToCompare)
+    {
+        bool origListContainsAllNewList = true;
+        foreach(boardSquare bs in listToCompare)
+        {
+            if (!listToCompare.Contains(bs))
+                origListContainsAllNewList = false;
+        }
+        return origListContainsAllNewList;
+    }
+    List<List<boardSquare>> RemoveListsDuplicates(List<List<boardSquare>> moveList)
+    {
+        int length = moveList.Count;
+        int potentialNewIndex = 0;
+        //List<boardSquare> tempMove;
+        for (int moveIndex = 0; moveIndex < length; moveIndex++)    //For each move
+        {
+            potentialNewIndex = moveIndex;
+            for (int newMove = moveIndex + 1; newMove < length; newMove++)    //For eah remaining move
+            {
+                //bool containsAll = false;
+                if (ListConstainsList(moveList[potentialNewIndex], moveList[newMove]))    //Compare items
+                {
+                    if (moveList[potentialNewIndex].Count >= moveList[newMove].Count)
+                    {
+                        moveList.Remove(moveList[newMove]);
+                        newMove--;
+                        length = moveList.Count;
+                    }
+                }
+            }
+            // tempMove = moveList[moveIndex];   //Store copy of bs
+            //moveList[moveIndex] = moveList[potentialNewIndex];  //Try update move
+            //moveList[potentialNewIndex] = tempMove;
+        }
+        return moveList;
+    }
+    List<List<boardSquare>> SortMultiList(List<List<boardSquare>> moveList)
+    {
+        int length = moveList.Count;
+        int potentialNewIndex = 0;
+        List<boardSquare> tempMove;
+        for (int moveIndex = 0; moveIndex < length; moveIndex++)    //For each move
+        {
+            potentialNewIndex = moveIndex;
+            for (int newMove = moveIndex + 1; newMove < length; newMove++)    //For eah remaining move
+            {
+                if (moveList[potentialNewIndex].Count <= moveList[newMove].Count)    //Compare items
+                {
+                    potentialNewIndex = newMove;
+                }
+            }
+            tempMove = moveList[moveIndex];   //Store copy of bs
+            moveList[moveIndex] = moveList[potentialNewIndex];  //Try update move
+            moveList[potentialNewIndex] = tempMove;
+        }
+        return moveList;
+    }
+    List<boardSquare> SortSingleList(List<boardSquare> move)
+    {
+        int length = move.Count;
+        int potentialNewIndex = 0;
+        boardSquare tempSquare;
+        for (int moveIndex = 0; moveIndex < length; moveIndex++)    //For each move
+        {
+            potentialNewIndex = moveIndex;
+            for (int newMove = moveIndex; newMove < length; newMove++)    //For eah remaining move
+            {
+                if (move[potentialNewIndex].gemX > move[newMove].gemX && move[potentialNewIndex].gemY < move[newMove].gemY)    //Compare items
+                {
+                    potentialNewIndex = newMove;
+                }
+            }
+            tempSquare = move[moveIndex];   //Store copy of bs
+            move[moveIndex] = move[potentialNewIndex];  //Try update move
+            move[potentialNewIndex] = tempSquare;
+        }
+        return move;
     }
     public bool ContainsAllItems(List<boardSquare> a, List<boardSquare> b)
     {
@@ -151,6 +206,13 @@ public class boardManager : MonoBehaviour
     public void DestroyComboableSquares()
     {
         OptimizeMoveList();
+        /*
+        Debug.Log(moveList.Count);
+        foreach(boardSquare bs in moveList[0])
+        {
+            Debug.Log(bs);
+        }
+        */
         foreach (List<boardSquare> move in moveList)
         {
             bool listMoving = false;
@@ -165,13 +227,13 @@ public class boardManager : MonoBehaviour
             {
                 foreach (boardSquare bs in new upgradeController().GetRandomUpgradedGemList(move))
                 {
-                    // Debug.Log("Attempting to upgrade " + bs);
+                     Debug.Log("Attempting to upgrade " + bs);
                     bs.UpgradeGem();
                     move.Remove(bs);
                 }
                 foreach (boardSquare bs in move)
                 {
-                    //Debug.Log("Attempting to destroy " + bs);
+                    Debug.Log("Attempting to destroy " + bs);
                     TryDestroyGem(bs);
                 }
             }

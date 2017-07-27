@@ -97,7 +97,7 @@ public class boardSquare : MonoBehaviour
     }
     public void UpgradeGem()
     {
-        if (comboable && gemScript.UpgradedPrefab != null)
+        if (gemScript.UpgradedPrefab != null)
         {
             Debug.Log(this.transform.position + " upgraded gem");
             gemScript.DestroyGem();
