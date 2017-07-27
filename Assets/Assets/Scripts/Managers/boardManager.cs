@@ -9,10 +9,13 @@ public class boardManager : MonoBehaviour
 {
 
     //Public Variables   
+    [SerializeField]
+    public gemUpgrade[] gemUpgrades = new gemUpgrade[0];
     public board board;
     public enum directionIndex { down = 0, right = 1, left = 2, up = 3 };
 
     //Private Variables
+    [SerializeField, HideInInspector]
     int currentDirection = 0;
     int outerOffset = 1;
     int numOuterRows = 1;
@@ -225,15 +228,15 @@ public class boardManager : MonoBehaviour
             }
             if (!listMoving)
             {
-                foreach (boardSquare bs in new upgradeController().GetRandomUpgradedGemList(move))
+                foreach (boardSquare bs in new upgradeController(gemUpgrades).GetRandomUpgradedGemList(move))
                 {
-                     Debug.Log("Attempting to upgrade " + bs);
+                     //Debug.Log("Attempting to upgrade " + bs);
                     bs.UpgradeGem();
                     move.Remove(bs);
                 }
                 foreach (boardSquare bs in move)
                 {
-                    Debug.Log("Attempting to destroy " + bs);
+                   // Debug.Log("Attempting to destroy " + bs);
                     TryDestroyGem(bs);
                 }
             }
