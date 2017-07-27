@@ -192,7 +192,7 @@ public class BasicMenusScript : MonoBehaviour {
         Color c = button[0].GetComponent<Text>().color;
         c.a = 0;
         au.PlayOneShot(click, PauseMenus.SFXvolume);
-        MusicScript music = GameObject.Find("Game Manager/Music").GetComponent<MusicScript>();
+        MusicScript music = GameObject.Find("AudioManager/Music").GetComponent<MusicScript>();
         music.StopAllCoroutines();
         music.StartCoroutine(music.MusicOff());
         GameObject.Find("Canvas/Menus/Basic/Campaign").GetComponent<Animator>().enabled = false;
@@ -223,7 +223,7 @@ public class BasicMenusScript : MonoBehaviour {
         Color c = button[0].GetComponent<Text>().color;
         c.a = 0;
         au.PlayOneShot(click, PauseMenus.SFXvolume);
-        MusicScript music = GameObject.Find("Game Manager/Music").GetComponent<MusicScript>();
+        MusicScript music = GameObject.Find("AudioManager/Music").GetComponent<MusicScript>();
         music.StopAllCoroutines();
         music.StartCoroutine(music.MusicOff());
         GameObject.Find("Canvas/Menus/Basic/Campaign").GetComponent<Animator>().enabled = false;

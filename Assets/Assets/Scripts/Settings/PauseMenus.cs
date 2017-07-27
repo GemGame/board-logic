@@ -389,18 +389,18 @@ public class PauseMenus : MonoBehaviour {
                         audioSettings = AudioSettings.Stereo;
                         audioText.text = "Stereo";
                         gameObject.GetComponent<AudioHighPassFilter>().enabled = false;
-                        AudioHighPassFilter sound = GameObject.Find("Game Manager/Sound").GetComponent<AudioHighPassFilter>();
+                        AudioHighPassFilter sound = GameObject.Find("AudioManager/Sound").GetComponent<AudioHighPassFilter>();
                         sound.enabled = false;
-                        sound = GameObject.Find("Game Manager/Music").GetComponent<AudioHighPassFilter>();
+                        sound = GameObject.Find("AudioManager/Music").GetComponent<AudioHighPassFilter>();
                         sound.enabled = false;
                         break;
                     case AudioSettings.Stereo:
                         audioSettings = AudioSettings.Mono;
                         audioText.text = "Mono";
                         gameObject.GetComponent<AudioHighPassFilter>().enabled = true;
-                        sound = GameObject.Find("Game Manager/Sound").GetComponent<AudioHighPassFilter>();
+                        sound = GameObject.Find("AudioManager/Sound").GetComponent<AudioHighPassFilter>();
                         sound.enabled = true;
-                        sound = GameObject.Find("Game Manager/Music").GetComponent<AudioHighPassFilter>();
+                        sound = GameObject.Find("AudioManager/Music").GetComponent<AudioHighPassFilter>();
                         sound.enabled = true;
                         break;
                 }

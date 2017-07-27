@@ -1,13 +1,10 @@
-﻿/* 11 errors -- Missing Reference -- CC
- * 
- * 
- * 
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AddingScore : MonoBehaviour {
+public class AddingScore : MonoBehaviour
+{
     int score;
     int add;
     Text myScore;
@@ -18,14 +15,14 @@ public class AddingScore : MonoBehaviour {
         myScore = gameObject.GetComponent<Text>();
         _score = Score();
         AddScore(50000);
-    } 
+    }
 
     public void AddScore(int score)
     {
         add += score;
         _score = Score();
         GameObject.Find("Canvas/UIText/PointsEarned").GetComponent<Text>().text = "+" + score.ToString("n0") + " Points";
-        GameObject.Find("Canvas/UIText/PointsEarned").GetComponent<Animator>().Play("ComboMeter",0,0);
+        GameObject.Find("Canvas/UIText/PointsEarned").GetComponent<Animator>().Play("ComboMeter", 0, 0);
         StopCoroutine(_score);
         StartCoroutine(_score);
     }
@@ -82,4 +79,4 @@ public class AddingScore : MonoBehaviour {
         }
     }
 }
-*/
+
