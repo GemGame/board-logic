@@ -21,6 +21,10 @@ public class gameManager : MonoBehaviour
     //Methods
     private void Start()
     {
+        ConfigureComponents();
+    }
+    private void ConfigureComponents()
+    {
         boardManager = this.gameObject.GetComponent<boardManager>();
         inputManager = this.gameObject.AddComponent<inputManager>();
         animationManager = this.gameObject.AddComponent<animationManager>();

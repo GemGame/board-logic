@@ -129,6 +129,7 @@ public class boardAnalyzer
                         bs.Comboable = true;    //10 million calls... why?
                         bs.Destructable = true;
                     }
+                    //newMove.Sort();
                     if (!movesLists.Contains(newMove))
                         movesLists.Add(newMove);              
                 }
