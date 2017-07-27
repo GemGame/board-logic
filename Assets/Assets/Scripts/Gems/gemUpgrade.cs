@@ -9,4 +9,10 @@ public class gemUpgrade {
     public int comboCount = 0;
     [SerializeField]
     public int gemReward = 0;
+
+    public gemUpgrade(int combo, int reward)
+    {
+        comboCount = combo;
+        gemReward = reward;
+    }
 }

@@ -8,9 +8,13 @@ using UnityEngine;
 public abstract class baseGem : MonoBehaviour  
 {
     //Public Variables
+    [SerializeField]
     public GameObject UpgradedPrefab;
 
+
     //Private Variables
+    [SerializeField]
+    public GameObject basePrefab;
     [SerializeField]   
     GameObject gemGO;    
 
@@ -26,8 +30,9 @@ public abstract class baseGem : MonoBehaviour
         gemGO = gem;
         //Debug.Log(gemGO);
     }
-    public GameObject SpawnGemCopy(Transform parent, GameObject gemPrefab)  //Spawns Gem Game Object
+    public GameObject SpawnGemCopy(Transform parent, GameObject gemPrefab, GameObject baseGemPrefab)  //Spawns Gem Game Object
     {
+        basePrefab = baseGemPrefab;
         return Instantiate(gemPrefab, parent.position, parent.rotation, parent);
     }
     public void DestroyGem()    //Includes pre and post

@@ -10,6 +10,7 @@ public class upgradeController
     public upgradeController(gemUpgrade[] upgrades)
     {
         gemUpgrades = upgrades;
+        Debug.Log("Gem upgrades instantiated to " + gemUpgrades.Length);
         SortGemUpgrades();  //Just in case
     }
 
@@ -33,6 +34,10 @@ public class upgradeController
                 gemUpgrades[moveIndex] = gemUpgrades[potentialNewIndex];  //Try update upgrade
                 gemUpgrades[potentialNewIndex] = tempUpgrade;   //Swap places
             }
+
+        Debug.Log("Sorted gem upgrades to " + gemUpgrades.Length);
+        foreach (gemUpgrade gu in gemUpgrades)
+            Debug.Log(gu);
             //return move;
         
     }
@@ -43,7 +48,7 @@ public class upgradeController
         int moveCount = moveList.Count;
         int upgradeCount = 0;
         
-        for(int x = 0; x < gemUpgrades.Length; x++)
+        for(int x = 0; x < gemUpgrades.Length; x++) //For each upgrade
         {
             if (moveCount >= gemUpgrades[x].comboCount)
                 upgradeCount = gemUpgrades[x].gemReward;
@@ -61,7 +66,7 @@ public class upgradeController
             //Debug.Log(moveList[index]);
             //moveList.Remove(moveList[index]);
         }
-
+        Debug.Log("Upgrade controller returned " + gemsToUpgrade.Count);
         return gemsToUpgrade;
     }
     

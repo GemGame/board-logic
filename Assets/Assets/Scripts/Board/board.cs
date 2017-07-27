@@ -111,8 +111,9 @@ public class board : MonoBehaviour  {
     {
         if(square.Gem == null && !square.Occupied)
         {
-            square.gemPrefab = gems.GetRandomGem(square.transform);
-            square.Gem = square.gemPrefab.GetComponent<baseGem>().SpawnGemCopy(square.transform, square.gemPrefab);
+            square.gemPrefab = gems.GetRandomGem(square.transform);            
+            square.Gem = square.gemPrefab.GetComponent<baseGem>().SpawnGemCopy(square.transform, square.gemPrefab, square.gemPrefab);
+            //square.GemScript.basePrefab = square.gemPrefab;
             square.Gem.name = "Gem[" + x + ", " + y + "]";
             square.GemScript.SetGemProperties(new Vector3(x, y, 0), square.Gem);
             square.Occupied = true;

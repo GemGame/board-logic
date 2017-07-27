@@ -10,7 +10,7 @@ public class boardManager : MonoBehaviour
 
     //Public Variables   
     [SerializeField]
-    public gemUpgrade[] gemUpgrades = new gemUpgrade[0];
+    public gemUpgrade[] gemUpgrades;// = new gemUpgrade[0];
     public board board;
     public enum directionIndex { down = 0, right = 1, left = 2, up = 3 };
 
@@ -26,6 +26,24 @@ public class boardManager : MonoBehaviour
     public int CurrentDirection { get { return currentDirection; } set { currentDirection = value; } }
     public board Board { get { /*Debug.Log(board);*/ return board; } }//boardGO.GetComponent<board>(); } }
 
+    private void Start()
+    {
+        SetUpDefaultUpgrades();
+    }
+    void SetUpDefaultUpgrades()
+    {
+        if(gemUpgrades.Length == 0)
+        {
+            gemUpgrades = new gemUpgrade[7];
+            gemUpgrades[0] = new gemUpgrade(3, 1);
+            gemUpgrades[1] = new gemUpgrade(5, 2);
+            gemUpgrades[2] = new gemUpgrade(7, 3);
+            gemUpgrades[3] = new gemUpgrade(9, 4);
+            gemUpgrades[4] = new gemUpgrade(10, 5);
+            gemUpgrades[5] = new gemUpgrade(11, 6);
+            gemUpgrades[6] = new gemUpgrade(12, 7);
+        }
+    }
     //Methods
     public void CreateBoard(int boardWidth, int boardHeight, gemPool gemPool)
     {
@@ -228,15 +246,17 @@ public class boardManager : MonoBehaviour
             }
             if (!listMoving)
             {
-                foreach (boardSquare bs in new upgradeController(gemUpgrades).GetRandomUpgradedGemList(move))
+                upgradeController uc = new upgradeController(gemUpgrades);
+                List<boardSquare> movesToRemove = uc.GetRandomUpgradedGemList(move);
+                foreach (boardSquare bs in movesToRemove)
                 {
-                     //Debug.Log("Attempting to upgrade " + bs);
+                     Debug.Log("Attempting to upgrade " + bs);
                     bs.UpgradeGem();
                     move.Remove(bs);
                 }
                 foreach (boardSquare bs in move)
                 {
-                   // Debug.Log("Attempting to destroy " + bs);
+                    Debug.Log("Attempting to destroy " + bs);
                     TryDestroyGem(bs);
                 }
             }
@@ -254,7 +274,7 @@ public class boardManager : MonoBehaviour
                     if (onCreate)   //Works
                     {
                         square.gemPrefab = board.GemPool.GetRandomGem(square.transform);
-                        square.Gem = square.gemPrefab.GetComponent<baseGem>().SpawnGemCopy(square.transform, square.gemPrefab);
+                        square.Gem = square.gemPrefab.GetComponent<baseGem>().SpawnGemCopy(square.transform, square.gemPrefab, square.gemPrefab);
                         square.Gem.name = "Gem[" + square.gemX + ", " + square.gemY + "]";
                     }
                     else

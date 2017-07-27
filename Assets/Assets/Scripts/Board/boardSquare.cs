@@ -101,7 +101,7 @@ public class boardSquare : MonoBehaviour
         {
             Debug.Log(this.transform.position + " upgraded gem");
             gemScript.DestroyGem();
-            Gem = gemScript.SpawnGemCopy(this.transform, gemScript.UpgradedPrefab);
+            Gem = gemScript.SpawnGemCopy(this.transform, gemScript.UpgradedPrefab, gemScript.basePrefab);
             gemScript.SetGemProperties(this.transform.position, gem);
         }
     }
