@@ -11,6 +11,7 @@ public class ScreenEffect : MonoBehaviour {
     {
         if (resetLevel)
         {
+            resetLevel = false;
             gameObject.GetComponent<Animator>().Play("FillOut", 0, 0);
             gameObject.GetComponent<Transform>().transform.rotation = Quaternion.Euler(0, 180, 0);
             Time.timeScale = 0;
@@ -19,16 +20,9 @@ public class ScreenEffect : MonoBehaviour {
 	}
     IEnumerator Resetting()
     {
-        print("true");
         yield return new WaitForSecondsRealtime(1.1f);
         gameObject.GetComponent<Transform>().transform.rotation = Quaternion.Euler(0, 0, 0);
-        resetLevel = false;
         Time.timeScale = PauseMenus.scaleTime;
-        PauseMenus.gamePaused = true;
+        PauseMenus.gamePaused = false;
     }
-
-    // Update is called once per frame
-    void Update () {
-		
-	}
 }
