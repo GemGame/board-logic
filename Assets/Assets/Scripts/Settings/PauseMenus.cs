@@ -32,6 +32,8 @@ public class PauseMenus : MonoBehaviour {
     Slider SFXSlider;
     [SerializeField]
     Slider brightnessSlider;
+    [SerializeField]
+    Animator screenEffect;
 
     bool mute = false;//determiens whether or not all music/sounds are muted
     public static bool gamePaused;
@@ -229,7 +231,15 @@ public class PauseMenus : MonoBehaviour {
          //reset score, reset gems, reset board
             _audio.pitch = 1.2f;
             _audio.PlayOneShot(select, SFXvolume);
+            screenEffect.Play("FillIn",0,0);
+            StartCoroutine(Resetting());
         }
+    }
+    IEnumerator Resetting()
+    {
+        yield return new WaitForSecondsRealtime(1f);
+        ScreenEffect.resetLevel = true;
+        SceneManager.LoadScene("Level01");
     }
 
     //sends the player to the audio options
@@ -335,7 +345,6 @@ public class PauseMenus : MonoBehaviour {
             else if (curMenu == CurMenu.Reset)
             {
                 ResetLevel();
-                print("The game should reset current level"); //application.quit should be applied here
             }
         }
     }
