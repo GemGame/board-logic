@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class AddingScore : MonoBehaviour
 {
-    int score;
+    //int myScore;
     int add;
     [SerializeField]
     Text myScore;
@@ -45,7 +45,6 @@ public class AddingScore : MonoBehaviour
         goal2.text = manageScoreScript.goal2.ToString("n0");
         goal3.text = manageScoreScript.goal3.ToString("n0");
     }
-
     public void AddScore(int score)
     {
         add += score;
@@ -66,8 +65,8 @@ public class AddingScore : MonoBehaviour
         }
         while (add > 0)
         {
-            if (PauseMenus.gamePaused)
-                break;
+            //if (PauseMenus.gamePaused)
+            //    break;
             if (add > 1600)
             {
                 add -= 128;
@@ -105,6 +104,7 @@ public class AddingScore : MonoBehaviour
             }
             else if (add <= 50)
             {
+
                 add -= 1;
                 manageScoreScript.score += 1;
             }

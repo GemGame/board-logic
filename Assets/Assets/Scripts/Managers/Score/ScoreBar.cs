@@ -12,25 +12,23 @@ public class ScoreBar : MonoBehaviour {
     public static Text percentage;
 
     static ManageScore manageScoreScript;
+    [SerializeField]
+    ManageScore _manageScoreScript;
 
 
-    private void Start()
+    private void Awake()
     {
         bar = _bar;
         percentage = _percentage;
-        manageScoreScript = GameObject.Find("Canvas").GetComponent<ManageScore>();
+        manageScoreScript = _manageScoreScript;
+        bar.fillAmount = bar.fillAmount = 0;
+        percentage.text = Mathf.Floor(0).ToString() + "%";
     }
 
     public static void UpdateBar()
     {
-        try
-        {
-            bar.fillAmount = (float)manageScoreScript.score / manageScoreScript.goal3;
-            percentage.text = Mathf.Floor(bar.fillAmount * 100).ToString() + "%";
-        }
-        catch
-        {
+    bar.fillAmount = (float)manageScoreScript.score / manageScoreScript.goal3;
+    percentage.text = Mathf.Floor(bar.fillAmount * 100).ToString() + "%";
 
-        }
     }
 }
