@@ -23,7 +23,13 @@ public class inputManager : MonoBehaviour {
             if (Physics.Raycast(ray, out hit, 100))
             {
                 if (hit.transform.gameObject != null)
-                    return hit.transform.gameObject.GetComponent<boardSquare>();
+                {
+                    boardSquare square = hit.transform.gameObject.GetComponent<boardSquare>();
+                    if(square != null && !square.isStaticSquare)
+                    {
+                        return square;
+                    }
+                }
             }
         }
         return null;
