@@ -100,12 +100,28 @@ public class board : MonoBehaviour  {
         {
             SpawnRandomGem(topSquares[x], x, 0);
             SpawnRandomGem(bottomSquares[x], x, 0);   
-                     
+            if(topSquares[x].Gem != null && topSquares[x].Gem.activeSelf)
+            {
+                topSquares[x].Gem.SetActive(false);
+            }
+            if (bottomSquares[x].Gem != null && bottomSquares[x].Gem.activeSelf)
+            {
+                bottomSquares[x].Gem.SetActive(false);
+            }
+
         }
        for(int y = 0; y < height; y++)
         {
             SpawnRandomGem(leftSquares[y], y, 0);
             SpawnRandomGem(rightSquares[y], y, 0);
+            if (leftSquares[y].Gem != null && leftSquares[y].Gem.activeSelf)
+            {
+                leftSquares[y].Gem.SetActive(false);
+            }
+            if (rightSquares[y].Gem != null && rightSquares[y].Gem.activeSelf)
+            {
+                rightSquares[y].Gem.SetActive(false);
+            }
         }
     }
     void SpawnRandomGem(boardSquare square, int x, int y)
@@ -117,8 +133,8 @@ public class board : MonoBehaviour  {
             //square.GemScript.basePrefab = square.gemPrefab;
             square.Gem.name = "Gem[" + x + ", " + y + "]";
             square.GemScript.SetGemProperties(new Vector3(x, y, 0), square.Gem);
-            square.Occupied = true;
-            square.Gem.gameObject.SetActive(false);
+            square.Occupied = true;            
+            //square.Gem.gameObject.SetActive(false);
         }
     }
     public bool DetectComboableSquares()    //Moved to board analyzer

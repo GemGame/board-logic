@@ -47,7 +47,7 @@ public class gameManager : MonoBehaviour
     {
         if (!animationManager.CheckAnimationsPlaying())
         {
-            boardSquare square = inputManager.GetSquareOnClick();
+            boardSquare square = inputManager.GetInput();
             if (square != null)
             {
                 square.GemScript.DestroyGem();

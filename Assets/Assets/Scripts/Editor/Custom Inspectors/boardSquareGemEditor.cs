@@ -35,13 +35,25 @@ public class gemSelectorWindow : EditorWindow
     {
         square = bs;
         var window = GetWindowWithRect<gemSelectorWindow>(new Rect(0, 0, 165, 100));
+        InitializeDefaultSelection();
         window.Show();
     }
     void CloseWindow()
     {
         this.Close();
     }
-
+    void InitializeDefaultSelection()
+    {
+        GameObject[] gems = GetGemPoolObjects();
+        for(int x = 0; x < gems.Length; x++)
+        {
+            if(gems[x] == square.gemPrefab)
+            {
+                selection = x;
+                Debug.Log("Selection set to " + x);
+            }
+        }
+    }
     void ChangeSquareGem()
     {
         GameObject newGem = GetGemPoolObjects()[selection];
@@ -54,18 +66,26 @@ public class gemSelectorWindow : EditorWindow
     }
     private void OnGUI()
     {
-        selection = EditorGUILayout.Popup(selection, GetArrayObjectNames(GetGemPoolObjects()));
-        foreach (GameObject gem in GetGemPoolObjects())
-        {
-            EditorGUILayout.ObjectField(gem, typeof(GameObject), false);
-        }
+        EditorGUILayout.Separator();
 
-        if(GUILayout.Button("Replace Gem"))
+        EditorGUILayout.LabelField("Gem To Replace With");
+        EditorGUILayout.Separator();
+        selection = EditorGUILayout.Popup(selection, GetArrayObjectNames(GetGemPoolObjects()));
+        //foreach (GameObject gem in GetGemPoolObjects())
+        //{
+        //    EditorGUILayout.ObjectField(gem, typeof(GameObject), false);
+        //}
+        EditorGUILayout.Separator();
+        EditorGUILayout.Separator();
+
+        if (GUILayout.Button("Replace Gem"))
         {
             Debug.Log(GetGemPoolObjects()[selection]);
             ChangeSquareGem();
         }
-        if (GUILayout.Button("Cancel"))
+        EditorGUILayout.Separator();
+
+        if (GUILayout.Button("Close"))
         {
             CloseWindow();
         }
