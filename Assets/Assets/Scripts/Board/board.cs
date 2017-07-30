@@ -99,7 +99,8 @@ public class board : MonoBehaviour  {
        for(int x = 0; x < width; x++)
         {
             SpawnRandomGem(topSquares[x], x, 0);
-            SpawnRandomGem(bottomSquares[x], x, 0);            
+            SpawnRandomGem(bottomSquares[x], x, 0);   
+                     
         }
        for(int y = 0; y < height; y++)
         {
@@ -117,6 +118,7 @@ public class board : MonoBehaviour  {
             square.Gem.name = "Gem[" + x + ", " + y + "]";
             square.GemScript.SetGemProperties(new Vector3(x, y, 0), square.Gem);
             square.Occupied = true;
+            square.Gem.gameObject.SetActive(false);
         }
     }
     public bool DetectComboableSquares()    //Moved to board analyzer
@@ -205,7 +207,9 @@ public class board : MonoBehaviour  {
             for (int y = 0; y < rowCount; y++)
             {
                 topSquares[x] = InitializeSquare(topSquares[x], x, y + height + offset, tSquaresGO);
-                bottomSquares[x] = InitializeSquare(bottomSquares[x], x, -y-1 - offset, bSquaresGO);                
+                bottomSquares[x] = InitializeSquare(bottomSquares[x], x, -y-1 - offset, bSquaresGO);
+                topSquares[x].Gem.gameObject.SetActive(false);
+                bottomSquares[x].Gem.gameObject.SetActive(false);
             }
         }
         //Height dependent
@@ -217,6 +221,8 @@ public class board : MonoBehaviour  {
                 int leftIndex = y;//Get1DIndexFrom2D(x, y, width);
                 leftSquares[leftIndex] = InitializeSquare(leftSquares[leftIndex], -x - 1 - offset, y, lSquaresGO);
                 rightSquares[y] = InitializeSquare(rightSquares[y], x + width + offset, y, rSquaresGO);
+                leftSquares[leftIndex].Gem.gameObject.SetActive(false);
+                rightSquares[y].Gem.gameObject.SetActive(false);
             }
         }
     }

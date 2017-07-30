@@ -113,6 +113,8 @@ public class boardManager : MonoBehaviour
                     {
                         if (!fallingSquares.Contains(square))
                             fallingSquares.Add(square);
+                        if (!square.Gem.activeSelf)
+                            square.Gem.SetActive(true);
                     }
                 }
             }
