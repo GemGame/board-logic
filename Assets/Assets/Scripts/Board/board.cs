@@ -94,34 +94,46 @@ public class board : MonoBehaviour  {
     {
         RefillEmptySquares();
     }
+    private void LateUpdate()
+    {
+        DeactivateBorderGems();
+    }
+    void DeactivateBorderGems()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            if (topSquares[x].Gem != null && topSquares[x].Gem.activeSelf)
+            {
+                topSquares[x].Gem.SetActive(false);
+            }
+            if (bottomSquares[x].Gem != null && bottomSquares[x].Gem.activeSelf)
+            {
+                bottomSquares[x].Gem.SetActive(false);
+            }
+        }
+        for (int y = 0; y < height; y++)
+        {
+            if (leftSquares[y].Gem != null && leftSquares[y].Gem.activeSelf)
+            {
+                leftSquares[y].Gem.SetActive(false);
+            }
+            if (rightSquares[y].Gem != null && rightSquares[y].Gem.activeSelf)
+            {
+                rightSquares[y].Gem.SetActive(false);
+            }
+        }
+    }
     void RefillEmptySquares()
     {
        for(int x = 0; x < width; x++)
         {
             SpawnRandomGem(topSquares[x], x, 0);
-            SpawnRandomGem(bottomSquares[x], x, 0);   
-            if(topSquares[x].Gem != null && topSquares[x].Gem.activeSelf)
-            {
-                //topSquares[x].Gem.SetActive(false);
-            }
-            if (bottomSquares[x].Gem != null && bottomSquares[x].Gem.activeSelf)
-            {
-                //bottomSquares[x].Gem.SetActive(false);
-            }
-
+            SpawnRandomGem(bottomSquares[x], x, 0);             
         }
        for(int y = 0; y < height; y++)
         {
             SpawnRandomGem(leftSquares[y], y, 0);
-            SpawnRandomGem(rightSquares[y], y, 0);
-            if (leftSquares[y].Gem != null && leftSquares[y].Gem.activeSelf)
-            {
-                //leftSquares[y].Gem.SetActive(false);
-            }
-            if (rightSquares[y].Gem != null && rightSquares[y].Gem.activeSelf)
-            {
-                //rightSquares[y].Gem.SetActive(false);
-            }
+            SpawnRandomGem(rightSquares[y], y, 0);            
         }
     }
     void SpawnRandomGem(boardSquare square, int x, int y)

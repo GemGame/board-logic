@@ -252,13 +252,13 @@ public class boardManager : MonoBehaviour
                 List<boardSquare> movesToRemove = uc.GetRandomUpgradedGemList(move);
                 foreach (boardSquare bs in movesToRemove)
                 {
-                     Debug.Log("Attempting to upgrade " + bs);
+                     //Debug.Log("Attempting to upgrade " + bs);
                     bs.UpgradeGem();
                     move.Remove(bs);
                 }
                 foreach (boardSquare bs in move)
                 {
-                    Debug.Log("Attempting to destroy " + bs);
+                    //Debug.Log("Attempting to destroy " + bs);
                     TryDestroyGem(bs);
                 }
             }

@@ -33,8 +33,8 @@ public class CreateBoardWizard : ScriptableWizard {
     void OnWizardCreate()   //On create button
     {
         TryCreateRequiredObjects();
-        InitializeGemPool();
-        InitializeGameBoard();
+        if (InitializeGemPool())
+            InitializeGameBoard();
     }    
     void OnWizardOtherButton()  //On clear board button
     {
@@ -52,14 +52,21 @@ public class CreateBoardWizard : ScriptableWizard {
         gameManager.CreateBMInstance();
         gameManager.BoardManager.CreateBoard(boardWidth, boardHeight, gemPool);        
     }
-    void InitializeGemPool()    //Fills gem array from resource directory
+    bool InitializeGemPool()    //Fills gem array from resource directory
     {
         gemPool = GameObject.FindGameObjectWithTag("Gem Pool").GetComponent<gemPool>();
         gemPool.LoadGemsAtPath(gemsDirectory);
         if (gemPool.gameObject == null)
         {
             Debug.Log("Cannot find game object with the tag 'Gem Pool'");
+            return false;
         }
+        else if (gemPool.Gems.Count == 0)
+        {
+            ClearWizardObjects();
+            return false;
+        }
+        return true;         
     }
     void ClearWizardObjects()   //Deletes all objects created
     {

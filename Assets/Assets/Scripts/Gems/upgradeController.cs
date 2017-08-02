@@ -10,7 +10,7 @@ public class upgradeController
     public upgradeController(gemUpgrade[] upgrades)
     {
         gemUpgrades = upgrades;
-        Debug.Log("Gem upgrades instantiated to " + gemUpgrades.Length);
+        //Debug.Log("Gem upgrades instantiated to " + gemUpgrades.Length);
         SortGemUpgrades();  //Just in case
     }
 
