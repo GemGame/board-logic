@@ -102,11 +102,11 @@ public class board : MonoBehaviour  {
             SpawnRandomGem(bottomSquares[x], x, 0);   
             if(topSquares[x].Gem != null && topSquares[x].Gem.activeSelf)
             {
-                topSquares[x].Gem.SetActive(false);
+                //topSquares[x].Gem.SetActive(false);
             }
             if (bottomSquares[x].Gem != null && bottomSquares[x].Gem.activeSelf)
             {
-                bottomSquares[x].Gem.SetActive(false);
+                //bottomSquares[x].Gem.SetActive(false);
             }
 
         }
@@ -116,11 +116,11 @@ public class board : MonoBehaviour  {
             SpawnRandomGem(rightSquares[y], y, 0);
             if (leftSquares[y].Gem != null && leftSquares[y].Gem.activeSelf)
             {
-                leftSquares[y].Gem.SetActive(false);
+                //leftSquares[y].Gem.SetActive(false);
             }
             if (rightSquares[y].Gem != null && rightSquares[y].Gem.activeSelf)
             {
-                rightSquares[y].Gem.SetActive(false);
+                //rightSquares[y].Gem.SetActive(false);
             }
         }
     }
@@ -128,13 +128,14 @@ public class board : MonoBehaviour  {
     {
         if(square.Gem == null && !square.Occupied)
         {
-            square.gemPrefab = gems.GetRandomGem(square.transform);            
-            square.Gem = square.gemPrefab.GetComponent<baseGem>().SpawnGemCopy(square.transform, square.gemPrefab, square.gemPrefab);
-            //square.GemScript.basePrefab = square.gemPrefab;
-            square.Gem.name = "Gem[" + x + ", " + y + "]";
-            square.GemScript.SetGemProperties(new Vector3(x, y, 0), square.Gem);
-            square.Occupied = true;            
-            //square.Gem.gameObject.SetActive(false);
+            square.gemPrefab = gems.GetRandomGem(square.transform);
+            if (square.gemPrefab != null)
+            {
+                square.Gem = square.gemPrefab.GetComponent<baseGem>().SpawnGemCopy(square.transform, square.gemPrefab, square.gemPrefab);
+                square.Gem.name = "Gem[" + x + ", " + y + "]";
+                square.GemScript.SetGemProperties(new Vector3(x, y, 0), square.Gem);
+                square.Occupied = true;
+            }   
         }
     }
     public bool DetectComboableSquares()    //Moved to board analyzer
@@ -201,6 +202,7 @@ public class board : MonoBehaviour  {
         BoxCollider col =  sq.AddComponent<BoxCollider>();    //Make the square clickable 
         col.isTrigger = true;
         sq.transform.parent = parent.transform;
+        //Debug.Log("Pre error check");
         SpawnRandomGem(square, x, y);
         //square.GemScript.SpawnGem(sq.transform);
         
@@ -224,8 +226,14 @@ public class board : MonoBehaviour  {
             {
                 topSquares[x] = InitializeSquare(topSquares[x], x, y + height + offset, tSquaresGO);
                 bottomSquares[x] = InitializeSquare(bottomSquares[x], x, -y-1 - offset, bSquaresGO);
-                topSquares[x].Gem.gameObject.SetActive(false);
-                bottomSquares[x].Gem.gameObject.SetActive(false);
+                GameObject topGO = topSquares[x].Gem;
+                GameObject botGO = bottomSquares[x].Gem;
+                if(botGO && topGO)
+                {
+                    topSquares[x].Gem.gameObject.SetActive(false);
+                    bottomSquares[x].Gem.gameObject.SetActive(false);
+                }
+                
             }
         }
         //Height dependent
@@ -237,8 +245,13 @@ public class board : MonoBehaviour  {
                 int leftIndex = y;//Get1DIndexFrom2D(x, y, width);
                 leftSquares[leftIndex] = InitializeSquare(leftSquares[leftIndex], -x - 1 - offset, y, lSquaresGO);
                 rightSquares[y] = InitializeSquare(rightSquares[y], x + width + offset, y, rSquaresGO);
-                leftSquares[leftIndex].Gem.gameObject.SetActive(false);
-                rightSquares[y].Gem.gameObject.SetActive(false);
+                GameObject leftGO = leftSquares[x].Gem;
+                GameObject rightGO = rightSquares[x].Gem;
+                if (leftGO && rightGO)
+                {
+                    leftSquares[leftIndex].Gem.gameObject.SetActive(false);
+                    rightSquares[y].Gem.gameObject.SetActive(false);
+                }
             }
         }
     }

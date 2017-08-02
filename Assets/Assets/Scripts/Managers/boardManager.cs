@@ -49,7 +49,7 @@ public class boardManager : MonoBehaviour
     {
         boardGO = new GameObject("Board");
         board = boardGO.AddComponent<board>();
-        Debug.Log(gemPool);
+        //Debug.Log(gemPool);
         board.SetBoardProperties(boardWidth, boardHeight, outerOffset, numOuterRows, gemPool);
         board.InitializeDefaultBoard();
         board.InitializeOuterRows();

@@ -18,18 +18,32 @@ public class gemPool : MonoBehaviour {
     {
         gems = new List<GameObject>();
         Object[] gemObjects = Resources.LoadAll(path, typeof(GameObject)); //Resources.LoadAll(path);
-        
-        foreach (Object gem in gemObjects)
+
+        if (gemObjects.Length > 0)
         {
-            Debug.Log("Gem added : " + gem.name);
-            gems.Add((GameObject)gem);
+            foreach (Object gem in gemObjects)
+            {
+                Debug.Log("Gem added : " + gem.name);
+                gems.Add((GameObject)gem);
+            }
+        }
+        else
+        {
+            Debug.Log("Directory contained no Game Objects");
         }
     }
     public GameObject GetRandomGem(Transform parent)
     {
-        int randomIndex = Random.Range(0, gems.Count);
-        //Debug.Log(gems[randomIndex]);
-        //return Instantiate(gems[randomIndex], parent);
-        return gems[randomIndex];//.GetComponent<baseGem>();
+        int count = gems.Count;
+        if (count > 0)
+        {
+            int randomIndex = Random.Range(0, count);
+            return gems[randomIndex];
+        }
+        else
+        {
+            //Debug.Log("Gem Pool Contains No Gems");
+            return null;
+        }
     }
 }

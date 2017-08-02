@@ -49,13 +49,16 @@ public class upgradeController
 
     List<boardSquare> ListMinusMaxedSquares(List<boardSquare> list)
     {
-        List<boardSquare> tempList = list;
-
-        foreach(boardSquare bs in list)
+        List<boardSquare> tempList = new List<boardSquare>();
+        int count = list.Count;
+        for(int x = 0; x < count; x++)
         {
-            if (bs.GemScript.UpgradedPrefab == null)
-                tempList.Remove(bs);
+            if(list[x].GemScript.UpgradedPrefab != null)
+            {
+                tempList.Add(list[x]);
+            }
         }
+       
         return tempList;
     }
     public List<boardSquare> GetRandomUpgradedGemList(List<boardSquare> moveList)
@@ -66,7 +69,7 @@ public class upgradeController
 
         Debug.Log("Upgrade count " + upgradeCount);
 
-        //moveList = ListMinusMaxedSquares(moveList); //Remove squares where upgraded prefab == null
+        moveList = ListMinusMaxedSquares(moveList); //Remove squares where upgraded prefab == null
 
         for (int x = 0; x < upgradeCount; x++)
         {
@@ -76,13 +79,13 @@ public class upgradeController
 
             int index = PreventDuplicateEntries(gemsToUpgrade, moveList, Random.Range(0, moveList.Count));
 
-            if (index != -1)    //If index didn't error out
+            if (index != -1)    //If index didn't error out in PreventDuplicateEntries()
                 gemsToUpgrade.Add(moveList[index]);
             //Debug.Log(moveList[index]);
             //moveList.Remove(moveList[index]);
         }
 
-        Debug.Log("Upgrade controller returned " + gemsToUpgrade.Count);
+        Debug.Log("Upgrade controller returned " + gemsToUpgrade.Count + " upgrades.");
 
         return gemsToUpgrade;
     }
