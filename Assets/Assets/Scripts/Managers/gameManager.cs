@@ -2,7 +2,7 @@
 //Gem Quest Game Manager
 //The master manager through which all other managers are interacted with. 
 //Contains the main game loop & controls the flow / updating of the game
-using UnityEngine;
+using UnityEngine; 
 
 [System.Serializable]
 public class gameManager : MonoBehaviour

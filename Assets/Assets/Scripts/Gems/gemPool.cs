@@ -17,13 +17,12 @@ public class gemPool : MonoBehaviour {
     public void LoadGemsAtPath(string path) //Set gems list
     {
         gems = new List<GameObject>();
-        Object[] gemObjects = Resources.LoadAll(path, typeof(GameObject)); //Resources.LoadAll(path);
+        Object[] gemObjects = Resources.LoadAll(path, typeof(GameObject)); 
 
         if (gemObjects.Length > 0)
         {
             foreach (Object gem in gemObjects)
             {
-                Debug.Log("Gem added : " + gem.name);
                 gems.Add((GameObject)gem);
             }
         }
@@ -42,8 +41,7 @@ public class gemPool : MonoBehaviour {
         }
         else
         {
-            //Debug.Log("Gem Pool Contains No Gems");
             return null;
         }
     }
-}
+} 

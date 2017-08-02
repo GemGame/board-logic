@@ -1,46 +1,47 @@
 ﻿//Written By Christopher Cooke
 //Gem Quest Input Manager
-//Basic controls that allow the user to interact with the board (add android!)
-//Needs animation manager hooked up to ensure no animations are playing to take input -- Consider moving this requirment elsewhere, seems lame 
-
+//Mouse & Touchscreen controls that allow the user to interact with the board 
 using UnityEngine;
-using System.Collections;
-
-
 
 public class inputManager : MonoBehaviour {
 
     //Private Variables
     animationManager animationManager;
+    bool editMode = false;
+    bool windows = false;
+    bool android = false;
+    bool iPhone = false;
+    bool osx = false;
 
     //Properties
     public animationManager AnimationManager { set { animationManager = value; } }
 
     //Methods
-    private void Awake()
+    private void Awake()    //Preprocess Platform Determination
     {
-
+        #if UNITY_EDITOR
+            editMode = true;
+        #elif UNITY_IPHONE
+            iPhone = true;
+        #elif UNITY_STANDALONE_OSX
+            osx = true;
+        #elif UNITY_STANDALONE_WIN
+            windows = true;
+        #elif UNITY_ANDROID
+            android = true;
+        #endif
     }
 
+    //Class Return Method
     public boardSquare GetInput()
     {
-#if UNITY_EDITOR
-        return GetSquareOnClick();
-#elif UNITY_IPHONE
-          Debug.Log("Iphone");
-        
-
-#elif UNITY_STANDALONE_OSX
-          Debug.Log("Stand Alone OSX");
-
-#elif UNITY_STANDALONE_WIN
-           return GetSquareOnClick();
-
-#elif UNITY_ANDROID
-        return GetSquareOnTap();
-#endif
+        if (android)
+            return GetSquareOnTap();
+        else
+            return GetSquareOnClick();
     }
-    boardSquare GetSquareOnTap()
+
+    boardSquare GetSquareOnTap()    //Android
     {
         foreach(Touch touch in Input.touches)
         {
@@ -61,7 +62,7 @@ public class inputManager : MonoBehaviour {
         }
         return null;
     }
-    boardSquare GetSquareOnClick()
+    boardSquare GetSquareOnClick()  //Win / Editor
     {
         if (Input.GetMouseButtonDown(0) && !animationManager.CheckAnimationsPlaying())
         {

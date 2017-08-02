@@ -7,7 +7,6 @@ using System.Linq;
 
 public class boardManager : MonoBehaviour
 {
-
     //Public Variables   
     [SerializeField]
     public gemUpgrade[] gemUpgrades;// = new gemUpgrade[0];
@@ -24,15 +23,18 @@ public class boardManager : MonoBehaviour
 
     //Properties
     public int CurrentDirection { get { return currentDirection; } set { currentDirection = value; } }
-    public board Board { get { /*Debug.Log(board);*/ return board; } }//boardGO.GetComponent<board>(); } }
+    public board Board { get { return board; } }
 
+    //Methods
     private void Start()
     {
         SetUpDefaultUpgrades();
     }
+
+    //Creation
     void SetUpDefaultUpgrades()
     {
-        if(gemUpgrades.Length == 0)
+        if (gemUpgrades.Length == 0)
         {
             gemUpgrades = new gemUpgrade[7];
             gemUpgrades[0] = new gemUpgrade(3, 1);
@@ -44,40 +46,26 @@ public class boardManager : MonoBehaviour
             gemUpgrades[6] = new gemUpgrade(12, 7);
         }
     }
-    //Methods
     public void CreateBoard(int boardWidth, int boardHeight, gemPool gemPool)
     {
         boardGO = new GameObject("Board");
         board = boardGO.AddComponent<board>();
-        //Debug.Log(gemPool);
         board.SetBoardProperties(boardWidth, boardHeight, outerOffset, numOuterRows, gemPool);
         board.InitializeDefaultBoard();
         board.InitializeOuterRows();
         UpdateComboableSquares();
         DestroyComboableSquares(true);
     }
-    public void UpdateComboableSquares()
-    {
-        boardAnalyzer bA = new boardAnalyzer(board, currentDirection);
-        board = bA.CheckAllSquaresForCombo();
-        moveList = new List<List<boardSquare>>();
-        moveList = bA.MovesList;
-        //Debug.Log("Finished Updating Targetable Squares");
-    }
+
+    //Destruction
     public bool TryDestroyGem(boardSquare square)
     {
         if (square != null && square.Gem != null && square.Destructable && !square.AnimPlaying)
         {
             square.GemScript.DestroyGem();
             square.Clear();
-            //Debug.Log("Destroyed a square");
         }
         return square.Destructable;
-    }
-    boardSquare GetNextGemToFall(boardSquare square)
-    {
-        boardAnalyzer bA = new boardAnalyzer(board, currentDirection);
-        return bA.RecurseToNextGem((int)square.transform.position.x, (int)square.transform.position.y, bA.DirectionX, bA.DirectionY);
     }
     public void DestroyAdjacentSquares(boardSquare square)
     {
@@ -89,11 +77,83 @@ public class boardManager : MonoBehaviour
                 if (bs != square)
                 {
                     TryDestroyGem(bs);
-                    Debug.Log(bs);
                 }
             }
         }
     }
+    public void DestroyComboableSquares()
+    {
+        OptimizeMoveList();
+
+        foreach (List<boardSquare> move in moveList)
+        {
+            bool listMoving = false;
+            foreach (boardSquare bs in move)
+            {
+                if (bs.AnimPlaying)
+                {
+                    listMoving = true;
+                }
+            }
+            if (!listMoving)
+            {
+                upgradeController uc = new upgradeController(gemUpgrades);
+                List<boardSquare> movesToRemove = uc.GetRandomUpgradedGemList(move);
+                foreach (boardSquare bs in movesToRemove)
+                {
+                    bs.UpgradeGem();
+                    move.Remove(bs);
+                }
+                foreach (boardSquare bs in move)
+                {
+                    TryDestroyGem(bs);
+                }
+            }
+        }
+    }
+    public void DestroyComboableSquares(bool onCreate)  //Prevent wizard from creating a board with combos
+    {
+        while (board.DetectComboableSquares())
+        {
+            foreach (boardSquare square in board.GetBoardStruct().StructCoreSquare)
+            {
+                if (square.Comboable && square.Gem != null)
+                {
+                    TryDestroyGem(square);
+                    if (onCreate)
+                    {
+                        square.gemPrefab = board.GemPool.GetRandomGem(square.transform);
+                        square.Gem = square.gemPrefab.GetComponent<baseGem>().SpawnGemCopy(square.transform, square.gemPrefab, square.gemPrefab);
+                        square.Gem.name = "Gem[" + square.gemX + ", " + square.gemY + "]";
+                    }
+                    else
+                    {
+                        square.gemPrefab = null;
+                    }
+                }
+                if (board.DetectComboableSquares())
+                    UpdateComboableSquares();
+            }
+            if (board.DetectComboableSquares())
+                UpdateComboableSquares();
+        }
+    }
+
+    //Control
+    public void UpdateComboableSquares()
+    {
+        boardAnalyzer bA = new boardAnalyzer(board, currentDirection);
+        board = bA.CheckAllSquaresForCombo();
+        moveList = new List<List<boardSquare>>();
+        moveList = bA.MovesList;
+    }
+    boardSquare GetNextGemToFall(boardSquare square)
+    {
+        boardAnalyzer bA = new boardAnalyzer(board, currentDirection);
+        return bA.RecurseToNextGem((int)square.transform.position.x, (int)square.transform.position.y, bA.DirectionX, bA.DirectionY);
+    }
+
+    //List Management -- I should make a list sort library for board games or at least another class
     public List<boardSquare> GetFallingGemsList()
     {
         List<boardSquare> fallingSquares = new List<boardSquare>();
@@ -102,13 +162,9 @@ public class boardManager : MonoBehaviour
         {
             for (int y = 0; y < board.Height; y++)
             {
-                // int count = 0;
                 boardSquare square = board.Squares[board.Get1DIndexFrom2D(x, y, board.Width)];
-                // Debug.Log("Analyzing fall for square : " + square);
-                if (square.Gem == null)//&& count == 0)
+                if (square.Gem == null)
                 {
-                    //   count++;
-                    //Debug.Log("Square is empty");
                     if (board.TrySwapSquareGems(square, GetNextGemToFall(square)))
                     {
                         if (!fallingSquares.Contains(square))
@@ -121,16 +177,15 @@ public class boardManager : MonoBehaviour
         }
         return fallingSquares;
     }
-    List<boardSquare> RemoveListDuplicates(List<boardSquare> move)
+    List<boardSquare> RemoveListDuplicates(List<boardSquare> move)  //Return Distinct List
     {
         List<boardSquare> distinctMove = new List<boardSquare>();
         distinctMove = move.Distinct().ToList();
 
         return distinctMove;
     }
-    public void OptimizeMoveList()
+    public void OptimizeMoveList()  //Clean up individual elements
     {
-        //Clean up individual elements
         if (moveList.Count > 0)
         {
             moveList = SortMultiList(moveList);
@@ -140,13 +195,11 @@ public class boardManager : MonoBehaviour
             }
             moveList = RemoveListsDuplicates(moveList);
         }
-
-
     }
     bool ListConstainsList(List<boardSquare> origList, List<boardSquare> listToCompare)
     {
         bool origListContainsAllNewList = true;
-        foreach(boardSquare bs in listToCompare)
+        foreach (boardSquare bs in listToCompare)
         {
             if (!listToCompare.Contains(bs))
                 origListContainsAllNewList = false;
@@ -226,72 +279,5 @@ public class boardManager : MonoBehaviour
     {
         return !b.Except(a).Any();
     }
-    public void DestroyComboableSquares()
-    {
-        OptimizeMoveList();
-        /*
-        Debug.Log(moveList.Count);
-        foreach(boardSquare bs in moveList[0])
-        {
-            Debug.Log(bs);
-        }
-        */
-        foreach (List<boardSquare> move in moveList)
-        {
-            bool listMoving = false;
-            foreach (boardSquare bs in move)
-            {
-                if (bs.AnimPlaying)
-                {
-                    listMoving = true;
-                }
-            }
-            if (!listMoving)
-            {
-                upgradeController uc = new upgradeController(gemUpgrades);
-                List<boardSquare> movesToRemove = uc.GetRandomUpgradedGemList(move);
-                foreach (boardSquare bs in movesToRemove)
-                {
-                     //Debug.Log("Attempting to upgrade " + bs);
-                    bs.UpgradeGem();
-                    move.Remove(bs);
-                }
-                foreach (boardSquare bs in move)
-                {
-                    //Debug.Log("Attempting to destroy " + bs);
-                    TryDestroyGem(bs);
-                }
-            }
-        }
-    }
-    public void DestroyComboableSquares(bool onCreate)  //Prevent wizard from creating a board with combos
-    {
-        while (board.DetectComboableSquares())// && count < 8000)
-        {
-            foreach (boardSquare square in board.GetBoardStruct().StructCoreSquare)
-            {
-                if (square.Comboable && square.Gem != null)
-                {
-                    TryDestroyGem(square);
-                    if (onCreate)   //Works
-                    {
-                        square.gemPrefab = board.GemPool.GetRandomGem(square.transform);
-                        square.Gem = square.gemPrefab.GetComponent<baseGem>().SpawnGemCopy(square.transform, square.gemPrefab, square.gemPrefab);
-                        square.Gem.name = "Gem[" + square.gemX + ", " + square.gemY + "]";
-                    }
-                    else
-                    {
-                        square.gemPrefab = null;
-                        Debug.Log(square + " destroyed and left empty");
-                    }
-                }
-                if (board.DetectComboableSquares())
-                    UpdateComboableSquares();
-            }
-            if (board.DetectComboableSquares())
-                UpdateComboableSquares();
-        }
-    }
-
 
 }

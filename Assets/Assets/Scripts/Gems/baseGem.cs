@@ -6,7 +6,7 @@ using UnityEngine;
 
 [System.Serializable]
 public abstract class baseGem : MonoBehaviour  
-{
+{ 
     //Public Variables
     [SerializeField]
     public GameObject UpgradedPrefab;
@@ -26,9 +26,7 @@ public abstract class baseGem : MonoBehaviour
     //Methods
     public void SetGemProperties(Vector3 position, GameObject gem)   //Use before spawning
     {
-       // location = position;
         gemGO = gem;
-        //Debug.Log(gemGO);
     }
     public GameObject SpawnGemCopy(Transform parent, GameObject gemPrefab, GameObject baseGemPrefab)  //Spawns Gem Game Object
     {
@@ -44,9 +42,7 @@ public abstract class baseGem : MonoBehaviour
    
     void Destroy()  //Destroy gem objects gem game object
     {
-        //Debug.Log("Destroying gem at position " + gemGO.transform.position.x + ", " + gemGO.transform.position.y);
         DestroyImmediate(gemGO);
-        //Debug.Log(gemGO);
     }
     public abstract void PreDestroy();
     public abstract void PostDestroy();

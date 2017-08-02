@@ -20,10 +20,8 @@ public class boardSquare : MonoBehaviour
     bool destructable = false;
     bool animPlaying = false;
     bool occupied = false;
-    //bool empty = false;
 
     //Properties
-   // public bool Empty { get { if (gem == null) return true; else return false; } }
     public baseGem GemScript { get { return gemScript; } }
     public GameObject Gem   //Assigns gemScript from GO
     {
@@ -33,8 +31,8 @@ public class boardSquare : MonoBehaviour
         }
         set
         {
-            gem = value;  
-            if(gem != null)
+            gem = value;
+            if (gem != null)
             {
                 gemScript = gem.GetComponent<baseGem>();
                 gemScript.GemGO = gem;
@@ -43,26 +41,20 @@ public class boardSquare : MonoBehaviour
             {
                 Debug.Log("Gem script failed to assign");
             }
-            else
-            {
-            }
         }
     }
-    public bool Comboable { get { return comboable; }set { comboable = value; } }
+    public bool Comboable { get { return comboable; } set { comboable = value; } }
     public bool Destructable { get { if (animPlaying) return false; return destructable; } set { destructable = value; } }
-    public bool AnimPlaying { get { return animPlaying; } set{ animPlaying = value; } } 
+    public bool AnimPlaying { get { return animPlaying; } set { animPlaying = value; } }
     public bool Occupied { get { return occupied; } set { occupied = value; } }
 
     public void OnTriggerStay(Collider other)
     {
-        //Debug.Log("On trigger stay");
         if (other.gameObject.tag == "Gems")
             occupied = true;
     }
     public void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("On trigger enter");
-
         if (other.gameObject.tag == "Gems")
         {
             occupied = true;
@@ -70,25 +62,23 @@ public class boardSquare : MonoBehaviour
     }
     public void OnTriggerExit(Collider other)
     {
-        //Debug.Log("On trigger exit");
-
         if (other.gameObject.tag == "Gems")
         {
-           occupied = false;
+            occupied = false;
         }
     }
+
     private void Update()
     {
-        if(gemScript != null)
+        if (gemScript != null)
         {
             gemX = (int)gemScript.transform.position.x;
             gemY = (int)gemScript.transform.position.y;
-        }        
+        }
     }
     public void Clear()
     {
         gemScript = null;
-        //gem = null;
         gemPrefab = null;
         comboable = false;
         destructable = false;
@@ -99,7 +89,6 @@ public class boardSquare : MonoBehaviour
     {
         if (gemScript.UpgradedPrefab != null)
         {
-            //Debug.Log(this.transform.position + " upgraded gem");
             gemScript.DestroyGem();
             Gem = gemScript.SpawnGemCopy(this.transform, gemScript.UpgradedPrefab, gemScript.basePrefab);
             gemScript.SetGemProperties(this.transform.position, gem);
@@ -107,12 +96,9 @@ public class boardSquare : MonoBehaviour
     }
     public void DestroyGem()
     {
-        if(gemScript != null)
+        if (gemScript != null)
         {
             gemScript.DestroyGem();
         }
     }
-    
-
-   
 }

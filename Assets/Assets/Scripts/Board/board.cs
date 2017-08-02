@@ -2,7 +2,7 @@
 //Gem Quest Board Class
 //Holds arrays of boardSquares and contains methods to initialize & spawn everything
 //A board is a pretty public thing
-using UnityEngine;
+using UnityEngine; 
 
 public struct boardStruct   //Retrieves all board square arrays
 {
@@ -98,6 +98,138 @@ public class board : MonoBehaviour  {
     {
         DeactivateBorderGems();
     }
+    //Initialization
+    public void CreateBoardGameObjects()
+    {
+        allSquares = new GameObject("Squares");
+        cSquaresGO = new GameObject("Core");
+        tSquaresGO = new GameObject("Top Border");
+        bSquaresGO = new GameObject("Bottom Border");
+        lSquaresGO = new GameObject("Left Border");
+        rSquaresGO = new GameObject("Right Border");
+        cSquaresGO.transform.parent = allSquares.transform;
+        tSquaresGO.transform.parent = allSquares.transform;
+        bSquaresGO.transform.parent = allSquares.transform;
+        lSquaresGO.transform.parent = allSquares.transform;
+        rSquaresGO.transform.parent = allSquares.transform;
+        allSquares.transform.parent = GameObject.Find("Board").transform;
+    }
+    boardSquare InitializeSquare(boardSquare square, int x, int y, GameObject parent)
+    {
+        if (parent == null)
+        {
+            parent = new GameObject("Unknown Parent");
+        }
+        GameObject sq = new GameObject("Square[" + x + ", " + y + "]");
+        sq.tag = "Square";
+        sq.transform.position = new Vector3(x, y, 0);
+        square = sq.AddComponent<boardSquare>();
+        BoxCollider col = sq.AddComponent<BoxCollider>();    //Make the square clickable 
+        col.isTrigger = true;
+        sq.transform.parent = parent.transform;
+        SpawnRandomGem(square, x, y);        
+        square.gemX = x;
+        square.gemY = y;
+        return square;
+    }
+    public void InitializeOuterRows()   //Outside core squares
+    {
+        //Width dependent
+        topSquares = new boardSquare[width];
+        bottomSquares = new boardSquare[width];
+        //Height dependent
+        leftSquares = new boardSquare[height];
+        rightSquares = new boardSquare[height];
+        //Width dependent
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < rowCount; y++)
+            {
+                topSquares[x] = InitializeSquare(topSquares[x], x, y + height + offset, tSquaresGO);
+                bottomSquares[x] = InitializeSquare(bottomSquares[x], x, -y - 1 - offset, bSquaresGO);
+                GameObject topGO = topSquares[x].Gem;
+                GameObject botGO = bottomSquares[x].Gem;
+                if (botGO && topGO)
+                {
+                    topSquares[x].Gem.gameObject.SetActive(false);
+                    bottomSquares[x].Gem.gameObject.SetActive(false);
+                }
+
+            }
+        }
+        //Height dependent
+        for (int x = 0; x < rowCount; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                // X & Y reversed
+                int leftIndex = y;//Get1DIndexFrom2D(x, y, width);
+                leftSquares[leftIndex] = InitializeSquare(leftSquares[leftIndex], -x - 1 - offset, y, lSquaresGO);
+                rightSquares[y] = InitializeSquare(rightSquares[y], x + width + offset, y, rSquaresGO);
+                GameObject leftGO = leftSquares[x].Gem;
+                GameObject rightGO = rightSquares[x].Gem;
+                if (leftGO && rightGO)
+                {
+                    leftSquares[leftIndex].Gem.gameObject.SetActive(false);
+                    rightSquares[y].Gem.gameObject.SetActive(false);
+                }
+            }
+        }
+    }
+    public void InitializeDefaultBoard()	// Build the board randomly
+    {
+        coreSquares = new boardSquare[width * height];
+        CreateBoardGameObjects();
+        if (gems == null)
+        {
+            Debug.Log("Error loading gems");
+        }
+        else
+        {
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    coreSquares[Get1DIndexFrom2D(x, y, width)] = InitializeSquare(coreSquares[Get1DIndexFrom2D(x, y, width)], x, y, cSquaresGO);
+                }
+            }
+        }
+    }
+    public void SetBoardProperties(int boardWidth, int boardHeight, int outerRowOffset, int outerRowCount, gemPool gemPool)
+    {
+        gems = gemPool;
+        width = boardWidth;
+        height = boardHeight;
+        offset = outerRowOffset;
+        rowCount = outerRowCount;
+    }
+    //Control
+    public bool DetectComboableSquares()    //Moved to board analyzer
+    {
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                boardSquare square = coreSquares[Get1DIndexFrom2D(x, y, width)];
+                if (square.Comboable)
+                    return true;
+            }
+        }
+        return false;
+    }
+    public bool TrySwapSquareGems(boardSquare emptySquare, boardSquare gemSquare)
+    {
+        if (gemSquare.Gem != null)
+        {
+            emptySquare.Gem = gemSquare.Gem;
+            emptySquare.gemPrefab = gemSquare.gemPrefab;
+            emptySquare.Gem.transform.parent = emptySquare.transform;
+            gemSquare.Gem = null;
+            gemSquare.gemPrefab = null;
+            return true;
+        }
+        return false;
+    }
     void DeactivateBorderGems()
     {
         for (int x = 0; x < width; x++)
@@ -150,34 +282,7 @@ public class board : MonoBehaviour  {
             }   
         }
     }
-    public bool DetectComboableSquares()    //Moved to board analyzer
-    {
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                boardSquare square = coreSquares[Get1DIndexFrom2D(x, y, width)];
-                if (square.Comboable)
-                    return true;
-            }
-        }
-        return false;
-    }
-    public bool TrySwapSquareGems(boardSquare emptySquare, boardSquare gemSquare)
-    {
-        //Debug.Log("Attempted to swap gems");
-        if (gemSquare.Gem != null)
-        {
-            //Debug.Log("Moved " + gemSquare + "to " + emptySquare);
-            emptySquare.Gem = gemSquare.Gem;
-            emptySquare.gemPrefab = gemSquare.gemPrefab;
-            emptySquare.Gem.transform.parent = emptySquare.transform;
-            gemSquare.Gem = null;
-            gemSquare.gemPrefab = null;
-            return true;
-        }
-        return false;
-    }
+    //Utility
     public boardStruct GetBoardStruct()
     {
         boardStruct board = new boardStruct();
@@ -188,117 +293,9 @@ public class board : MonoBehaviour  {
         board.RightStructCoreSquare = rightSquares;
         return board;
     }
-    public int Get1DIndexFrom2D(int x, int y, int boardWidth)   //Optimize to remove 3rd param  //2d arrays are not serializable. Converted all 2d arrays to 1d. Now we're using 2d again.
+    public int Get1DIndexFrom2D(int x, int y, int boardWidth)   //Optimize to remove 3rd param  //2d arrays are not serializable. Converted all 2d arrays to 1d. Now we're using 2d again. Back to 1d again...
     {
         return y * boardWidth + x;
     }
-    public void SetBoardProperties(int boardWidth, int boardHeight, int outerRowOffset, int outerRowCount, gemPool gemPool)
-    {
-        gems = gemPool;
-        width = boardWidth;
-        height = boardHeight;
-        offset = outerRowOffset;
-        rowCount = outerRowCount;
-    }
-    boardSquare InitializeSquare(boardSquare square, int x, int y, GameObject parent)
-    {
-        if(parent == null)
-        {
-            parent = new GameObject("Unknown Parent");
-        }
-        //square = new boardSquare();
-        GameObject sq = new GameObject("Square[" + x + ", " + y + "]");
-        sq.tag = "Square";
-        sq.transform.position = new Vector3(x, y, 0);
-        square = sq.AddComponent<boardSquare>();        
-        BoxCollider col =  sq.AddComponent<BoxCollider>();    //Make the square clickable 
-        col.isTrigger = true;
-        sq.transform.parent = parent.transform;
-        //Debug.Log("Pre error check");
-        SpawnRandomGem(square, x, y);
-        //square.GemScript.SpawnGem(sq.transform);
-        
-        //square.gem = square.GemScript.GemGO;
-        square.gemX = x;
-        square.gemY = y;
-        return square;     
-    }
-    public void InitializeOuterRows()   //Outside core squares
-    {
-        //Width dependent
-        topSquares = new boardSquare[width];
-        bottomSquares = new boardSquare[width];
-        //Height dependent
-        leftSquares = new boardSquare[height];
-        rightSquares = new boardSquare[height];
-        //Width dependent
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < rowCount; y++)
-            {
-                topSquares[x] = InitializeSquare(topSquares[x], x, y + height + offset, tSquaresGO);
-                bottomSquares[x] = InitializeSquare(bottomSquares[x], x, -y-1 - offset, bSquaresGO);
-                GameObject topGO = topSquares[x].Gem;
-                GameObject botGO = bottomSquares[x].Gem;
-                if(botGO && topGO)
-                {
-                    topSquares[x].Gem.gameObject.SetActive(false);
-                    bottomSquares[x].Gem.gameObject.SetActive(false);
-                }
-                
-            }
-        }
-        //Height dependent
-        for (int x = 0; x < rowCount; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                // X & Y reversed
-                int leftIndex = y;//Get1DIndexFrom2D(x, y, width);
-                leftSquares[leftIndex] = InitializeSquare(leftSquares[leftIndex], -x - 1 - offset, y, lSquaresGO);
-                rightSquares[y] = InitializeSquare(rightSquares[y], x + width + offset, y, rSquaresGO);
-                GameObject leftGO = leftSquares[x].Gem;
-                GameObject rightGO = rightSquares[x].Gem;
-                if (leftGO && rightGO)
-                {
-                    leftSquares[leftIndex].Gem.gameObject.SetActive(false);
-                    rightSquares[y].Gem.gameObject.SetActive(false);
-                }
-            }
-        }
-    }
-    public void InitializeDefaultBoard()	// Build the board randomly
-    {
-        coreSquares = new boardSquare[width * height];
-        CreateBoardGameObjects();
-        if(gems == null)
-        {
-            Debug.Log("Error loading gems");
-        }
-        else
-        {
-            for(int y = 0; y < height; y++)
-            {
-                for(int x = 0; x < width; x++)
-                {
-                    coreSquares[Get1DIndexFrom2D(x,y,width)] = InitializeSquare(coreSquares[Get1DIndexFrom2D(x,y,width)], x, y, cSquaresGO);                   
-                }
-            }            
-        }
-    }    
-    public void CreateBoardGameObjects()
-    {
-        allSquares = new GameObject("Squares");
-        cSquaresGO = new GameObject("Core");
-        tSquaresGO = new GameObject("Top Border");
-        bSquaresGO = new GameObject("Bottom Border");
-        lSquaresGO = new GameObject("Left Border");
-        rSquaresGO = new GameObject("Right Border");
-        cSquaresGO.transform.parent = allSquares.transform;
-        tSquaresGO.transform.parent = allSquares.transform;
-        bSquaresGO.transform.parent = allSquares.transform;
-        lSquaresGO.transform.parent = allSquares.transform;
-        rSquaresGO.transform.parent = allSquares.transform;
-        allSquares.transform.parent = GameObject.Find("Board").transform;
-    } 
+    
 } 

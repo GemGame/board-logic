@@ -1,5 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿//Written By Christopher Cooke
+//Gem Quest Upgrade
+//How many gems must be in a combo to get this reward?
 using UnityEngine;
 
 [System.Serializable]

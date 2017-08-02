@@ -4,7 +4,7 @@
 //Board will be created from random prefabs from selected resource folder
 //Initializes most necessary game objects
 using UnityEngine;
-using UnityEditor;
+using UnityEditor; 
 
 public class CreateBoardWizard : ScriptableWizard {
 
@@ -20,13 +20,8 @@ public class CreateBoardWizard : ScriptableWizard {
     [MenuItem("Editor Tools/Create Board Wizard", false)]   
     static void CreateWizard()
     {
-        //ScriptableWizard.DisplayWizard<WizardCreateLight>("Create Light", "Create", "Apply");
-        //If you don't want to use the secondary button simply leave it out:
-
-        ScriptableWizard.DisplayWizard<CreateBoardWizard>("Create Board", "Create", "Clear Board");
-        
-        
-        
+        //If you don't want to use the secondary button simply leave it out -
+        ScriptableWizard.DisplayWizard<CreateBoardWizard>("Create Board", "Create", "Clear Board");      
     }
     
     //Wizard Built In Methods

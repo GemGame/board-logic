@@ -1,16 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿//Written By Christopher Cooke
+//Gem Quest Board Square Inspector & Editor Window
+//Custom inspector gives access to editor window
+//Editor window allows convenient swapping of gems on game board during edit mode 
 using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(boardSquare))]
 public class boardSquareGemEditor : Editor
-{
-
+{ 
     public override void OnInspectorGUI()
     {        
         boardSquare bs = (boardSquare)target;
-
         EditorGUILayout.LabelField("Gem Properties");
         bs.isStaticSquare = EditorGUILayout.Toggle("Static Square", bs.isStaticSquare);
         EditorGUILayout.IntField("X", bs.gemX);
@@ -28,9 +28,9 @@ public class boardSquareGemEditor : Editor
 public class gemSelectorWindow : EditorWindow
 {
     int selection = 0;
-
-    //EditorWindow window;
     boardSquare square;
+   
+    //Window Control
     public void ShowWindow(boardSquare bs)
     {
         square = bs;
@@ -42,39 +42,12 @@ public class gemSelectorWindow : EditorWindow
     {
         this.Close();
     }
-    void InitializeDefaultSelection()
-    {
-        GameObject[] gems = GetGemPoolObjects();
-        for(int x = 0; x < gems.Length; x++)
-        {
-            if(gems[x] == square.gemPrefab)
-            {
-                selection = x;
-                Debug.Log("Selection set to " + x);
-            }
-        }
-    }
-    void ChangeSquareGem()
-    {
-        GameObject newGem = GetGemPoolObjects()[selection];
-        baseGem newGemScript = newGem.GetComponent<baseGem>();
-
-        square.GemScript.DestroyGem();
-        newGemScript.SetGemProperties(square.transform.position, newGem);
-        square.Gem = newGemScript.SpawnGemCopy(square.transform, newGemScript.GemGO, newGemScript.GemGO);
-        square.gemPrefab = newGemScript.GemGO;
-    }
     private void OnGUI()
     {
         EditorGUILayout.Separator();
-
         EditorGUILayout.LabelField("Gem To Replace With");
         EditorGUILayout.Separator();
         selection = EditorGUILayout.Popup(selection, GetArrayObjectNames(GetGemPoolObjects()));
-        //foreach (GameObject gem in GetGemPoolObjects())
-        //{
-        //    EditorGUILayout.ObjectField(gem, typeof(GameObject), false);
-        //}
         EditorGUILayout.Separator();
         EditorGUILayout.Separator();
 
@@ -88,6 +61,32 @@ public class gemSelectorWindow : EditorWindow
         if (GUILayout.Button("Close"))
         {
             CloseWindow();
+        }
+    }
+
+    //Button Action
+    void ChangeSquareGem()
+    {
+        GameObject newGem = GetGemPoolObjects()[selection];
+        baseGem newGemScript = newGem.GetComponent<baseGem>();
+
+        square.GemScript.DestroyGem();
+        newGemScript.SetGemProperties(square.transform.position, newGem);
+        square.Gem = newGemScript.SpawnGemCopy(square.transform, newGemScript.GemGO, newGemScript.GemGO);
+        square.gemPrefab = newGemScript.GemGO;
+    }
+    
+    //Set Up Drop Down Menu
+    void InitializeDefaultSelection()
+    {
+        GameObject[] gems = GetGemPoolObjects();
+        for (int x = 0; x < gems.Length; x++)
+        {
+            if (gems[x] == square.gemPrefab)
+            {
+                selection = x;
+                Debug.Log("Selection set to " + x);
+            }
         }
     }
     GameObject GetObjectByName(string name)
