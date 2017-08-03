@@ -9,9 +9,11 @@ using UnityEditor;
 public class CreateBoardWizard : ScriptableWizard {
 
     //Wizard Fields
-    public string gemsDirectory = "Gems/All Gems";
+    public string gemsDirectory = "Some Bad Directory";
     public int boardWidth = 8;
     public int boardHeight = 8;
+
+    private bool updatedOnce = false;
 
     gemPool gemPool;
     gameManager gameManager;
@@ -19,11 +21,17 @@ public class CreateBoardWizard : ScriptableWizard {
     //Wizard Menu Bar Items    
     [MenuItem("Editor Tools/Create Board Wizard", false)]   
     static void CreateWizard()
-    {
+    {        
         //If you don't want to use the secondary button simply leave it out -
-        ScriptableWizard.DisplayWizard<CreateBoardWizard>("Create Board", "Create", "Clear Board");      
+        ScriptableWizard.DisplayWizard<CreateBoardWizard>("Create Board", "Create", "Clear Board");            
     }
-    
+    void SetEditorPrefs()
+    {
+        if (EditorPrefs.GetString("Gem Path").Length > 0)
+        {
+            gemsDirectory = EditorPrefs.GetString("Gem Path");
+        }
+    }
     //Wizard Built In Methods
     void OnWizardCreate()   //On create button
     {
@@ -38,7 +46,13 @@ public class CreateBoardWizard : ScriptableWizard {
     void OnWizardUpdate()   //Sets the help string
     {
         helpString = "Configure the board you would like to build!";
+        if (!updatedOnce)
+        {
+            SetEditorPrefs();
+            updatedOnce = true;
+        }
     }
+    
 
     //Custom Methods
     void InitializeGameBoard() //Creates the game board
@@ -61,7 +75,11 @@ public class CreateBoardWizard : ScriptableWizard {
             ClearWizardObjects();
             return false;
         }
-        return true;         
+        else
+        {
+            EditorPrefs.SetString("Gem Path", gemsDirectory);
+            return true;
+        }
     }
     void ClearWizardObjects()   //Deletes all objects created
     {

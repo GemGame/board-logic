@@ -14,6 +14,7 @@ public class boardManager : MonoBehaviour
     public enum directionIndex { down = 0, right = 1, left = 2, up = 3 };
 
     //Private Variables
+    bool destroyAllRanThisFrame = false;
     [SerializeField, HideInInspector]
     int currentDirection = 0;
     int outerOffset = 1;
@@ -30,7 +31,10 @@ public class boardManager : MonoBehaviour
     {
         SetUpDefaultUpgrades();
     }
-
+    private void LateUpdate()
+    {
+        destroyAllRanThisFrame = false;
+    }
     //Creation
     void SetUpDefaultUpgrades()
     {
@@ -62,7 +66,7 @@ public class boardManager : MonoBehaviour
     {
         if (square != null && square.Gem != null && square.Destructable && !square.AnimPlaying)
         {
-            square.GemScript.DestroyGem();
+            StartCoroutine(square.GemScript.DestroyGem());
             square.Clear();
         }
         return square.Destructable;
@@ -136,6 +140,20 @@ public class boardManager : MonoBehaviour
             }
             if (board.DetectComboableSquares())
                 UpdateComboableSquares();
+        }
+    }
+    public void DestroyAllSquares()
+    {
+        if (!destroyAllRanThisFrame)
+        {
+            boardSquare[] squares = board.GetBoardStruct().StructCoreSquare;
+            for (int x = 0; x < squares.Length; x++)
+            {
+                if (squares[x].Gem != null)
+                {
+                    squares[x].DestroyGem();
+                }
+            }
         }
     }
 

@@ -2,6 +2,7 @@
 //Gem Quest Base Gem Class
 //Contains all the most basic funtionality of a gem
 //Pre & Post Destroy must be overridden
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -33,11 +34,13 @@ public abstract class baseGem : MonoBehaviour
         basePrefab = baseGemPrefab;
         return Instantiate(gemPrefab, parent.position, parent.rotation, parent);
     }
-    public void DestroyGem()    //Includes pre and post
+    public IEnumerator<bool> DestroyGem()    //Includes pre and post
     {
         PreDestroy();
+        yield return false;
         Destroy();
         PostDestroy();
+        yield return true;
     }       
    
     void Destroy()  //Destroy gem objects gem game object
