@@ -42,6 +42,7 @@ public class board : MonoBehaviour  {
 
     //Public Variables
     public float gemFallingSpeed = 3.25f;
+    public bool showOuterGems = false;
     //Private Variables - Loads of serialization due to being created in editor
     [SerializeField, HideInInspector]
     int width = 8;
@@ -51,19 +52,19 @@ public class board : MonoBehaviour  {
     int offset = 3;
     [SerializeField, HideInInspector]
     int rowCount = 3;
-    [SerializeField]
+    [SerializeField, HideInInspector]
     gemPool gems;
-    [SerializeField]
+    [SerializeField, HideInInspector]
     boardSquare[] coreSquares;
-    [SerializeField]
+    [SerializeField, HideInInspector]
     boardSquare[] topSquares;
-    [SerializeField]
+    [SerializeField, HideInInspector]
     boardSquare[] leftSquares;
-    [SerializeField]
+    [SerializeField, HideInInspector]
     boardSquare[] rightSquares;
-    [SerializeField]
+    [SerializeField, HideInInspector]
     boardSquare[] bottomSquares;
-    [SerializeField]
+    [SerializeField, HideInInspector]
     GameObject allSquares, cSquaresGO, tSquaresGO, lSquaresGO, rSquaresGO, bSquaresGO;
 
     //Properties
@@ -149,7 +150,7 @@ public class board : MonoBehaviour  {
                 bottomSquares[x] = InitializeSquare(bottomSquares[x], x, -y - 1 - offset, bSquaresGO);
                 GameObject topGO = topSquares[x].Gem;
                 GameObject botGO = bottomSquares[x].Gem;
-                if (botGO && topGO)
+                if (!showOuterGems && botGO && topGO)
                 {
                     topSquares[x].Gem.gameObject.SetActive(false);
                     bottomSquares[x].Gem.gameObject.SetActive(false);
@@ -168,7 +169,7 @@ public class board : MonoBehaviour  {
                 rightSquares[y] = InitializeSquare(rightSquares[y], x + width + offset, y, rSquaresGO);
                 GameObject leftGO = leftSquares[x].Gem;
                 GameObject rightGO = rightSquares[x].Gem;
-                if (leftGO && rightGO)
+                if (!showOuterGems && leftGO && rightGO)
                 {
                     leftSquares[leftIndex].Gem.gameObject.SetActive(false);
                     rightSquares[y].Gem.gameObject.SetActive(false);
@@ -204,7 +205,7 @@ public class board : MonoBehaviour  {
         rowCount = outerRowCount;
     }
     //Control
-    public bool DetectComboableSquares()    //Moved to board analyzer
+    public bool DetectComboableSquares()    //Depreciated - Moved to board analyzer
     {
         for (int y = 0; y < height; y++)
         {
@@ -232,26 +233,29 @@ public class board : MonoBehaviour  {
     }
     void DeactivateBorderGems()
     {
-        for (int x = 0; x < width; x++)
+        if (!showOuterGems)
         {
-            if (topSquares[x].Gem != null && topSquares[x].Gem.activeSelf)
+            for (int x = 0; x < width; x++)
             {
-                topSquares[x].Gem.SetActive(false);
+                if (topSquares[x].Gem != null && topSquares[x].Gem.activeSelf)
+                {
+                    topSquares[x].Gem.SetActive(false);
+                }
+                if (bottomSquares[x].Gem != null && bottomSquares[x].Gem.activeSelf)
+                {
+                    bottomSquares[x].Gem.SetActive(false);
+                }
             }
-            if (bottomSquares[x].Gem != null && bottomSquares[x].Gem.activeSelf)
+            for (int y = 0; y < height; y++)
             {
-                bottomSquares[x].Gem.SetActive(false);
-            }
-        }
-        for (int y = 0; y < height; y++)
-        {
-            if (leftSquares[y].Gem != null && leftSquares[y].Gem.activeSelf)
-            {
-                leftSquares[y].Gem.SetActive(false);
-            }
-            if (rightSquares[y].Gem != null && rightSquares[y].Gem.activeSelf)
-            {
-                rightSquares[y].Gem.SetActive(false);
+                if (leftSquares[y].Gem != null && leftSquares[y].Gem.activeSelf)
+                {
+                    leftSquares[y].Gem.SetActive(false);
+                }
+                if (rightSquares[y].Gem != null && rightSquares[y].Gem.activeSelf)
+                {
+                    rightSquares[y].Gem.SetActive(false);
+                }
             }
         }
     }

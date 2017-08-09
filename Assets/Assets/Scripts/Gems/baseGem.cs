@@ -34,13 +34,11 @@ public abstract class baseGem : MonoBehaviour
         basePrefab = baseGemPrefab;
         return Instantiate(gemPrefab, parent.position, parent.rotation, parent);
     }
-    public IEnumerator<bool> DestroyGem()    //Includes pre and post
+    public void DestroyGem()    //Includes pre and post
     {
         PreDestroy();
-        yield return false;
         Destroy();
         PostDestroy();
-        yield return true;
     }       
    
     void Destroy()  //Destroy gem objects gem game object

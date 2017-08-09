@@ -50,7 +50,7 @@ public class gameManager : MonoBehaviour
             boardSquare square = inputManager.GetInput();
             if (square != null)
             {
-                StartCoroutine(square.GemScript.DestroyGem());
+                square.DestroyGem();
             }
         }
     }

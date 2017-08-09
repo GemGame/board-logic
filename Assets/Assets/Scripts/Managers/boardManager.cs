@@ -66,7 +66,7 @@ public class boardManager : MonoBehaviour
     {
         if (square != null && square.Gem != null && square.Destructable && !square.AnimPlaying)
         {
-            StartCoroutine(square.GemScript.DestroyGem());
+            square.GemScript.DestroyGem();  //Considering just calling square.DestroyGem but don't want to debug if I did this on purpose...
             square.Clear();
         }
         return square.Destructable;
