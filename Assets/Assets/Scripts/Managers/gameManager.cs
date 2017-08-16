@@ -47,15 +47,15 @@ public class gameManager : MonoBehaviour
     {
         if (!animationManager.CheckAnimationsPlaying())
         {
-            boardSquare square = inputManager.GetSquareOnClick();
+            boardSquare square = inputManager.GetInput();
             if (square != null)
             {
-                square.GemScript.DestroyGem();
+                square.DestroyGem();
             }
         }
     }
     public void CreateBMInstance()  //Board Manager is needed during editor mode when creating new boards
     {
         boardManager = this.gameObject.AddComponent<boardManager>();
-    }   
+    }
 }

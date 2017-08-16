@@ -4,7 +4,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class gemPool : MonoBehaviour {
+public class gemPool : MonoBehaviour
+{
 
     //Private Variables
     [SerializeField, HideInInspector]
@@ -12,24 +13,36 @@ public class gemPool : MonoBehaviour {
 
     //Properties
     public List<GameObject> Gems { get { return gems; } }
-    
+
     //Methods
     public void LoadGemsAtPath(string path) //Set gems list
     {
         gems = new List<GameObject>();
-        Object[] gemObjects = Resources.LoadAll(path, typeof(GameObject)); //Resources.LoadAll(path);
-        
-        foreach (Object gem in gemObjects)
+        Object[] gemObjects = Resources.LoadAll(path, typeof(GameObject));
+
+        if (gemObjects.Length > 0)
         {
-            Debug.Log("Gem added : " + gem.name);
-            gems.Add((GameObject)gem);
+            foreach (Object gem in gemObjects)
+            {
+                gems.Add((GameObject)gem);
+            }
+        }
+        else
+        {
+            Debug.Log("Directory contained no Game Objects");
         }
     }
     public GameObject GetRandomGem(Transform parent)
     {
-        int randomIndex = Random.Range(0, gems.Count);
-        //Debug.Log(gems[randomIndex]);
-        //return Instantiate(gems[randomIndex], parent);
-        return gems[randomIndex];//.GetComponent<baseGem>();
+        int count = gems.Count;
+        if (count > 0)
+        {
+            int randomIndex = Random.Range(0, count);
+            return gems[randomIndex];
+        }
+        else
+        {
+            return null;
+        }
     }
 }

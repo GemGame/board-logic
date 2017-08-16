@@ -6,36 +6,40 @@
 using UnityEngine;
 using UnityEditor;
 
-public class CreateBoardWizard : ScriptableWizard {
+public class CreateBoardWizard : ScriptableWizard
+{
 
     //Wizard Fields
-    public string gemsDirectory = "Gems/All Gems";
+    public string gemsDirectory = "Some Bad Directory";
     public int boardWidth = 8;
     public int boardHeight = 8;
+
+    private bool updatedOnce = false;
 
     gemPool gemPool;
     gameManager gameManager;
 
     //Wizard Menu Bar Items    
-    [MenuItem("Editor Tools/Create Board Wizard", false)]   
+    [MenuItem("Editor Tools/Create Board Wizard", false)]
     static void CreateWizard()
     {
-        //ScriptableWizard.DisplayWizard<WizardCreateLight>("Create Light", "Create", "Apply");
-        //If you don't want to use the secondary button simply leave it out:
-
+        //If you don't want to use the secondary button simply leave it out -
         ScriptableWizard.DisplayWizard<CreateBoardWizard>("Create Board", "Create", "Clear Board");
-        
-        
-        
     }
-    
+    void SetEditorPrefs()
+    {
+        if (EditorPrefs.GetString("Gem Path").Length > 0)
+        {
+            gemsDirectory = EditorPrefs.GetString("Gem Path");
+        }
+    }
     //Wizard Built In Methods
     void OnWizardCreate()   //On create button
     {
         TryCreateRequiredObjects();
-        InitializeGemPool();
-        InitializeGameBoard();
-    }    
+        if (InitializeGemPool())
+            InitializeGameBoard();
+    }
     void OnWizardOtherButton()  //On clear board button
     {
         ClearWizardObjects();
@@ -43,22 +47,39 @@ public class CreateBoardWizard : ScriptableWizard {
     void OnWizardUpdate()   //Sets the help string
     {
         helpString = "Configure the board you would like to build!";
+        if (!updatedOnce)
+        {
+            SetEditorPrefs();
+            updatedOnce = true;
+        }
     }
+
 
     //Custom Methods
     void InitializeGameBoard() //Creates the game board
     {
         gameManager = GameObject.FindGameObjectWithTag("Game Manager").GetComponent<gameManager>();
         gameManager.CreateBMInstance();
-        gameManager.BoardManager.CreateBoard(boardWidth, boardHeight, gemPool);        
+        gameManager.BoardManager.CreateBoard(boardWidth, boardHeight, gemPool);
     }
-    void InitializeGemPool()    //Fills gem array from resource directory
+    bool InitializeGemPool()    //Fills gem array from resource directory
     {
         gemPool = GameObject.FindGameObjectWithTag("Gem Pool").GetComponent<gemPool>();
         gemPool.LoadGemsAtPath(gemsDirectory);
         if (gemPool.gameObject == null)
         {
             Debug.Log("Cannot find game object with the tag 'Gem Pool'");
+            return false;
+        }
+        else if (gemPool.Gems.Count == 0)
+        {
+            ClearWizardObjects();
+            return false;
+        }
+        else
+        {
+            EditorPrefs.SetString("Gem Path", gemsDirectory);
+            return true;
         }
     }
     void ClearWizardObjects()   //Deletes all objects created
@@ -110,5 +131,5 @@ public class CreateBoardWizard : ScriptableWizard {
             gameManager.AddComponent<gameManager>();
         }
     }
-} 
+}
 

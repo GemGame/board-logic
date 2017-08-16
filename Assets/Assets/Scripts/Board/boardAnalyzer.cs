@@ -3,7 +3,6 @@
 //Interperets board object to identify combos, adjacent squares, & falling gems
 //Loaded with recursion & double recursion
 using System.Collections.Generic;
-using UnityEngine;
 
 public class boardAnalyzer
 {
@@ -51,10 +50,10 @@ public class boardAnalyzer
                 square.Destructable = false;
             }
         }
-    }   
+    }
 
     //Adjacency Checking -- Beware Double Recursion
-    public List<boardSquare> CheckSquareForAdjacency(boardSquare square)
+    public List<boardSquare> CheckSquareForAdjacency(boardSquare square)    //Overrides itself
     {
         List<boardSquare> adjacentSquares = new List<boardSquare>();
         for (int tempDir = 0; tempDir < dirCount; tempDir++)
@@ -77,23 +76,19 @@ public class boardAnalyzer
         boardSquare square = board.GetBoardStruct().StructCoreSquare[board.Get1DIndexFrom2D(x, y, board.Width)];
         if (searchStart)    //Recurse again if able
         {
-            //Debug.Log("Attempting recursion on original square");
             if ((x + dirX < board.Width && x + dirX >= 0)
                     && (y + dirY < board.Height && y + dirY >= 0))
             {
                 return RecurseAdjacencyCheck(x + dirX, y + dirY, dirX, dirY, squareList, originalSquare, false);
             }
-            
         }
         else   //If not the starting object, compare and check
         {
-            //Debug.Log(square + " is not equal to " + originalSquare);
             if (square.gemPrefab == originalSquare.gemPrefab && originalSquare.gemPrefab != null)
             {
                 if (!squareList.Contains(square))
                 {
                     squareList.Add(square);
-                    //square.Comboable = true;
                     square.Destructable = true;
                     return CheckSquareForAdjacency(square, squareList);
                 }
@@ -101,7 +96,7 @@ public class boardAnalyzer
         }
         return squareList;  //Default escape
     }
-   
+
     //Combo Checking
     public board CheckAllSquaresForCombo()  //Identify comboable squares
     {
@@ -119,19 +114,17 @@ public class boardAnalyzer
                     {
                         if (!newMove.Contains(bs))
                             newMove.Add(bs);
-                        foreach(boardSquare adjSq in CheckSquareForAdjacency(bs))
+                        foreach (boardSquare adjSq in CheckSquareForAdjacency(bs))
                         {
                             if (!newMove.Contains(adjSq))
                                 newMove.Add(adjSq);
                         }
                         combosExisting++;
-                         //Debug.Log("Combos found so far : " + combosExisting);
-                        bs.Comboable = true;    //10 million calls... why?
+                        bs.Comboable = true;
                         bs.Destructable = true;
                     }
-                    //newMove.Sort();
                     if (!movesLists.Contains(newMove))
-                        movesLists.Add(newMove);              
+                        movesLists.Add(newMove);
                 }
             }
         }
@@ -149,37 +142,24 @@ public class boardAnalyzer
         {
             if (CheckSquaresEqual(originalSquare, nextSquare))
             {
-                //    Debug.Log("Gem " + x + ", " + y + " matches square " + originalSquare.gemX + ", " + originalSquare.gemY + "! Looking another square!");
                 counter += 1;
-                // Debug.Log("Counter set to " + counter);
-                //if (x == 0 && y == 0) Debug.Log("00 set to true");
-                //nextSquare.Targetable = true;
-                //if (x == 0 && y == 0) Debug.Log(board.coreSquares[board.Get1DIndexFrom2D(x, y, board.Width)].Targetable);
-                validSquares.Add(nextSquare);
+                validSquares.Add(nextSquare);   //Squares do match
                 return RecurseComboCheck(x + dirX, y + dirY, dirX, dirY, originalSquare, tempBoard, counter, validSquares);
             }
-            //Debug.Log("Gems do not match. Counted " + counter + " matching gems.");
-            //nextSquare.Targetable = false; 
             validSquares.Clear();
             return validSquares;   //Squares do not match
         }
         else
         {
-            //Debug.Log("Recursion ended due to leaving board at square : " + x + ", " + y);
-            //nextSquare.Targetable = false;
             validSquares.Clear();   //Out of range
             return validSquares;
         }
-        //return nextSquare.Targetable;
-
     }
     List<boardSquare> RecurseComboCheck(int x, int y, int dirX, int dirY, boardSquare originalSquare, boardStruct tempBoard, int counter, List<boardSquare> validSquares)
     {
         boardSquare nextSquare = tempBoard.StructCoreSquare[board.Get1DIndexFrom2D(x, y, board.Width)];
         if (counter == 3)
         {
-            //Debug.Log("Counter reached 3, returning true.");
-            //board = existingBoard;
             return validSquares;
         }
         else
@@ -190,29 +170,21 @@ public class boardAnalyzer
             {
                 if (CheckSquaresEqual(originalSquare, nextSquare))
                 {
-                    //Debug.Log("Gem " + x + ", " + y + " matches square " + originalSquare.gemX + ", " + originalSquare.gemY + "! Looking another square!");
                     counter += 1;
-                    //Debug.Log("Counter set to " + counter);
                     validSquares.Add(nextSquare);
-                    //nextSquare.Targetable = true;
                     return RecurseComboCheck(x + dirX, y + dirY, dirX, dirY, originalSquare, tempBoard, counter, validSquares);
                 }
-                //Debug.Log("Gems do not match. Counted " + counter + " matching gems.");
-                //nextSquare.Targetable = false; 
                 validSquares.Clear();
                 return validSquares;   //Squares do not match
             }
             else
             {
-                //  Debug.Log("Recursion ended due to leaving board at square : " + x + ", " + y);
-                //nextSquare.Targetable = false;
                 validSquares.Clear();
                 return validSquares;   //Out of range
             }
-            //return nextSquare.Targetable;
         }
     }
-    
+
     //Gem Falling   
     public boardSquare RecurseToNextGem(int x, int y, int dirX, int dirY)   //Recurse in opposite direction to square with gem
     {
@@ -220,12 +192,9 @@ public class boardAnalyzer
 
         if (square.Gem == null)
         {
-            //Debug.Log("Next square has no gem : " + x + ", " + y);
-            if ((x - dirX < board.Width && x - dirX >= 0) 
+            if ((x - dirX < board.Width && x - dirX >= 0)
                 && (y - dirY < board.Height && y - dirY >= 0))
             {
-                //Debug.Log("Next square is still on the board. Recursing again.");
-
                 return RecurseToNextGem(x - dirX, y - dirY, dirX, dirY);
             }
             else
@@ -240,21 +209,17 @@ public class boardAnalyzer
                 }
                 else if (y - dirY == board.Height)
                 {
-                    //Debug.Log("Looking for new top square");
-                    return board.GetBoardStruct().TopStructCoreSquare[x];//board.Get1DIndexFrom2D(x, 0, board.Width)];
+                    return board.GetBoardStruct().TopStructCoreSquare[x];
                 }
                 else if (y - dirY == -1)
                 {
-                    //Debug.Log("Looking for new bot square");
-                    //Debug.Log(x);
-                    return board.GetBoardStruct().BotStructCoreSquare[x];//board.Get1DIndexFrom2D(x, 0, board.Width)];
-                }                
+                    return board.GetBoardStruct().BotStructCoreSquare[x];
+                }
                 return null;
             }
         }
         else
         {
-           // Debug.Log("Recursion ended at square : " + x + ", " + y);
             return square;
         }
     }
