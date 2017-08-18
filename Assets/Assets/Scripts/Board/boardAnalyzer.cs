@@ -50,7 +50,7 @@ public class boardAnalyzer
                 square.Destructable = false;
             }
         }
-    }   
+    }
 
     //Adjacency Checking -- Beware Double Recursion
     public List<boardSquare> CheckSquareForAdjacency(boardSquare square)    //Overrides itself
@@ -80,7 +80,7 @@ public class boardAnalyzer
                     && (y + dirY < board.Height && y + dirY >= 0))
             {
                 return RecurseAdjacencyCheck(x + dirX, y + dirY, dirX, dirY, squareList, originalSquare, false);
-            }            
+            }
         }
         else   //If not the starting object, compare and check
         {
@@ -96,7 +96,7 @@ public class boardAnalyzer
         }
         return squareList;  //Default escape
     }
-   
+
     //Combo Checking
     public board CheckAllSquaresForCombo()  //Identify comboable squares
     {
@@ -114,17 +114,17 @@ public class boardAnalyzer
                     {
                         if (!newMove.Contains(bs))
                             newMove.Add(bs);
-                        foreach(boardSquare adjSq in CheckSquareForAdjacency(bs))
+                        foreach (boardSquare adjSq in CheckSquareForAdjacency(bs))
                         {
                             if (!newMove.Contains(adjSq))
                                 newMove.Add(adjSq);
                         }
                         combosExisting++;
-                        bs.Comboable = true;    
+                        bs.Comboable = true;
                         bs.Destructable = true;
                     }
                     if (!movesLists.Contains(newMove))
-                        movesLists.Add(newMove);              
+                        movesLists.Add(newMove);
                 }
             }
         }
@@ -145,7 +145,7 @@ public class boardAnalyzer
                 counter += 1;
                 validSquares.Add(nextSquare);   //Squares do match
                 return RecurseComboCheck(x + dirX, y + dirY, dirX, dirY, originalSquare, tempBoard, counter, validSquares);
-            }            
+            }
             validSquares.Clear();
             return validSquares;   //Squares do not match
         }
@@ -173,7 +173,7 @@ public class boardAnalyzer
                     counter += 1;
                     validSquares.Add(nextSquare);
                     return RecurseComboCheck(x + dirX, y + dirY, dirX, dirY, originalSquare, tempBoard, counter, validSquares);
-                } 
+                }
                 validSquares.Clear();
                 return validSquares;   //Squares do not match
             }
@@ -184,7 +184,7 @@ public class boardAnalyzer
             }
         }
     }
-    
+
     //Gem Falling   
     public boardSquare RecurseToNextGem(int x, int y, int dirX, int dirY)   //Recurse in opposite direction to square with gem
     {
@@ -192,7 +192,7 @@ public class boardAnalyzer
 
         if (square.Gem == null)
         {
-            if ((x - dirX < board.Width && x - dirX >= 0) 
+            if ((x - dirX < board.Width && x - dirX >= 0)
                 && (y - dirY < board.Height && y - dirY >= 0))
             {
                 return RecurseToNextGem(x - dirX, y - dirY, dirX, dirY);
@@ -214,7 +214,7 @@ public class boardAnalyzer
                 else if (y - dirY == -1)
                 {
                     return board.GetBoardStruct().BotStructCoreSquare[x];
-                }                
+                }
                 return null;
             }
         }
@@ -223,4 +223,4 @@ public class boardAnalyzer
             return square;
         }
     }
-} 
+}

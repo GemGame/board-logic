@@ -4,9 +4,10 @@
 //Board will be created from random prefabs from selected resource folder
 //Initializes most necessary game objects
 using UnityEngine;
-using UnityEditor; 
+using UnityEditor;
 
-public class CreateBoardWizard : ScriptableWizard {
+public class CreateBoardWizard : ScriptableWizard
+{
 
     //Wizard Fields
     public string gemsDirectory = "Some Bad Directory";
@@ -19,11 +20,11 @@ public class CreateBoardWizard : ScriptableWizard {
     gameManager gameManager;
 
     //Wizard Menu Bar Items    
-    [MenuItem("Editor Tools/Create Board Wizard", false)]   
+    [MenuItem("Editor Tools/Create Board Wizard", false)]
     static void CreateWizard()
-    {        
+    {
         //If you don't want to use the secondary button simply leave it out -
-        ScriptableWizard.DisplayWizard<CreateBoardWizard>("Create Board", "Create", "Clear Board");            
+        ScriptableWizard.DisplayWizard<CreateBoardWizard>("Create Board", "Create", "Clear Board");
     }
     void SetEditorPrefs()
     {
@@ -38,7 +39,7 @@ public class CreateBoardWizard : ScriptableWizard {
         TryCreateRequiredObjects();
         if (InitializeGemPool())
             InitializeGameBoard();
-    }    
+    }
     void OnWizardOtherButton()  //On clear board button
     {
         ClearWizardObjects();
@@ -52,14 +53,14 @@ public class CreateBoardWizard : ScriptableWizard {
             updatedOnce = true;
         }
     }
-    
+
 
     //Custom Methods
     void InitializeGameBoard() //Creates the game board
     {
         gameManager = GameObject.FindGameObjectWithTag("Game Manager").GetComponent<gameManager>();
         gameManager.CreateBMInstance();
-        gameManager.BoardManager.CreateBoard(boardWidth, boardHeight, gemPool);        
+        gameManager.BoardManager.CreateBoard(boardWidth, boardHeight, gemPool);
     }
     bool InitializeGemPool()    //Fills gem array from resource directory
     {
@@ -130,5 +131,5 @@ public class CreateBoardWizard : ScriptableWizard {
             gameManager.AddComponent<gameManager>();
         }
     }
-} 
+}
 

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GemSelect : MonoBehaviour {
+public class GemSelect : MonoBehaviour
+{
 
     public float scaleIncreasePercent = .2f;
-    Vector3 currentScale;   
-    Vector3 oldScale;   
+    Vector3 currentScale;
+    Vector3 oldScale;
 
-    private void Start()    
+    private void Start()
     {
         currentScale = this.transform.localScale;
         oldScale = currentScale;
@@ -21,7 +22,7 @@ public class GemSelect : MonoBehaviour {
             gameObject.transform.localScale = currentScale;
             //print(gameObject.transform.localScale);
             Sound.SelectGem();
-           // transform.parent.GetComponent<BoxCollider>().enabled = true;
+            // transform.parent.GetComponent<BoxCollider>().enabled = true;
         }
     }
 

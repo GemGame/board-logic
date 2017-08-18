@@ -155,13 +155,13 @@ public class LobbyMenus : MonoBehaviour
         {
             default:
                 PauseMenus.audioSettings = PauseMenus.AudioSettings.Stereo;
-                GameObject.Find("Game Manager/Sound").GetComponent<AudioHighPassFilter>().enabled = false;
-                GameObject.Find("Game Manager/Music").GetComponent<AudioHighPassFilter>().enabled = false;
+                GameObject.Find("AudioManager/Sound").GetComponent<AudioHighPassFilter>().enabled = false;
+                GameObject.Find("AudioManager/Music").GetComponent<AudioHighPassFilter>().enabled = false;
                 break;
             case PauseMenus.AudioSettings.Stereo:
                 PauseMenus.audioSettings = PauseMenus.AudioSettings.Mono;
-                GameObject.Find("Game Manager/Sound").GetComponent<AudioHighPassFilter>().enabled = true;
-                GameObject.Find("Game Manager/Music").GetComponent<AudioHighPassFilter>().enabled = true;
+                GameObject.Find("AudioManager/Sound").GetComponent<AudioHighPassFilter>().enabled = true;
+                GameObject.Find("AudioManager/Music").GetComponent<AudioHighPassFilter>().enabled = true;
                 break;
         }
         PlayerPrefs.SetString("audioSettings", PauseMenus.audioSettings.ToString());
@@ -332,7 +332,7 @@ public class LobbyMenus : MonoBehaviour
                 PauseMenus.BGMvolume = 1f;
             PlayerPrefs.SetFloat("BGMvolume", PauseMenus.BGMvolume);
             GameObject.Find("Canvas/Menus/Basic/Options/Audio/BGMVolume").GetComponent<Text>().text = "<" + Mathf.Round(PauseMenus.BGMvolume * 10).ToString() + ">";
-            GameObject.Find("Game Manager/Music").GetComponent<AudioSource>().volume = PauseMenus.BGMvolume;
+            GameObject.Find("AudioManager/Music").GetComponent<AudioSource>().volume = PauseMenus.BGMvolume;
         }
     }
     public void BGMVolumeDown()
@@ -345,7 +345,7 @@ public class LobbyMenus : MonoBehaviour
                 PauseMenus.BGMvolume = 0;
             PlayerPrefs.SetFloat("BGMvolume", PauseMenus.BGMvolume);
             GameObject.Find("Canvas/Menus/Basic/Options/Audio/BGMVolume").GetComponent<Text>().text = "<" + Mathf.Round(PauseMenus.BGMvolume * 10).ToString() + ">";
-            GameObject.Find("Game Manager/Music").GetComponent<AudioSource>().volume = PauseMenus.BGMvolume;
+            GameObject.Find("AudioManager/Music").GetComponent<AudioSource>().volume = PauseMenus.BGMvolume;
             au.PlayOneShot(click, PauseMenus.SFXvolume);
         }
     }
@@ -360,7 +360,7 @@ public class LobbyMenus : MonoBehaviour
                 PauseMenus.SFXvolume = 1;
             PlayerPrefs.SetFloat("SFXvolume", PauseMenus.SFXvolume);
             GameObject.Find("Canvas/Menus/Basic/Options/Audio/SFXVolume").GetComponent<Text>().text = "<" + Mathf.Round(PauseMenus.SFXvolume * 10).ToString() + ">";
-            GameObject.Find("Game Manager/Sound").GetComponent<AudioSource>().volume = PauseMenus.BGMvolume;
+            GameObject.Find("AudioManager/Sound").GetComponent<AudioSource>().volume = PauseMenus.BGMvolume;
             au.PlayOneShot(click, PauseMenus.SFXvolume);
         }
     }
@@ -374,7 +374,7 @@ public class LobbyMenus : MonoBehaviour
                 PauseMenus.SFXvolume = 0;
             PlayerPrefs.SetFloat("SFXvolume", PauseMenus.SFXvolume);
             GameObject.Find("Canvas/Menus/Basic/Options/Audio/SFXVolume").GetComponent<Text>().text = "<" + Mathf.Round(PauseMenus.SFXvolume * 10).ToString() + ">";
-            GameObject.Find("Game Manager/Sound").GetComponent<AudioSource>().volume = PauseMenus.BGMvolume;
+            GameObject.Find("AudioManager/Sound").GetComponent<AudioSource>().volume = PauseMenus.BGMvolume;
             au.PlayOneShot(click, PauseMenus.SFXvolume);
         }
     }
@@ -391,7 +391,7 @@ public class LobbyMenus : MonoBehaviour
             c.a = PauseMenus.brightness;
             GameObject.Find("Canvas/Image").GetComponent<Image>().color = c;
             GameObject.Find("Canvas/Menus/Basic/Options/Video/Brightness").GetComponent<Text>().text = "<" + Mathf.Round(10 -(PauseMenus.brightness * 10)).ToString() + ">";
-            GameObject.Find("Game Manager/Sound").GetComponent<AudioSource>().volume = PauseMenus.BGMvolume;
+            GameObject.Find("AudioManager/Sound").GetComponent<AudioSource>().volume = PauseMenus.BGMvolume;
             au.PlayOneShot(click, PauseMenus.SFXvolume);
         }
     }
@@ -409,7 +409,7 @@ public class LobbyMenus : MonoBehaviour
             c.a = PauseMenus.brightness;
             GameObject.Find("Canvas/Image").GetComponent<Image>().color = c;
             GameObject.Find("Canvas/Menus/Basic/Options/Video/Brightness").GetComponent<Text>().text = "<" + Mathf.Round(10 - (PauseMenus.brightness * 10)).ToString() + ">";
-            GameObject.Find("Game Manager/Sound").GetComponent<AudioSource>().volume = PauseMenus.BGMvolume;
+            GameObject.Find("AudioManager/Sound").GetComponent<AudioSource>().volume = PauseMenus.BGMvolume;
         }
     }
 

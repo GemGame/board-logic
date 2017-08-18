@@ -3,7 +3,8 @@
 //Mouse & Touchscreen controls that allow the user to interact with the board 
 using UnityEngine;
 
-public class inputManager : MonoBehaviour {
+public class inputManager : MonoBehaviour
+{
 
     //Private Variables
     animationManager animationManager;
@@ -19,17 +20,17 @@ public class inputManager : MonoBehaviour {
     //Methods
     private void Awake()    //Preprocess Platform Determination
     {
-        #if UNITY_EDITOR
-            editMode = true;
-        #elif UNITY_IPHONE
+#if UNITY_EDITOR
+        editMode = true;
+#elif UNITY_IPHONE
             iPhone = true;
-        #elif UNITY_STANDALONE_OSX
+#elif UNITY_STANDALONE_OSX
             osx = true;
-        #elif UNITY_STANDALONE_WIN
+#elif UNITY_STANDALONE_WIN
             windows = true;
-        #elif UNITY_ANDROID
+#elif UNITY_ANDROID
             android = true;
-        #endif
+#endif
     }
 
     //Class Return Method
@@ -43,7 +44,7 @@ public class inputManager : MonoBehaviour {
 
     boardSquare GetSquareOnTap()    //Android
     {
-        foreach(Touch touch in Input.touches)
+        foreach (Touch touch in Input.touches)
         {
             Ray ray = Camera.main.ScreenPointToRay(touch.position);
             RaycastHit hit;
@@ -74,7 +75,7 @@ public class inputManager : MonoBehaviour {
                 if (hit.transform.gameObject != null)
                 {
                     boardSquare square = hit.transform.gameObject.GetComponent<boardSquare>();
-                    if(square != null && !square.isStaticSquare)
+                    if (square != null && !square.isStaticSquare)
                     {
                         return square;
                     }

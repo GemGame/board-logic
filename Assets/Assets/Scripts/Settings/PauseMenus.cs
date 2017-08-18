@@ -32,6 +32,8 @@ public class PauseMenus : MonoBehaviour {
     Slider SFXSlider;
     [SerializeField]
     Slider brightnessSlider;
+    [SerializeField]
+    Animator screenEffect;
 
     bool mute = false;//determiens whether or not all music/sounds are muted
     public static bool gamePaused;
@@ -61,7 +63,7 @@ public class PauseMenus : MonoBehaviour {
         curMenu = CurMenu.Pause;
         //just to avoid any null references for the static variable, we're going to find the audio source
         _audio = gameObject.GetComponent<AudioSource>();
-        AudioSource music = GameObject.Find("AudioManager/Music").GetComponent<AudioSource>();
+        AudioSource music = GameObject.Find("Audio Manager/Music").GetComponent<AudioSource>();
         MusicScript.auSource = music;
 
         //setting defaults
@@ -229,7 +231,15 @@ public class PauseMenus : MonoBehaviour {
          //reset score, reset gems, reset board
             _audio.pitch = 1.2f;
             _audio.PlayOneShot(select, SFXvolume);
+            screenEffect.Play("FillIn",0,0);
+            StartCoroutine(Resetting());
         }
+    }
+    IEnumerator Resetting()
+    {
+        yield return new WaitForSecondsRealtime(1f);
+        ScreenEffect.resetLevel = true;
+        SceneManager.LoadScene("Level01");
     }
 
     //sends the player to the audio options
@@ -335,7 +345,6 @@ public class PauseMenus : MonoBehaviour {
             else if (curMenu == CurMenu.Reset)
             {
                 ResetLevel();
-                print("The game should reset current level"); //application.quit should be applied here
             }
         }
     }
@@ -389,18 +398,18 @@ public class PauseMenus : MonoBehaviour {
                         audioSettings = AudioSettings.Stereo;
                         audioText.text = "Stereo";
                         gameObject.GetComponent<AudioHighPassFilter>().enabled = false;
-                        AudioHighPassFilter sound = GameObject.Find("Game Manager/Sound").GetComponent<AudioHighPassFilter>();
+                        AudioHighPassFilter sound = GameObject.Find("AudioManager/Sound").GetComponent<AudioHighPassFilter>();
                         sound.enabled = false;
-                        sound = GameObject.Find("Game Manager/Music").GetComponent<AudioHighPassFilter>();
+                        sound = GameObject.Find("AudioManager/Music").GetComponent<AudioHighPassFilter>();
                         sound.enabled = false;
                         break;
                     case AudioSettings.Stereo:
                         audioSettings = AudioSettings.Mono;
                         audioText.text = "Mono";
                         gameObject.GetComponent<AudioHighPassFilter>().enabled = true;
-                        sound = GameObject.Find("Game Manager/Sound").GetComponent<AudioHighPassFilter>();
+                        sound = GameObject.Find("AudioManager/Sound").GetComponent<AudioHighPassFilter>();
                         sound.enabled = true;
-                        sound = GameObject.Find("Game Manager/Music").GetComponent<AudioHighPassFilter>();
+                        sound = GameObject.Find("AudioManager/Music").GetComponent<AudioHighPassFilter>();
                         sound.enabled = true;
                         break;
                 }

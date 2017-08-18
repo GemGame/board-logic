@@ -2,12 +2,12 @@
 //Gem Quest Board Class
 //Holds arrays of boardSquares and contains methods to initialize & spawn everything
 //A board is a pretty public thing
-using UnityEngine; 
+using UnityEngine;
 
 public struct boardStruct   //Retrieves all board square arrays
 {
     //Intended to be designed out to hold all relevant data about a board without having to pass methods as well
-    boardSquare[] structCoreSquare;    
+    boardSquare[] structCoreSquare;
     public boardSquare[] StructCoreSquare
     {
         get { return structCoreSquare; }
@@ -38,7 +38,8 @@ public struct boardStruct   //Retrieves all board square arrays
         set { rightStructCoreSquare = value; }
     }
 }
-public class board : MonoBehaviour  {
+public class board : MonoBehaviour
+{
 
     //Public Variables
     public float gemFallingSpeed = 3.25f;
@@ -72,9 +73,9 @@ public class board : MonoBehaviour  {
     {
         get
         {
-            for(int x = 0; x < coreSquares.Length; x++)
+            for (int x = 0; x < coreSquares.Length; x++)
             {
-                if(coreSquares[x].Gem == null || coreSquares[x].AnimPlaying)
+                if (coreSquares[x].Gem == null || coreSquares[x].AnimPlaying)
                 {
                     return true;
                 }
@@ -128,7 +129,7 @@ public class board : MonoBehaviour  {
         BoxCollider col = sq.AddComponent<BoxCollider>();    //Make the square clickable 
         col.isTrigger = true;
         sq.transform.parent = parent.transform;
-        SpawnRandomGem(square, x, y);        
+        SpawnRandomGem(square, x, y);
         square.gemX = x;
         square.gemY = y;
         return square;
@@ -261,20 +262,20 @@ public class board : MonoBehaviour  {
     }
     void RefillEmptySquares()
     {
-       for(int x = 0; x < width; x++)
+        for (int x = 0; x < width; x++)
         {
             SpawnRandomGem(topSquares[x], x, 0);
-            SpawnRandomGem(bottomSquares[x], x, 0);             
+            SpawnRandomGem(bottomSquares[x], x, 0);
         }
-       for(int y = 0; y < height; y++)
+        for (int y = 0; y < height; y++)
         {
             SpawnRandomGem(leftSquares[y], y, 0);
-            SpawnRandomGem(rightSquares[y], y, 0);            
+            SpawnRandomGem(rightSquares[y], y, 0);
         }
     }
     void SpawnRandomGem(boardSquare square, int x, int y)
     {
-        if(square.Gem == null && !square.Occupied)
+        if (square.Gem == null && !square.Occupied)
         {
             square.gemPrefab = gems.GetRandomGem(square.transform);
             if (square.gemPrefab != null)
@@ -283,7 +284,7 @@ public class board : MonoBehaviour  {
                 square.Gem.name = "Gem[" + x + ", " + y + "]";
                 square.GemScript.SetGemProperties(new Vector3(x, y, 0), square.Gem);
                 square.Occupied = true;
-            }   
+            }
         }
     }
     //Utility
@@ -301,5 +302,4 @@ public class board : MonoBehaviour  {
     {
         return y * boardWidth + x;
     }
-    
-} 
+}

@@ -90,7 +90,10 @@ public class boardSquare : MonoBehaviour
         if (gemScript.UpgradedPrefab != null)
         {
             gemScript.DestroyGem();
+            //if (gemScript.basePrefab == null) Debug.Log("Base Prefab Null");
+            if (gemScript.UpgradedPrefab == null) Debug.Log("Upgraded Prefab Null");
             Gem = gemScript.SpawnGemCopy(this.transform, gemScript.UpgradedPrefab, gemScript.basePrefab);
+            if(Gem)
             gemScript.SetGemProperties(this.transform.position, gem);
         }
     }

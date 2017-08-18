@@ -6,18 +6,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public abstract class baseGem : MonoBehaviour  
-{ 
+public abstract class baseGem : MonoBehaviour
+{
     //Public Variables
     [SerializeField]
     public GameObject UpgradedPrefab;
+    public int GemValue = 100;
 
 
     //Private Variables
     [SerializeField]
     public GameObject basePrefab;
-    [SerializeField]   
-    GameObject gemGO;    
+    [SerializeField]
+    GameObject gemGO;
 
     //Properties
     public GameObject GemGO { get { return gemGO; } set { gemGO = value; } }
@@ -39,13 +40,12 @@ public abstract class baseGem : MonoBehaviour
         PreDestroy();
         Destroy();
         PostDestroy();
-    }       
-   
+    }
+
     void Destroy()  //Destroy gem objects gem game object
     {
         DestroyImmediate(gemGO);
     }
     public abstract void PreDestroy();
     public abstract void PostDestroy();
-    
 }

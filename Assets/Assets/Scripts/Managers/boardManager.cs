@@ -19,10 +19,12 @@ public class boardManager : MonoBehaviour
     int currentDirection = 0;
     int outerOffset = 1;
     int numOuterRows = 1;
+    int tempScore = 0;
     GameObject boardGO;
     List<List<boardSquare>> moveList = new List<List<boardSquare>>();
 
     //Properties
+    public int TempScore { get { return tempScore; } set { tempScore = value; } }
     public int CurrentDirection { get { return currentDirection; } set { currentDirection = value; } }
     public board Board { get { return board; } }
 
@@ -38,7 +40,21 @@ public class boardManager : MonoBehaviour
     //Creation
     void SetUpDefaultUpgrades()
     {
-        if (gemUpgrades.Length == 0)
+        if (gemUpgrades != null)
+        {
+            if (gemUpgrades.Length == 0)
+            {
+                gemUpgrades = new gemUpgrade[7];
+                gemUpgrades[0] = new gemUpgrade(3, 1);
+                gemUpgrades[1] = new gemUpgrade(5, 2);
+                gemUpgrades[2] = new gemUpgrade(7, 3);
+                gemUpgrades[3] = new gemUpgrade(9, 4);
+                gemUpgrades[4] = new gemUpgrade(10, 5);
+                gemUpgrades[5] = new gemUpgrade(11, 6);
+                gemUpgrades[6] = new gemUpgrade(12, 7);
+            }
+        }
+        else
         {
             gemUpgrades = new gemUpgrade[7];
             gemUpgrades[0] = new gemUpgrade(3, 1);
@@ -85,6 +101,19 @@ public class boardManager : MonoBehaviour
             }
         }
     }
+    int AddMoveListValue(List<List<boardSquare>> moveList)
+    {
+        int totalScore = 0;
+        foreach(List<boardSquare> move in moveList)
+        {
+            foreach (boardSquare bs in move)
+            {
+                totalScore += bs.GemScript.GemValue;
+            }
+        }
+        return totalScore;
+    }
+    
     public void DestroyComboableSquares()
     {
         OptimizeMoveList();
@@ -101,6 +130,9 @@ public class boardManager : MonoBehaviour
             }
             if (!listMoving)
             {
+                tempScore += AddMoveListValue(moveList);
+
+                //GameObject.Find("Score").GetComponent<AddingScore>().AddScore(AddMoveListValue(moveList));
                 upgradeController uc = new upgradeController(gemUpgrades);
                 List<boardSquare> movesToRemove = uc.GetRandomUpgradedGemList(move);
                 foreach (boardSquare bs in movesToRemove)
@@ -297,5 +329,4 @@ public class boardManager : MonoBehaviour
     {
         return !b.Except(a).Any();
     }
-
 }

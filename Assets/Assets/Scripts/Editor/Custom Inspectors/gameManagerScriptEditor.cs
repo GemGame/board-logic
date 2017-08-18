@@ -4,8 +4,8 @@
 using UnityEditor;
 
 [CustomEditor(typeof(gameManager))]
-public class gameManagerScriptEditor : Editor {
-
+public class gameManagerScriptEditor : Editor
+{
     public override void OnInspectorGUI()
     {
         string[] directions = { "Down", "Right", "Left", "Up" };
@@ -13,7 +13,7 @@ public class gameManagerScriptEditor : Editor {
         gameManager gm = (gameManager)target;
 
         EditorGUILayout.LabelField("Current Falling Direction");
-        gm.BoardManager.CurrentDirection = EditorGUILayout.IntPopup(gm.BoardManager.CurrentDirection, directions, values);        
+        gm.BoardManager.CurrentDirection = EditorGUILayout.IntPopup(gm.BoardManager.CurrentDirection, directions, values);
     }
 }
 

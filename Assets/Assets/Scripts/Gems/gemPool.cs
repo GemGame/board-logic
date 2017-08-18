@@ -4,7 +4,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class gemPool : MonoBehaviour {
+public class gemPool : MonoBehaviour
+{
 
     //Private Variables
     [SerializeField, HideInInspector]
@@ -12,12 +13,12 @@ public class gemPool : MonoBehaviour {
 
     //Properties
     public List<GameObject> Gems { get { return gems; } }
-    
+
     //Methods
     public void LoadGemsAtPath(string path) //Set gems list
     {
         gems = new List<GameObject>();
-        Object[] gemObjects = Resources.LoadAll(path, typeof(GameObject)); 
+        Object[] gemObjects = Resources.LoadAll(path, typeof(GameObject));
 
         if (gemObjects.Length > 0)
         {
@@ -44,4 +45,4 @@ public class gemPool : MonoBehaviour {
             return null;
         }
     }
-} 
+}

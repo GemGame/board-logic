@@ -7,17 +7,17 @@ using UnityEditor;
 
 [CustomEditor(typeof(boardSquare))]
 public class boardSquareGemEditor : Editor
-{ 
+{
     public override void OnInspectorGUI()
-    {        
+    {
         boardSquare bs = (boardSquare)target;
         EditorGUILayout.LabelField("Gem Properties");
         bs.isStaticSquare = EditorGUILayout.Toggle("Static Square", bs.isStaticSquare);
         EditorGUILayout.IntField("X", bs.gemX);
         EditorGUILayout.IntField("Y", bs.gemY);
         EditorGUILayout.ObjectField("Gem", bs.gemPrefab, typeof(GameObject), false);
-        
-        if(GUILayout.Button("Change Gem"))
+
+        if (GUILayout.Button("Change Gem"))
         {
             gemSelectorWindow window = new gemSelectorWindow();
             window.ShowWindow(bs);
@@ -29,7 +29,7 @@ public class gemSelectorWindow : EditorWindow
 {
     int selection = 0;
     boardSquare square;
-   
+
     //Window Control
     public void ShowWindow(boardSquare bs)
     {
@@ -75,7 +75,7 @@ public class gemSelectorWindow : EditorWindow
         square.Gem = newGemScript.SpawnGemCopy(square.transform, newGemScript.GemGO, newGemScript.GemGO);
         square.gemPrefab = newGemScript.GemGO;
     }
-    
+
     //Set Up Drop Down Menu
     void InitializeDefaultSelection()
     {
@@ -91,7 +91,7 @@ public class gemSelectorWindow : EditorWindow
     }
     GameObject GetObjectByName(string name)
     {
-        foreach(GameObject go in GetGemPoolObjects())
+        foreach (GameObject go in GetGemPoolObjects())
         {
             if (go.name == name)
                 return go;
@@ -103,7 +103,7 @@ public class gemSelectorWindow : EditorWindow
         gemPool gemPool = GameObject.FindGameObjectWithTag("Gem Pool").GetComponent<gemPool>();
         int arraySize = gemPool.Gems.Count;
         GameObject[] gems = new GameObject[arraySize];
-        for(int x = 0; x < arraySize; x++)
+        for (int x = 0; x < arraySize; x++)
         {
             gems[x] = gemPool.Gems[x];
         }
@@ -115,11 +115,10 @@ public class gemSelectorWindow : EditorWindow
         int arraySize = gems.Length;
         string[] names = new string[arraySize];
 
-        for(int x = 0; x < arraySize; x++)
+        for (int x = 0; x < arraySize; x++)
         {
             names[x] = gems[x].name;
         }
         return names;
     }
-    
 }

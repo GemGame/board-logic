@@ -37,7 +37,7 @@ public class BasicMenusScript : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         SaveLoadPrefs.Load();
         canSelect = true;
@@ -47,19 +47,19 @@ public class BasicMenusScript : MonoBehaviour {
         myEvent = GameObject.Find("Canvas/EventSystem").GetComponent<UnityEngine.EventSystems.EventSystem>();
         //finding all butons within the menu
         Transform menu = gameObject.transform;
-		foreach (Transform child in menu)
+        foreach (Transform child in menu)
         {
             button.Add(child.gameObject);
         }
         myEvent.SetSelectedGameObject(button[0]);
-        GameObject.Find("Canvas/Menus/GameTitle").GetComponent<Animator>().Play("Intro",0,0);
+        GameObject.Find("Canvas/Menus/GameTitle").GetComponent<Animator>().Play("Intro", 0, 0);
         GameObject.Find("Canvas/Menus").GetComponent<Animator>().Play("Introduction", 0, 0);
         Animator anim = GameObject.Find("Canvas/Background").GetComponent<Animator>();
         anim.speed = 1;
         anim.Play("FromBlack", 0, 0);
     }
-	
-	public void SelectingNew()
+   
+public void SelectingNew()
     {
         if (isLerping || !canSelect)
             return;
@@ -72,6 +72,7 @@ public class BasicMenusScript : MonoBehaviour {
         Transform menu = gameObject.transform;
         foreach (Transform child in menu)
         {
+            //Text text = child.gameObject.GetComponent<Text>();    //You can reduce calls here
             child.gameObject.GetComponent<Text>().color = c;
             child.gameObject.GetComponent<Text>().raycastTarget = false;
             child.gameObject.GetComponent<Animator>().enabled = false;
@@ -84,8 +85,10 @@ public class BasicMenusScript : MonoBehaviour {
         myEvent.currentSelectedGameObject.GetComponent<Text>().color = c;
         myEvent.currentSelectedGameObject.GetComponent<Animator>().enabled = true;
         c.a = .8f;
+        
         if (myEvent.currentSelectedGameObject == button[0])
         {
+            
             lastSelected = button[0];
             lastSelected.GetComponent<Text>().raycastTarget = true;
             button[button.Count-1].GetComponent<Text>().fontSize = 30;
@@ -157,13 +160,15 @@ public class BasicMenusScript : MonoBehaviour {
             StartCoroutine(Lerp(transform.rotation, Quaternion.Euler(0, 0, 200), 3, 5));
             // transform.rotation = Quaternion.Euler(0, 0, 200);
         }
+        
         foreach (Transform child in menu)
         {
             child.gameObject.GetComponent<Button>().enabled = false;
         }
     }
 
-    IEnumerator Lerp(Quaternion a, Quaternion b, int one, int two)
+    //How is this different than a regular lerp? - CC
+    IEnumerator Lerp(Quaternion a, Quaternion b, int one, int two)  
      {
         Transform menu = gameObject.transform;
         float lerpTime = 0;
@@ -192,7 +197,7 @@ public class BasicMenusScript : MonoBehaviour {
         Color c = button[0].GetComponent<Text>().color;
         c.a = 0;
         au.PlayOneShot(click, PauseMenus.SFXvolume);
-        MusicScript music = GameObject.Find("Game Manager/Music").GetComponent<MusicScript>();
+        MusicScript music = GameObject.Find("AudioManager/Music").GetComponent<MusicScript>();
         music.StopAllCoroutines();
         music.StartCoroutine(music.MusicOff());
         GameObject.Find("Canvas/Menus/Basic/Campaign").GetComponent<Animator>().enabled = false;
@@ -208,12 +213,13 @@ public class BasicMenusScript : MonoBehaviour {
         GameObject.Find("Canvas/Menus/Basic/Arcade").GetComponent<Text>().color = c;
         StartCoroutine(MyCor());
     }
-    public IEnumerator MyCor()
+    public IEnumerator MyCor()  //Can this be renamed to describe what it does? - CC
     {
         Animator title = GameObject.Find("Canvas/Menus/GameTitle").GetComponent<Animator>();
         title.Play("Crumble",0,0);
         yield return new WaitForSecondsRealtime(2.5f);
-        SceneManager.LoadScene("Level01");
+        sceneController sc = GameObject.Find("SceneManager").GetComponent<sceneController>();
+        sc.TryLoadAsyncScene();
     }
     //arcade mode
     public void Arcade()
@@ -223,7 +229,7 @@ public class BasicMenusScript : MonoBehaviour {
         Color c = button[0].GetComponent<Text>().color;
         c.a = 0;
         au.PlayOneShot(click, PauseMenus.SFXvolume);
-        MusicScript music = GameObject.Find("Game Manager/Music").GetComponent<MusicScript>();
+        MusicScript music = GameObject.Find("AudioManager/Music").GetComponent<MusicScript>();
         music.StopAllCoroutines();
         music.StartCoroutine(music.MusicOff());
         GameObject.Find("Canvas/Menus/Basic/Campaign").GetComponent<Animator>().enabled = false;
@@ -244,7 +250,7 @@ public class BasicMenusScript : MonoBehaviour {
         Animator title = GameObject.Find("Canvas/Menus/GameTitle").GetComponent<Animator>();
         title.Play("Break", 0, 0);
         yield return new WaitForSecondsRealtime(.5f);
-        SceneManager.LoadScene("Level01");
+        SceneManager.LoadScene("ArcadeMode");
     }
 
     public void Credits()
