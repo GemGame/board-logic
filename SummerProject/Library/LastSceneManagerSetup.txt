@@ -1,4 +1,0 @@
-sceneSetups:
-- path: Assets/Scenes/MVP_7-22.unity
-  isLoaded: 1
-  isActive: 1
