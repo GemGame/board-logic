@@ -58,9 +58,13 @@ public class AddingScore : MonoBehaviour
     {
         if (manageScoreScript.score < manageScoreScript.goal3)
         {
-            scoreBar.Play("TurnOn", 0, 0);
-            scoreBarText.Play("TurnOn", 0, 0);
-            playAnim = true;
+            if (!playAnim)
+            {
+                float temp = 1 - scoreBar.GetCurrentAnimatorStateInfo(0).normalizedTime;
+                scoreBar.Play("TurnOn", 0, temp);
+                scoreBarText.Play("TurnOn", 0, temp);
+                playAnim = true;
+            }
         }
         while (add > 0)
         {
@@ -137,6 +141,10 @@ public class AddingScore : MonoBehaviour
         }
         if (playAnim)
         {
+            while (!scoreBar.GetCurrentAnimatorStateInfo(0).IsName("TurnOn"))
+            {
+                yield return null;
+            }
             scoreBar.Play("TurnOff", 0, 0);
             scoreBarText.Play("TurnOff", 0, 0);
             playAnim = false;
