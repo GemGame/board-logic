@@ -70,7 +70,7 @@ public class gemSelectorWindow : EditorWindow
         GameObject newGem = GetGemPoolObjects()[selection];
         baseGem newGemScript = newGem.GetComponent<baseGem>();
 
-        square.GemScript.DestroyGem();
+        square.GemScript.DestroyGem(false);
         newGemScript.SetGemProperties(square.transform.position, newGem);
         square.Gem = newGemScript.SpawnGemCopy(square.transform, newGemScript.GemGO, newGemScript.GemGO);
         square.gemPrefab = newGemScript.GemGO;

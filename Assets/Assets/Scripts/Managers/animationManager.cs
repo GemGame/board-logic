@@ -2,6 +2,7 @@
 //Gem Quest Animation Manager
 //Controls gems falling to empty squares
 //Sets board square flags
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ public class animationManager : MonoBehaviour
 {
     //Public Variables
     float gemFallingSpeed = 0.5f;
+    float gemFallingDelay = 1f;
 
     //Private Variables
     List<boardSquare> animationsPlaying = new List<boardSquare>();
@@ -39,6 +41,12 @@ public class animationManager : MonoBehaviour
             StartCoroutine(GemFallingAnimation(square, squares.IndexOf(square)));
         }
     }
+
+    IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(gemFallingDelay);
+    }
+
     IEnumerator<boardSquare> GemFallingAnimation(boardSquare square, int index)
     {
         if (square != null && square.Gem != null && !square.AnimPlaying)

@@ -40,7 +40,6 @@ public class AddingScore : MonoBehaviour
     {
         myScore = gameObject.GetComponent<Text>();
         _score = Score();
-        AddScore(50000);
         goal1.text = manageScoreScript.goal1.ToString("n0");
         goal2.text = manageScoreScript.goal2.ToString("n0");
         goal3.text = manageScoreScript.goal3.ToString("n0");

@@ -15,7 +15,7 @@ public class MusicScript : MonoBehaviour
     private void Start()
     {
         auSource = gameObject.GetComponent<AudioSource>();
-        curMusic = Random.Range (0, music.Length);
+        curMusic = Random.Range(0, music.Length);
         auSource.clip = music[curMusic];
         auSource.Play();
         StartCoroutine(LerpMusic());

@@ -14,11 +14,15 @@ public class nukeGem : baseGem
         foreach (boardSquare square in squares)
         {
             square.Destructable = true;
-            bm.TryDestroyGem(square);
+            // bm.TryDestroyGem(square);
         }
     }
 
     public override void PostDestroy()
+    {
+
+    }
+    public override void UpgradeGem()
     {
 
     }

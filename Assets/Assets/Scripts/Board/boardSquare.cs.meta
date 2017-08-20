@@ -1,10 +1,15 @@
 fileFormatVersion: 2
 guid: 33ee60e186f7136488f4ffe8994599cb
-timeCreated: 1497740573
+timeCreated: 1503120547
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - upgradeEffectPrefab: {fileID: 180852, guid: 9ef916b309aba9446a08be5910cbc272,
+      type: 2}
+  - gemPrefab: {instanceID: 0}
+  - gem: {instanceID: 0}
+  - gemScript: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

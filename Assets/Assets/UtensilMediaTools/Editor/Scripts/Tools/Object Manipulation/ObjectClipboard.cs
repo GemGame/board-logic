@@ -11,29 +11,29 @@ namespace EditorTools
     public class ObjectClipboard : MonoBehaviour
     {
         //Private variables
-        public static GameObject[] allObjects;        
+        public static GameObject[] allObjects;
         static string clipboardPath = "Assets/UtensilMediaTools/Editor/Resources/Clipboard/";
-        public static bool cut = false;     
-        
+        public static bool cut = false;
+
         public static void AfterExit() //Actions for after exiting playmode
-        {           
+        {
             if (cut == true) //If we cut some object out
             {
-                cut = false;               
+                cut = false;
                 for (int x = 0; x < allObjects.Length; x++)     //Delete those objects
                 {
                     Debug.Log("Destroying thing : " + x);
                     DestroyImmediate(allObjects[x]);
                 }
             }
-        }          
+        }
         public static void MakePrefab(GameObject go, string path) //Create a prefab of a game object
-        {            
+        {
             //Make a prefab in the clipboard directory from a passed in game object
             PrefabUtility.CreatePrefab(path + go.name + ".prefab", go);
         }
         public static void MakePrefabs(GameObject[] gos, string path, int itemNum) //Create  prefabs from array of GameObject
-        {            
+        {
             for (int x = 0; x < itemNum; x++)  //Loop through objects
             {
                 RenameDuplicates(x);
@@ -56,15 +56,15 @@ namespace EditorTools
         //Copy all game objects in the game
         static void CopyAll() //Create a prefab of all objects in game in resource/clipboard folder
         {
-            ClearClipboard();             
+            ClearClipboard();
             allObjects = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();    //Store array of all root objects 
             MakePrefabs(allObjects, clipboardPath, allObjects.Length);  //Make prefabs of individual objects            
         }
         [MenuItem("GameObject/Clipboard/Cut/All", false, MenuPriorities.rightClickClipboard)]
         [MenuItem("Project Tools/Tools/Clipboard/Cut/All", false, MenuPriorities.clipboard)]
         static void CutAll() //Same as copy but delete all the objects copied
-        {            
-            cut = true;            
+        {
+            cut = true;
             ClearClipboard();  //Empty the clipboard
             allObjects = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();    //Store array of all root objects
             MakePrefabs(allObjects, clipboardPath, allObjects.Length);  //Make prefabs of individual objects
@@ -84,19 +84,19 @@ namespace EditorTools
                 if (SelectionHandler.GetSelected() != null)
                 {
                     clipboardObject.transform.parent = SelectionHandler.GetSelected().transform;
-                } 
+                }
             }
             CreateNewLevel.SaveScene();
         }
         [MenuItem("GameObject/Clipboard/Cut/Selected", false, MenuPriorities.rightClickClipboard)]
         [MenuItem("Project Tools/Tools/Clipboard/Cut/Selected %#x", false, MenuPriorities.clipboard)]
         static void CutSelected() //Same as copy but delete all the objects copied
-        {           
+        {
             cut = true;     //We have cut            
             ClearClipboard();  //Empty the clipboard            
             //SelectionHandler.DeselectChildren();    //Deselect child objects 
             allObjects = Selection.gameObjects;     //Array of game objects is equal to selection of all game objects 
-            
+
             MakePrefabsSelected(allObjects, clipboardPath, allObjects.Length);  //Make prefabs of individual objects
             DeleteAll();  //Cut objects out
         }
@@ -112,10 +112,10 @@ namespace EditorTools
         [MenuItem("GameObject/Clipboard/Paste/To New Level", false, MenuPriorities.rightClickClipboard)]
         [MenuItem("Project Tools/Tools/Clipboard/Paste/To New Level", false, MenuPriorities.levels)]
         static void PasteNewLevel() //Copy clipboard
-        {            
+        {
             CreateNewLevel.AddNewLevel();
             PasteAll();
-        }            
+        }
         public static void ClearClipboard() //Recursively delete directory and recreate
         {
             //Delete the directory, true indicates recursive meaning to delete all subfiles and directories        
@@ -124,7 +124,7 @@ namespace EditorTools
             Directory.CreateDirectory(clipboardPath);
             //Refresh the database for updated results
             AssetDatabase.Refresh();
-        }  
+        }
         static void DeleteAll() //Delete all game objects (used in cut)
         {
             for (int x = 0; x < allObjects.Length; x++)

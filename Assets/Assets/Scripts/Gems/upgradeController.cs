@@ -110,6 +110,4 @@ public class upgradeController
         }
         return movesRemain;
     }
-
-
 }
