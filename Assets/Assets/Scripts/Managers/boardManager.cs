@@ -78,11 +78,11 @@ public class boardManager : MonoBehaviour
     }
 
     //Destruction
-    public bool TryDestroyGem(boardSquare square)
+    public bool TryDestroyGem(boardSquare square, bool isCombo)
     {
         if (square != null && square.Gem != null && square.Destructable && !square.AnimPlaying)
         {
-            square.GemScript.DestroyGem();  //Considering just calling square.DestroyGem but don't want to debug if I did this on purpose...
+            StartCoroutine(square.GemScript.DestroyGem(isCombo));  //Considering just calling square.DestroyGem but don't want to debug if I did this on purpose...
             square.Clear();
         }
         return square.Destructable;
@@ -96,7 +96,7 @@ public class boardManager : MonoBehaviour
             {
                 if (bs != square)
                 {
-                    TryDestroyGem(bs);
+                    TryDestroyGem(bs, true);
                 }
             }
         }
@@ -142,7 +142,7 @@ public class boardManager : MonoBehaviour
                 }
                 foreach (boardSquare bs in move)
                 {
-                    TryDestroyGem(bs);
+                    TryDestroyGem(bs, true);
                 }
             }
         }
@@ -155,7 +155,7 @@ public class boardManager : MonoBehaviour
             {
                 if (square.Comboable && square.Gem != null)
                 {
-                    TryDestroyGem(square);
+                    TryDestroyGem(square, false);
                     if (onCreate)
                     {
                         square.gemPrefab = board.GemPool.GetRandomGem(square.transform);
@@ -183,7 +183,7 @@ public class boardManager : MonoBehaviour
             {
                 if (squares[x].Gem != null)
                 {
-                    squares[x].DestroyGem();
+                    squares[x].DestroyGem(true);
                 }
             }
         }

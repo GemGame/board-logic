@@ -56,7 +56,7 @@ public class gameManager : MonoBehaviour
             boardSquare square = inputManager.GetInput();
             if (square != null)
             {
-                square.DestroyGem();
+                square.DestroyGem(false);
                // Debug.Log("Started UpdateScore()");
                 return true;
             }

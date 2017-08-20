@@ -34,12 +34,21 @@ public class inputManager : MonoBehaviour
     }
 
     //Class Return Method
-    public boardSquare GetInput()
+    public boardSquare GetInput()   //Can return null
     {
         if (android)
             return GetSquareOnTap();
-        else
+        else if(windows || editMode)
             return GetSquareOnClick();
+        return null;
+    }
+    public bool DetectMenuHover()
+    {
+        return false;
+    }
+    public bool DetectMenuSelect()
+    {
+        return false;
     }
 
     boardSquare GetSquareOnTap()    //Android
@@ -54,9 +63,10 @@ public class inputManager : MonoBehaviour
                 if (hit.transform.gameObject != null)
                 {
                     boardSquare square = hit.transform.gameObject.GetComponent<boardSquare>();
-                    if (square != null && !square.isStaticSquare)
+                    if (square != null && !square.isStaticSquare && square.Gem.activeSelf)
                     {
-                        return square;
+                        if (touch.phase == TouchPhase.Ended)
+                            return square;
                     }
                 }
             }
@@ -65,7 +75,7 @@ public class inputManager : MonoBehaviour
     }
     boardSquare GetSquareOnClick()  //Win / Editor
     {
-        if (Input.GetMouseButtonDown(0) && !animationManager.CheckAnimationsPlaying())
+        if (Input.GetMouseButtonUp(0) && !animationManager.CheckAnimationsPlaying())
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -75,7 +85,7 @@ public class inputManager : MonoBehaviour
                 if (hit.transform.gameObject != null)
                 {
                     boardSquare square = hit.transform.gameObject.GetComponent<boardSquare>();
-                    if (square != null && !square.isStaticSquare)
+                    if (square != null && !square.isStaticSquare && square.Gem.activeSelf)
                     {
                         return square;
                     }

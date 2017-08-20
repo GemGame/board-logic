@@ -89,7 +89,7 @@ public class boardSquare : MonoBehaviour
     {
         if (gemScript.UpgradedPrefab != null)
         {
-            gemScript.DestroyGem();
+            StartCoroutine(gemScript.DestroyGem(true));
             //if (gemScript.basePrefab == null) Debug.Log("Base Prefab Null");
             if (gemScript.UpgradedPrefab == null) Debug.Log("Upgraded Prefab Null");
             Gem = gemScript.SpawnGemCopy(this.transform, gemScript.UpgradedPrefab, gemScript.basePrefab);
@@ -97,11 +97,11 @@ public class boardSquare : MonoBehaviour
             gemScript.SetGemProperties(this.transform.position, gem);
         }
     }
-    public void DestroyGem()
+    public void DestroyGem(bool isCombo)
     {
         if (gemScript != null)
         {
-            gemScript.DestroyGem();
+            StartCoroutine(gemScript.DestroyGem(isCombo));
         }
     }
 }

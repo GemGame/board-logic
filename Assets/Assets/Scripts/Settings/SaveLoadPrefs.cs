@@ -61,7 +61,7 @@ public class SaveLoadPrefs : MonoBehaviour {
                 QualitySettings.SetQualityLevel(2);
                 break;
         }
-
+        /*
         switch (PauseMenus.resolution)
         {
             default:
@@ -77,6 +77,7 @@ public class SaveLoadPrefs : MonoBehaviour {
                 PauseMenus.resolution = PauseMenus.Resolution.Fullscreen;
                 break;
         }
+        */
     }
 
     //saving all data

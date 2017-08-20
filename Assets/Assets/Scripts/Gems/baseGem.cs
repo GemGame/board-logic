@@ -3,6 +3,7 @@
 //Contains all the most basic funtionality of a gem
 //Pre & Post Destroy must be overridden
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 [System.Serializable]
@@ -35,11 +36,23 @@ public abstract class baseGem : MonoBehaviour
         basePrefab = baseGemPrefab;
         return Instantiate(gemPrefab, parent.position, parent.rotation, parent);
     }
-    public void DestroyGem()    //Includes pre and post
+    public IEnumerator DestroyGem(bool isCombo)    //Includes pre and post
     {
-        PreDestroy();
+        if (isCombo)
+            yield return new WaitForSeconds(2.0f);
+        PreDestroy();        
+        PassScript();
         Destroy();
         PostDestroy();
+        
+    }
+
+    void PassScript()
+    {
+        GameObject newGameObject = new GameObject("Temp GO");
+        newGameObject.transform.position = this.transform.position;
+        defaultGem newGemScript = newGameObject.AddComponent<defaultGem>();
+        newGemScript = (defaultGem)this;
     }
 
     void Destroy()  //Destroy gem objects gem game object
