@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SaveLoadPrefs : MonoBehaviour {
+public class SaveLoadPrefs : MonoBehaviour
+{
 
     //loading prefs
     public static void Load()
@@ -61,7 +62,7 @@ public class SaveLoadPrefs : MonoBehaviour {
                 QualitySettings.SetQualityLevel(2);
                 break;
         }
-
+        /*
         switch (PauseMenus.resolution)
         {
             default:
@@ -77,6 +78,7 @@ public class SaveLoadPrefs : MonoBehaviour {
                 PauseMenus.resolution = PauseMenus.Resolution.Fullscreen;
                 break;
         }
+        */
     }
 
     //saving all data
