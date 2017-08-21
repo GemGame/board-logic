@@ -20,6 +20,8 @@ public class AddingScore : MonoBehaviour
     Animator scoreBarText;
     [SerializeField]
     ManageScore manageScoreScript;
+    [SerializeField]
+    ResultsScript resultScript;
 
     [SerializeField]
     Text goal1;
@@ -46,6 +48,7 @@ public class AddingScore : MonoBehaviour
     }
     public void AddScore(int score)
     {
+        resultScript.isWaiting = true;
         add += score;
         _score = Score();
         pointsText.text = "+" + score.ToString("n0") + " Points";
@@ -149,6 +152,7 @@ public class AddingScore : MonoBehaviour
             scoreBarText.Play("TurnOff", 0, 0);
             playAnim = false;
         }
+        resultScript.isWaiting = false;
     }
 }
 

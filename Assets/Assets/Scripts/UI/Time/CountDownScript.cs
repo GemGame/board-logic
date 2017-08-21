@@ -26,6 +26,10 @@ public class CountDownScript : MonoBehaviour {
     AudioSource sounds;
     [SerializeField]
     AudioClip tick;
+    [SerializeField]
+    GameObject results;
+    [SerializeField]
+    GameObject menu;
 
 
     private void Start()
@@ -61,12 +65,6 @@ public class CountDownScript : MonoBehaviour {
                 if (countDownTimer <= 10)
                     sounds.PlayOneShot(tick, PauseMenus.SFXvolume);
             }
-            else if (miliSeconds <= 0 && countDownTimer <= 0)
-            {
-                print("game over");
-                //show score
-               //end game
-            }
             //myText.text = string.Format("{0}.{1}", countDownTimer, (int)miliSeconds);
             myText.text = countDownTimer.ToString();
             Color lerpedOutline = Color.Lerp(end, start, countDownTimer/placeholder);
@@ -74,5 +72,19 @@ public class CountDownScript : MonoBehaviour {
             myOutline.effectColor = lerpedOutline;
             myText.color = lerpedFont;
         }
+        //ending the game and showing the results
+        PauseMenus.gamePaused = true;
+        menu.SetActive(false);
+        Transform time = GameObject.Find("Time").transform;
+        foreach (Transform text in time)
+        {
+            text.GetComponent<Text>().text = " ";
+        }
+        //Transform text = transform.FindChild("Text");
+
+        print("game over");
+        results.SetActive(true);
+        //show score
+        //end game
     }
 }
