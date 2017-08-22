@@ -44,18 +44,16 @@ public class gameManager : MonoBehaviour
     }
     void UpdateBoard()
     {
-
-        boardManager.UpdateComboableSquares();
-        if (boardManager.Board.DetectComboableSquares())
-            boardManager.DestroyComboableSquares();
-        animationManager.PlayFallingAnimations(boardManager.GetFallingGemsList());
-        if (moveMade)
-        {
-            StartCoroutine(UpdateScore());
-            //subtract turn
-            countDownScript.SetTurns(-1);
-        }
-
+            boardManager.UpdateComboableSquares();
+            if (boardManager.Board.DetectComboableSquares())
+                boardManager.DestroyComboableSquares();
+            animationManager.PlayFallingAnimations(boardManager.GetFallingGemsList());
+            if (moveMade)
+            {
+                StartCoroutine(UpdateScore());
+                //subtract turn
+                countDownScript.SetTurns(-1);
+            }
     }
     bool AcceptInput()
     {

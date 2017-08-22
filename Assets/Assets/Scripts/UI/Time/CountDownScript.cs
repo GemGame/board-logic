@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class CountDownScript : MonoBehaviour {
 
     float countDownTimer = 60;
+
     public float CountDowTimer
     {
         get { return countDownTimer; }
@@ -104,9 +105,9 @@ public class CountDownScript : MonoBehaviour {
             text.GetComponent<Text>().text = " ";
         }
         yield return new WaitForSecondsRealtime(2f);
-       myText.gameObject.SetActive(false);
-       myTitle.gameObject.SetActive(false);
-       AddTimeText.gameObject.SetActive(false);
+        myText.text = (" ");
+        myTitle.text = (" ");
+        AddTimeText.text = (" ");
     }
 
 
@@ -132,9 +133,9 @@ public class CountDownScript : MonoBehaviour {
     IEnumerator Wait()
     {
         yield return new WaitForSecondsRealtime(2f);
-        myText.gameObject.SetActive(false);
-        myTitle.gameObject.SetActive(false);
-        AddTimeText.gameObject.SetActive(false);
+        myText.text = (" ");
+        myTitle.text = (" ");
+        AddTimeText.text  = (" ");
     }
 
     public void AddTime(int secs)

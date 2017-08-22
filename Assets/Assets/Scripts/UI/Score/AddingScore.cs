@@ -110,7 +110,6 @@ public class AddingScore : MonoBehaviour
             }
             else if (add <= 50)
             {
-
                 add -= 1;
                 manageScoreScript.score += 1;
             }

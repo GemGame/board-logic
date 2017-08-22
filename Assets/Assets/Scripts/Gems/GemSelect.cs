@@ -36,13 +36,14 @@ public class GemSelect : MonoBehaviour
         currentScale = this.transform.localScale;
         oldScale = currentScale;
     }
-    private void Update()
+    private void Update()//this is causing an isue at the moment - Koester
     {
-        if (CheckTouching())
-            OnMouseEnter();
-        else
-            OnMouseExit();
+        //if (CheckTouching())
+        //    OnMouseEnter();
+        //else
+        //    OnMouseExit();
     }
+
     private bool CheckTouching()
     {
         foreach (Touch touch in Input.touches)
@@ -65,6 +66,8 @@ public class GemSelect : MonoBehaviour
     }
     private void OnMouseEnter()
     {
+        if (ResultsScript.isGameOver)
+            return;
         if (Time.timeScale > 0 && !currentlySelected) //What is this for? - CC
         {
             currentScale += (currentScale * scaleIncreasePercent);
@@ -78,6 +81,8 @@ public class GemSelect : MonoBehaviour
 
     private void OnMouseExit()
     {
+        if (ResultsScript.isGameOver)
+            return;
         currentScale = oldScale;
         gameObject.transform.localScale = currentScale;
         currentlySelected = false;  //CC

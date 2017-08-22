@@ -72,7 +72,6 @@ public class PauseMenus : MonoBehaviour {
         resolution = Resolution.Fullscreen;
         scaleTime = 1f;
         SFXvolume = .8f;
-        BGMvolume = .3f;
         //loading all player prefs
         SaveLoadPrefs.Load();
     }
@@ -80,7 +79,7 @@ public class PauseMenus : MonoBehaviour {
     //Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("escape") && (pauseMenus.activeSelf || !pause.activeSelf) && curMenu == CurMenu.Pause && !isPlaying)
+        if (Input.GetKeyDown("escape") && (pauseMenus.activeSelf || !pause.activeSelf) && curMenu == CurMenu.Pause && !isPlaying && !ResultsScript.isGameOver)
         {//pausing the game
             Pause();
         }
@@ -90,6 +89,8 @@ public class PauseMenus : MonoBehaviour {
     public void Pause()
     {
         {
+            if (ResultsScript.isGameOver)
+                return;
             if (!pause.activeSelf)
             {
                 pause.SetActive(true);
@@ -190,6 +191,8 @@ public class PauseMenus : MonoBehaviour {
 
     public void Mute()
     {
+        if (ResultsScript.isGameOver)
+            return;
         AudioSource sounds = GameObject.Find("AudioManager/Sound").GetComponent<AudioSource>();
         AudioSource sounds2 = GameObject.Find("Canvas/HUDButtons/Mute").GetComponent<AudioSource>();
         AudioSource music = GameObject.Find("AudioManager/Music").GetComponent<AudioSource>();
@@ -215,11 +218,15 @@ public class PauseMenus : MonoBehaviour {
     }
     public void HoveroffMute()
     {
+        if (ResultsScript.isGameOver)
+            return;
         Transform t = GameObject.Find("Canvas/HUDButtons/Mute").GetComponent<Transform>();
         t.localScale = new Vector3(1,1,1);
     }
     public void HoverOnMute()
     {
+        if (ResultsScript.isGameOver)
+            return;
         Transform t = GameObject.Find("Canvas/HUDButtons/Mute").GetComponent<Transform>();
         t.localScale = new Vector3(1.05f, 1.05f, 1.05f);
     }

@@ -33,6 +33,7 @@ public class ManageScore : MonoBehaviour {
 
     private void Start()
     {
+        ResultsScript.isGameOver = false;
         PlayerTurns = startingTurns;
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ResultsScript : MonoBehaviour {
+    public static bool isGameOver;//this is set to true when game is over
     [SerializeField]
     GameObject Star1;
     [SerializeField]
@@ -18,13 +19,22 @@ public class ResultsScript : MonoBehaviour {
     Text levelCompletedText;
     [SerializeField]
     ManageScore manageScoreScript;
+    [SerializeField]
+    GameObject HUDbuttons;
     public bool isWaiting; //waiting to run the coroutine -- this is determiend by the "adding score" script
     public static GameObject results;
 
     void OnEnable()
     {
+        isGameOver = true;
+        HUDbuttons.SetActive(false);
         SaveLoadPrefs.Load();
+        StartCoroutine(MusicSettings.TurnOffMusic());
         StartCoroutine(Display());
+    }
+    void OnDestroy()
+    {
+        isGameOver = false;
     }
     IEnumerator Display()
     {
@@ -58,6 +68,7 @@ public class ResultsScript : MonoBehaviour {
             + "Highest Combo: " + manageScoreScript.combos + "\r\n"
             + "Largest Streak: " + manageScoreScript.streaks + "\r\n"
             + "Total Time: " + format + "\r\n"
+            + "\r\n"
             + "\r\n"
             + "		Score: " + manageScoreScript.score.ToString("n0") + " Points"+"\r\n";
         //myText.text = string.Format("{0}.{1}", countDownTimer, (int)miliSeconds);
