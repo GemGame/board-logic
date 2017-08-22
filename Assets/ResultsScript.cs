@@ -19,7 +19,7 @@ public class ResultsScript : MonoBehaviour {
     [SerializeField]
     ManageScore manageScoreScript;
     public bool isWaiting; //waiting to run the coroutine -- this is determiend by the "adding score" script
-
+    public static GameObject results;
 
     void OnEnable()
     {
@@ -28,30 +28,38 @@ public class ResultsScript : MonoBehaviour {
     }
     IEnumerator Display()
     {
+        float temp = Time.timeSinceLevelLoad;
+        if (temp >= 3600)
+            temp = 3600;
+        string format = (temp / 60).ToString("00") + ":" + (temp % 60).ToString("00");
+
         while (isWaiting)
             yield return null;
-        yield return new WaitForSeconds(3f);
-        while (isWaiting)
-            yield return null;
+        yield return new WaitForSecondsRealtime(3f);
         if (manageScoreScript.score > ManageScore.highestScore)
             ManageScore.highestScore = manageScoreScript.score;
         gameObject.GetComponent<Animator>().Play("Victory");
         //here we are displayig all game information
         highScoresText.text = "High Scores: " + ManageScore.highestScore.ToString("n0");
 
-        if (manageScoreScript.score > manageScoreScript.goal1)
-            levelCompletedText.text = "Level Complete";
-        else
+        if(manageScoreScript.gameType == ManageScore.GameType.Arcade)
             levelCompletedText.text = "Game Over";
+        else
+            if (manageScoreScript.score > manageScoreScript.goal1)
+                levelCompletedText.text = "Level Complete";
+            else
+                levelCompletedText.text = "Level Failed";
 
-        infoText.text = "	Goals Completed " + manageScoreScript.completedGoals + "/" + manageScoreScript.totalGoals + "\r\n"
+        infoText.text = "	Quests Completed " + manageScoreScript.completedGoals + "/" + manageScoreScript.totalGoals + "\r\n"
             + "\r\n"
             + "Difficulty: " + PauseMenus.difficulty + "\r\n"
             + "Stars Earned: " + "2" + "\r\n"
             + "Total Stars: " + "6" + "\r\n"
             + "Highest Combo: " + manageScoreScript.combos + "\r\n"
             + "Largest Streak: " + manageScoreScript.streaks + "\r\n"
+            + "Total Time: " + format + "\r\n"
             + "\r\n"
-            + "		Score: " + manageScoreScript.score.ToString("n0") + "\r\n";
+            + "		Score: " + manageScoreScript.score.ToString("n0") + " Points"+"\r\n";
+        //myText.text = string.Format("{0}.{1}", countDownTimer, (int)miliSeconds);
     }
 }

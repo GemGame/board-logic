@@ -17,12 +17,16 @@ public class gameManager : MonoBehaviour
     animationManager animationManager;
     bool moveMade = false;
 
+    [SerializeField]
+    CountDownScript countDownScript;
+
     //Properties
     public boardManager BoardManager { get { return boardManager; } }
 
     //Methods
     private void Start()
     {
+        countDownScript = GameObject.Find("CountDownText").GetComponent<CountDownScript>();
         ConfigureComponents();
     }
     private void ConfigureComponents()
@@ -46,7 +50,11 @@ public class gameManager : MonoBehaviour
             boardManager.DestroyComboableSquares();
         animationManager.PlayFallingAnimations(boardManager.GetFallingGemsList());
         if (moveMade)
+        {
             StartCoroutine(UpdateScore());
+            //subtract turn
+            countDownScript.SetTurns(-1);
+        }
 
     }
     bool AcceptInput()
@@ -56,8 +64,14 @@ public class gameManager : MonoBehaviour
             boardSquare square = inputManager.GetInput();
             if (square != null)
             {
+                //ending the game
+                if (countDownScript.Turns == 0 || countDownScript.CountDowTimer == 0)
+                {
+                    ManageScore ms = GameObject.Find("Canvas").GetComponent<ManageScore>();
+                    ms.results.SetActive(true);//enabling the gameobject, reults, which ultimately ends the game
+                    return false;
+                }
                 square.DestroyGem(false);
-                // Debug.Log("Started UpdateScore()");
                 return true;
             }
         }
@@ -65,15 +79,18 @@ public class gameManager : MonoBehaviour
     }
     IEnumerator UpdateScore()
     {
-        int x = 0;
         while (animationManager.CheckAnimationsPlaying() && boardManager.board.HasEmptySquares)
         {
-            // Debug.Log(x += 1);
             yield return null;
         }
         yield return null;
         if (boardManager.TempScore > 0)
         {
+            //add seconds if the score that is earned is high enough
+            if (boardManager.TempScore > 500)
+            {
+                countDownScript.AddTime((int)(boardManager.TempScore / 100));
+            }
             GameObject.Find("Score").GetComponent<AddingScore>().AddScore(boardManager.TempScore);
             boardManager.TempScore = 0;
         }
