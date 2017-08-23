@@ -16,9 +16,10 @@ public class gameManager : MonoBehaviour
     [SerializeField, HideInInspector]
     animationManager animationManager;
     bool moveMade = false;
-
     [SerializeField]
     CountDownScript countDownScript;
+
+
 
     //Properties
     public boardManager BoardManager { get { return boardManager; } }
@@ -50,7 +51,7 @@ public class gameManager : MonoBehaviour
             animationManager.PlayFallingAnimations(boardManager.GetFallingGemsList());
             if (moveMade)
             {
-                StartCoroutine(UpdateScore());
+                //StartCoroutine(UpdateScore());
                 //subtract turn
                 countDownScript.SetTurns(-1);
             }
@@ -74,25 +75,6 @@ public class gameManager : MonoBehaviour
             }
         }
         return false;
-    }
-    IEnumerator UpdateScore()
-    {
-        while (animationManager.CheckAnimationsPlaying() && boardManager.board.HasEmptySquares)
-        {
-            yield return null;
-        }
-        yield return null;
-        if (boardManager.TempScore > 0)
-        {
-            //add seconds if the score that is earned is high enough
-            if (boardManager.TempScore > 500)
-            {
-                countDownScript.AddTime((int)(boardManager.TempScore / 100));
-            }
-            GameObject.Find("Score").GetComponent<AddingScore>().AddScore(boardManager.TempScore);
-            boardManager.TempScore = 0;
-        }
-
     }
     public void CreateBMInstance()  //Board Manager is needed during editor mode when creating new boards
     {

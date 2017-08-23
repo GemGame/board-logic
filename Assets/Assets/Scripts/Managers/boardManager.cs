@@ -3,6 +3,7 @@
 //Creates board & utilizes of board analyzer to make decisions on & about the board
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 
 public class boardManager : MonoBehaviour
@@ -12,11 +13,14 @@ public class boardManager : MonoBehaviour
     public gemUpgrade[] gemUpgrades;// = new gemUpgrade[0];
     public board board;
     public enum directionIndex { down = 0, right = 1, left = 2, up = 3 };
+    
 
     //Private Variables
     bool destroyAllRanThisFrame = false;
     [SerializeField, HideInInspector]
     int currentDirection = 0;
+    [SerializeField]
+    CountDownScript countDownScript;
     int outerOffset = 1;
     int numOuterRows = 1;
     int tempScore = 0;
@@ -24,7 +28,7 @@ public class boardManager : MonoBehaviour
     List<List<boardSquare>> moveList = new List<List<boardSquare>>();
 
     //Properties
-    public int TempScore { get { return tempScore; } set { tempScore = value; } }
+    //public int TempScore { get { return tempScore; } set { tempScore = value; } }
     public int CurrentDirection { get { return currentDirection; } set { currentDirection = value; } }
     public board Board { get { return board; } }
 
@@ -32,6 +36,8 @@ public class boardManager : MonoBehaviour
     private void Start()
     {
         SetUpDefaultUpgrades();
+        if (Application.isPlaying)
+            countDownScript = GameObject.Find("CountDownText").GetComponent<CountDownScript>();
     }
     private void LateUpdate()
     {
@@ -114,6 +120,25 @@ public class boardManager : MonoBehaviour
         return totalScore;
     }
 
+    IEnumerator UpdateScore()
+    {
+        while (board.HasEmptySquares)
+        {
+            yield return null;
+        }
+        yield return null;
+        if (tempScore > 0)
+        {
+            //add seconds if the score that is earned is high enough
+            if (tempScore > 500)
+            {
+                countDownScript.AddTime((int)(tempScore / 100));
+            }
+            GameObject.Find("Score").GetComponent<AddingScore>().AddScore(tempScore);
+            tempScore = 0;
+        }
+
+    }
     public void DestroyComboableSquares()
     {
         OptimizeMoveList();
@@ -144,6 +169,11 @@ public class boardManager : MonoBehaviour
                 {
                     TryDestroyGem(bs, true);
                 }
+
+                //********************************
+                //****ONE MOVE WAS DESTROYED******
+                //********************************
+                StartCoroutine(UpdateScore());
             }
         }
     }

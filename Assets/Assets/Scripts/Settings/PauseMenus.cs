@@ -63,7 +63,7 @@ public class PauseMenus : MonoBehaviour {
         curMenu = CurMenu.Pause;
         //just to avoid any null references for the static variable, we're going to find the audio source
         _audio = gameObject.GetComponent<AudioSource>();
-        AudioSource music = GameObject.Find("AudioManager/Music").GetComponent<AudioSource>();
+        AudioSource music = GameObject.Find("Audio Manager/Music").GetComponent<AudioSource>();
         MusicScript.auSource = music;
 
         //setting defaults

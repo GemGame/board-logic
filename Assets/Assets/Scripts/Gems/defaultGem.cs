@@ -10,20 +10,36 @@ using UnityEngine.UI;
 [System.Serializable]
 public class defaultGem : baseGem {
 
-	public override void PreDestroy()
+    public override void PreDestroy()
     {
         //Debug.Log("PreDestroy()");
         //StartCoroutine(WaitTime());
-        GameObject clone = explosionPrefab;
-        Destroy(Instantiate(clone, transform.position, transform.rotation), 1);
-        floatingTextValue.text = "+"+value.ToString();
-        clone = floatingTextPrefab;
-        Instantiate(clone, transform.position, transform.rotation);
-        Destroy(gameObject);
+        if (Application.isPlaying)  //Not in editor mode
+        {
+            GameObject clone = explosionPrefab;
+            Destroy(Instantiate(clone, transform.position, transform.rotation), 1);
+            floatingTextValue.text = "+" + value.ToString();
+            clone = floatingTextPrefab;
+            Instantiate(clone, transform.position, transform.rotation);
+            Destroy(gameObject);
+
+        }
     }
 
     public override void PostDestroy()
     {
+        try
+        {
+            Sound.sound.PlayOneShot(explosionSound, PauseMenus.SFXvolume);
+        }
+        catch
+        {
+
+        }
+
+
+            ;
+
         //Debug.Log("PostDestroy()");
     }
 
@@ -39,7 +55,7 @@ public class defaultGem : baseGem {
     {
         //mySprite.Play("ChargeUp", 0, 0);
         yield return null;
-        yield return new WaitForSeconds(1f);
+        //yield return new WaitForSeconds(1f);
         GameObject clone = explosionPrefab;
         Destroy(Instantiate(clone, transform.position, transform.rotation), 1);
         floatingTextValue.text = value.ToString();

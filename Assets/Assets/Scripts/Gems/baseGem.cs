@@ -56,19 +56,19 @@ public abstract class baseGem : MonoBehaviour
         if (isCombo)
             yield return new WaitForSeconds(2.0f);
         PreDestroy();
-        PassScript();
-        Destroy();
+        DisableGameObject();
         PostDestroy();
-        Sound.sound.PlayOneShot(explosionSound, PauseMenus.SFXvolume);
+        Destroy();
+
 
     }
-
-    void PassScript()
+    void DisableGameObject()
     {
-        GameObject newGameObject = new GameObject("Temp GO");
-        newGameObject.transform.position = this.transform.position;
-        defaultGem newGemScript = newGameObject.AddComponent<defaultGem>();
-        newGemScript = (defaultGem)this;
+        MeshRenderer[] mr = gameObject.GetComponentsInChildren<MeshRenderer>();
+        foreach (MeshRenderer r in mr)
+        {
+            r.enabled = false;
+        }
     }
 
     void Destroy()  //Destroy gem objects gem game object
