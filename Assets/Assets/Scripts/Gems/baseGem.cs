@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 
 [System.Serializable]
 public abstract class baseGem : MonoBehaviour
@@ -32,7 +33,7 @@ public abstract class baseGem : MonoBehaviour
 
     //Private Variables
     [SerializeField]
-    public GameObject basePrefab;
+    public Object basePrefab;
     [SerializeField]
     GameObject gemGO;
 
@@ -42,19 +43,22 @@ public abstract class baseGem : MonoBehaviour
     public int Y { get { return (int)transform.position.y; } }
 
     //Methods
-    public void SetGemProperties(Vector3 position, GameObject gem)   //Use before spawning
+    public void SetGemProperties(Vector3 position, GameObject gem, Transform parent)   //Use before spawning
     {
+        gemGO.transform.parent = parent;
         gemGO = gem;
     }
-    public GameObject SpawnGemCopy(Transform parent, GameObject gemPrefab, GameObject baseGemPrefab)  //Spawns Gem Game Object
+    public GameObject SpawnGemCopy(Transform parent, GameObject gemPrefab, Object baseGemPrefab)  //Spawns Gem Game Object
     {
         basePrefab = baseGemPrefab;
+        //GameObject tempGO = (GameObject)PrefabUtility.InstantiatePrefab(gemPrefab);
+        //tempGO.GetComponent<baseGem>().SetGemProperties(Vector3.zero, tempGO, parent);
         return Instantiate(gemPrefab, parent.position, parent.rotation, parent);
     }
     public IEnumerator DestroyGem(bool isCombo)    //Includes pre and post
     {
         if (isCombo)
-            yield return new WaitForSeconds(2.0f);
+            yield return null;//new WaitForSeconds(2.0f);
         PreDestroy();
         DisableGameObject();
         PostDestroy();

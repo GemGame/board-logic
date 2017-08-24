@@ -86,7 +86,7 @@ public class CountDownScript : MonoBehaviour {
                     gameObject.GetComponent<Animator>().Play("Subtract", 0, 0);
                 else
                     gameObject.GetComponent<Animator>().Play("DangerouslyLow", 0, 0);
-                if (countDownTimer <= 10)
+                if (countDownTimer <= 10 && sounds != null)
                     sounds.PlayOneShot(tick, PauseMenus.SFXvolume);
             }
             //myText.text = string.Format("{0}.{1}", countDownTimer, (int)miliSeconds);

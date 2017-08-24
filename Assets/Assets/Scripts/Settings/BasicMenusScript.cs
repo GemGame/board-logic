@@ -220,7 +220,9 @@ public class BasicMenusScript : MonoBehaviour
         title.Play("Crumble", 0, 0);
         yield return new WaitForSecondsRealtime(2.5f);
         sceneController sc = GameObject.Find("SceneManager").GetComponent<sceneController>();
-        sc.TryLoadAsyncScene();
+        sc.LoadFirstLevel();
+        //.PrepareFirstLevelAsynch();
+        //sc.TryLoadPreparedScene();
     }
     //arcade mode
     public void Arcade()
@@ -249,9 +251,12 @@ public class BasicMenusScript : MonoBehaviour
     public IEnumerator StartArcade()
     {
         Animator title = GameObject.Find("Canvas/Menus/GameTitle").GetComponent<Animator>();
+        sceneController sc = GameObject.Find("SceneManager").GetComponent<sceneController>();
+
         title.Play("Break", 0, 0);
         yield return new WaitForSecondsRealtime(.5f);
-        SceneManager.LoadScene("ArcadeMode");
+        //SceneManager.LoadScene("ArcadeMode");
+        sc.TryLoadPreparedScene();
     }
 
     public void Credits()

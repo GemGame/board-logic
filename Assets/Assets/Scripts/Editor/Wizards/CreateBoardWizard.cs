@@ -71,7 +71,7 @@ public class CreateBoardWizard : ScriptableWizard
             Debug.Log("Cannot find game object with the tag 'Gem Pool'");
             return false;
         }
-        else if (gemPool.Gems.Count == 0)
+        else if (gemPool.Gems.Length == 0)
         {
             ClearWizardObjects();
             return false;

@@ -47,7 +47,7 @@ public class gemSelectorWindow : EditorWindow
         EditorGUILayout.Separator();
         EditorGUILayout.LabelField("Gem To Replace With");
         EditorGUILayout.Separator();
-        selection = EditorGUILayout.Popup(selection, GetArrayObjectNames(GetGemPoolObjects()));
+        selection = EditorGUILayout.Popup(selection, GetArrayObjectNames((GameObject[])GetGemPoolObjects()));
         EditorGUILayout.Separator();
         EditorGUILayout.Separator();
 
@@ -67,19 +67,20 @@ public class gemSelectorWindow : EditorWindow
     //Button Action
     void ChangeSquareGem()
     {
-        GameObject newGem = GetGemPoolObjects()[selection];
+        GameObject newGem = (GameObject)GetGemPoolObjects()[selection];
+        GameObject newBaseGem = (GameObject)GetGemPoolObjects()[selection];
         baseGem newGemScript = newGem.GetComponent<baseGem>();
 
         square.GemScript.DestroyGem(false);
-        newGemScript.SetGemProperties(square.transform.position, newGem);
-        square.Gem = newGemScript.SpawnGemCopy(square.transform, newGemScript.GemGO, newGemScript.GemGO);
+        newGemScript.SetGemProperties(square.transform.position, newGem, square.transform);
+        square.Gem = newGemScript.SpawnGemCopy(square.transform, newGemScript.GemGO, newBaseGem);
         square.gemPrefab = newGemScript.GemGO;
     }
 
     //Set Up Drop Down Menu
     void InitializeDefaultSelection()
     {
-        GameObject[] gems = GetGemPoolObjects();
+        Object[] gems = GetGemPoolObjects();
         for (int x = 0; x < gems.Length; x++)
         {
             if (gems[x] == square.gemPrefab)
@@ -98,11 +99,11 @@ public class gemSelectorWindow : EditorWindow
         }
         return null;
     }
-    GameObject[] GetGemPoolObjects()
+    Object[] GetGemPoolObjects()
     {
         gemPool gemPool = GameObject.FindGameObjectWithTag("Gem Pool").GetComponent<gemPool>();
-        int arraySize = gemPool.Gems.Count;
-        GameObject[] gems = new GameObject[arraySize];
+        int arraySize = gemPool.Gems.Length;
+        Object[] gems = new GameObject[arraySize];
         for (int x = 0; x < arraySize; x++)
         {
             gems[x] = gemPool.Gems[x];

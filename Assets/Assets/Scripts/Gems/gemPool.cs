@@ -8,23 +8,28 @@ public class gemPool : MonoBehaviour
 {
 
     //Private Variables
-    [SerializeField, HideInInspector]
-    List<GameObject> gems;
+    [SerializeField]
+    //List<GameObject> gems;
+    Object[] gems;
 
     //Properties
-    public List<GameObject> Gems { get { return gems; } }
+    public Object[] Gems { get { return gems; } }
 
     //Methods
     public void LoadGemsAtPath(string path) //Set gems list
     {
-        gems = new List<GameObject>();
         Object[] gemObjects = Resources.LoadAll(path, typeof(GameObject));
+        int objectCount = 0;
 
         if (gemObjects.Length > 0)
         {
+            gems = new GameObject[gemObjects.Length];
+
             foreach (Object gem in gemObjects)
             {
-                gems.Add((GameObject)gem);
+                gems[objectCount] = ((GameObject)gem);
+                objectCount++;
+
             }
         }
         else
@@ -32,9 +37,23 @@ public class gemPool : MonoBehaviour
             Debug.Log("Directory contained no Game Objects");
         }
     }
-    public GameObject GetRandomGem(Transform parent)
+    public Object ReturnMatchingPrefab(Object currentBase)
     {
-        int count = gems.Count;
+        if(gems.Length > 0)
+        {
+            foreach(Object gem in gems)
+            {
+                if(currentBase == gem)
+                {
+                    return gem;
+                }
+            }
+        }
+        return null;
+    }
+    public Object GetRandomGem(Transform parent)
+    {
+        int count = gems.Length;
         if (count > 0)
         {
             int randomIndex = Random.Range(0, count);

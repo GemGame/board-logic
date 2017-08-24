@@ -25,7 +25,6 @@ public class animationManager : MonoBehaviour
         {
             for (int x = 0; x < animationsPlaying.Count; x++)
             {
-
                 if (animationsPlaying[x].AnimPlaying)
                 {
                     return true;
@@ -41,13 +40,16 @@ public class animationManager : MonoBehaviour
             StartCoroutine(GemFallingAnimation(square, squares.IndexOf(square)));
         }
     }
-
-    IEnumerator Delay()
+    public void PlayDelayedFallingAnimations(List<boardSquare> squares, float delay)
     {
-        yield return new WaitForSeconds(gemFallingDelay);
+        foreach (boardSquare square in squares)
+        {
+            StartCoroutine(DelayedGemFallingAnimation(square, squares.IndexOf(square), delay));
+        }
     }
 
-    IEnumerator<boardSquare> GemFallingAnimation(boardSquare square, int index)
+   
+    IEnumerator GemFallingAnimation(boardSquare square, int index)
     {
         if (square != null && square.Gem != null && !square.AnimPlaying)
         {
@@ -62,5 +64,10 @@ public class animationManager : MonoBehaviour
             animationsPlaying.Remove(square);
             square.AnimPlaying = false;
         }
+    }
+    IEnumerator DelayedGemFallingAnimation(boardSquare square, int index, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        StartCoroutine(GemFallingAnimation(square, index));
     }
 }

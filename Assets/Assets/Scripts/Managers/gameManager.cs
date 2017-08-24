@@ -3,7 +3,6 @@
 //The master manager through which all other managers are interacted with. 
 //Contains the main game loop & controls the flow / updating of the game
 using UnityEngine;
-using System.Collections;
 
 [System.Serializable]
 public class gameManager : MonoBehaviour
@@ -16,6 +15,7 @@ public class gameManager : MonoBehaviour
     [SerializeField, HideInInspector]
     animationManager animationManager;
     bool moveMade = false;
+    bool gameOver = false;
     [SerializeField]
     CountDownScript countDownScript;
 
@@ -27,7 +27,6 @@ public class gameManager : MonoBehaviour
     //Methods
     private void Start()
     {
-        countDownScript = GameObject.Find("CountDownText").GetComponent<CountDownScript>();
         ConfigureComponents();
     }
     private void ConfigureComponents()
@@ -37,24 +36,42 @@ public class gameManager : MonoBehaviour
         animationManager = this.gameObject.AddComponent<animationManager>();
         animationManager.GemFallingSpeed = boardManager.board.gemFallingSpeed;
         inputManager.AnimationManager = animationManager;
+        countDownScript = GameObject.Find("CountDownText").GetComponent<CountDownScript>();
     }
     private void Update()   //Main game loop
     {
-        UpdateBoard();
-        moveMade = AcceptInput();
+        if (!gameOver)
+        {
+            UpdateBoard();
+            UpdateTurnCount(AcceptInput());
+            gameOver = CheckGameOver();
+        }
     }
     void UpdateBoard()
     {
             boardManager.UpdateComboableSquares();
             if (boardManager.Board.DetectComboableSquares())
                 boardManager.DestroyComboableSquares();
-            animationManager.PlayFallingAnimations(boardManager.GetFallingGemsList());
-            if (moveMade)
-            {
-                //StartCoroutine(UpdateScore());
-                //subtract turn
-                countDownScript.SetTurns(-1);
-            }
+            animationManager.PlayFallingAnimations(boardManager.GetFallingGemsList());            
+    }
+    void UpdateTurnCount(bool inputDetected)
+    {
+        if (inputDetected)
+        {
+            countDownScript.SetTurns(-1);
+        }
+    }
+    bool CheckGameOver()
+    {
+        //ending the game
+        if (countDownScript.Turns == 0 || countDownScript.CountDowTimer == 0)
+        {
+            ManageScore ms = GameObject.Find("Canvas").GetComponent<ManageScore>();
+            if (ms != null)
+                ms.results.SetActive(true);//enabling the gameobject, reults, which ultimately ends the game
+            return true;
+        }
+        return false;
     }
     bool AcceptInput()
     {
@@ -63,13 +80,7 @@ public class gameManager : MonoBehaviour
             boardSquare square = inputManager.GetInput();
             if (square != null)
             {
-                //ending the game
-                if (countDownScript.Turns == 0 || countDownScript.CountDowTimer == 0)
-                {
-                    ManageScore ms = GameObject.Find("Canvas").GetComponent<ManageScore>();
-                    ms.results.SetActive(true);//enabling the gameobject, reults, which ultimately ends the game
-                    return false;
-                }
+                Debug.Log("Trying to boom");   
                 square.DestroyGem(false);
                 return true;
             }

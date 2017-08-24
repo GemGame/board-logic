@@ -8,7 +8,7 @@ public class boardSquare : MonoBehaviour
 {
     //Public Variables
     public bool isStaticSquare = false;
-    public GameObject gemPrefab;
+    public Object gemPrefab;
     public int gemX, gemY;
 
     //Private
@@ -90,11 +90,11 @@ public class boardSquare : MonoBehaviour
         if (gemScript.UpgradedPrefab != null)
         {
             StartCoroutine(gemScript.DestroyGem(true));
-            //if (gemScript.basePrefab == null) Debug.Log("Base Prefab Null");
+            if (gemScript.basePrefab == null) Debug.Log("Base Prefab Null");
             if (gemScript.UpgradedPrefab == null) Debug.Log("Upgraded Prefab Null");
             Gem = gemScript.SpawnGemCopy(this.transform, gemScript.UpgradedPrefab, gemScript.basePrefab);
             if (Gem)
-                gemScript.SetGemProperties(this.transform.position, gem);
+                gemScript.SetGemProperties(this.transform.position, gem, this.transform);
         }
     }
     public void DestroyGem(bool isCombo)

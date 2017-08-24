@@ -4,6 +4,7 @@
 //A board is a pretty public thing
 using UnityEngine;
 
+
 public struct boardStruct   //Retrieves all board square arrays
 {
     //Intended to be designed out to hold all relevant data about a board without having to pass methods as well
@@ -38,6 +39,7 @@ public struct boardStruct   //Retrieves all board square arrays
         set { rightStructCoreSquare = value; }
     }
 }
+[System.Serializable]
 public class board : MonoBehaviour
 {
 
@@ -278,11 +280,13 @@ public class board : MonoBehaviour
         if (square.Gem == null && !square.Occupied)
         {
             square.gemPrefab = gems.GetRandomGem(square.transform);
+            Object baseGemPrefab = gems.ReturnMatchingPrefab(square.gemPrefab);
             if (square.gemPrefab != null)
             {
-                square.Gem = square.gemPrefab.GetComponent<baseGem>().SpawnGemCopy(square.transform, square.gemPrefab, square.gemPrefab);
+                square.Gem = Instantiate((GameObject)square.gemPrefab, square.transform.position, square.transform.rotation, square.transform);//square.gemPrefab.GetComponent<baseGem>().SpawnGemCopy(square.transform, square.gemPrefab, baseGemPrefab);
+                square.GemScript.basePrefab = baseGemPrefab;
                 square.Gem.name = "Gem[" + x + ", " + y + "]";
-                square.GemScript.SetGemProperties(new Vector3(x, y, 0), square.Gem);
+                square.GemScript.SetGemProperties(new Vector3(x, y, 0), square.Gem, square.transform);
                 square.Occupied = true;
             }
         }

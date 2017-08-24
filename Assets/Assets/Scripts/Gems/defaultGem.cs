@@ -14,7 +14,7 @@ public class defaultGem : baseGem {
     {
         //Debug.Log("PreDestroy()");
         //StartCoroutine(WaitTime());
-        if (Application.isPlaying)  //Not in editor mode
+        if (Application.isPlaying && Time.time > 1.0f)  //Not in editor mode
         {
             GameObject clone = explosionPrefab;
             Destroy(Instantiate(clone, transform.position, transform.rotation), 1);
@@ -35,12 +35,7 @@ public class defaultGem : baseGem {
         catch
         {
 
-        }
-
-
-            ;
-
-        //Debug.Log("PostDestroy()");
+        }  
     }
 
     public override void UpgradeGem()

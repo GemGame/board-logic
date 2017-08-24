@@ -11,8 +11,8 @@ public class inputManager : MonoBehaviour
     bool editMode = false;
     bool windows = false;
     bool android = false;
-    bool iPhone = false;
-    bool osx = false;
+    //bool iPhone = false;
+    //bool osx = false;
 
     //Properties
     public animationManager AnimationManager { set { animationManager = value; } }
@@ -22,10 +22,10 @@ public class inputManager : MonoBehaviour
     {
 #if UNITY_EDITOR
         editMode = true;
-#elif UNITY_IPHONE
-            iPhone = true;
-#elif UNITY_STANDALONE_OSX
-            osx = true;
+//#elif UNITY_IPHONE
+//            iPhone = true;
+//#elif UNITY_STANDALONE_OSX
+//            osx = true;
 #elif UNITY_STANDALONE_WIN
             windows = true;
 #elif UNITY_ANDROID
@@ -73,7 +73,7 @@ public class inputManager : MonoBehaviour
         }
         return null;
     }
-    boardSquare GetSquareOnClick()  //Win / Editor
+    boardSquare GetSquareOnClick()  //Windows & Editor
     {
         if (Input.GetMouseButtonUp(0) && !animationManager.CheckAnimationsPlaying())
         {
