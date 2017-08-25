@@ -38,11 +38,13 @@ public class ResultsScript : MonoBehaviour {
     }
     IEnumerator Display()
     {
-        float temp = Time.timeSinceLevelLoad;
+        float temp = Time.time - manageScoreScript.gameLength;
+        print(Time.time);
+        print(manageScoreScript.gameLength);
+        print(Time.time - manageScoreScript.gameLength);
         if (temp >= 3600)
             temp = 3600;
         string format = (temp / 60).ToString("00") + ":" + (temp % 60).ToString("00");
-
         while (isWaiting)
             yield return null;
         yield return new WaitForSecondsRealtime(3f);
@@ -62,13 +64,13 @@ public class ResultsScript : MonoBehaviour {
 
         infoText.text = "	Quests Completed " + manageScoreScript.completedGoals + "/" + manageScoreScript.totalGoals + "\r\n"
             + "\r\n"
+            + "Game: "+manageScoreScript.gameRules + "\r\n"
             + "Difficulty: " + PauseMenus.difficulty + "\r\n"
             + "Stars Earned: " + "2" + "\r\n"
             + "Total Stars: " + "6" + "\r\n"
             + "Highest Combo: " + manageScoreScript.combos + "\r\n"
             + "Largest Streak: " + manageScoreScript.streaks + "\r\n"
             + "Total Time: " + format + "\r\n"
-            + "\r\n"
             + "\r\n"
             + "		Score: " + manageScoreScript.score.ToString("n0") + " Points"+"\r\n";
         //myText.text = string.Format("{0}.{1}", countDownTimer, (int)miliSeconds);

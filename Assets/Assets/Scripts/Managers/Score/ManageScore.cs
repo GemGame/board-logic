@@ -7,9 +7,11 @@ public class ManageScore : MonoBehaviour {
     public GameType gameType;
     public enum GameRules { TimeAttack, TurnBase };
     public GameRules gameRules;
-    int gameLength = 0;//length of game
+    [HideInInspector]
+    public float gameLength = 0;//length of game
     public int countDownTime = 60;//length of game
-    public int PlayerTurns = 8;//current turns for player
+    [HideInInspector]
+    public int PlayerTurns = 1;//current turns for player
     public int startingTurns = 8;//the startig turns for player
 
     public int score = 0;
@@ -35,5 +37,6 @@ public class ManageScore : MonoBehaviour {
     {
         ResultsScript.isGameOver = false;
         PlayerTurns = startingTurns;
+        gameLength = Time.time;
     }
 }

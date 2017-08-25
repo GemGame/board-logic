@@ -16,7 +16,7 @@ public class CountDownScript : MonoBehaviour {
         get { return manageScore.PlayerTurns; }
     }
     float miliSeconds;
-    [Range (.02f,10f)]
+    [Range (.0165f,10f)]
     public float countDownRate;
     [SerializeField]
     Text myTitle; //the title above the text. For example, in time attack,"Time" will be written above the countdown timer.
@@ -45,6 +45,7 @@ public class CountDownScript : MonoBehaviour {
     GameObject menu;
     [SerializeField]
     ManageScore manageScore;
+
 
 
     private void Start()
@@ -80,8 +81,8 @@ public class CountDownScript : MonoBehaviour {
                 miliSeconds -= 1;
             else if (miliSeconds <= 0 && countDownTimer > 0)
             {
-                miliSeconds = 10f;
-                countDownTimer -= 1;
+                miliSeconds = 60f;
+                countDownTimer--;
                 if (countDownTimer > 10)
                     gameObject.GetComponent<Animator>().Play("Subtract", 0, 0);
                 else

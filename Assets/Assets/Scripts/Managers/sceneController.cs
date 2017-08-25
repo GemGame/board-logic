@@ -12,7 +12,13 @@ public class sceneController : MonoBehaviour
     // Use this for initialization
     void Awake()    //Keep all scenes
     {
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(this);
+        //checking to see if more than one instace exist. If so, we destroy it. -Koester
+        if (FindObjectsOfType(GetType()).Length > 1)
+        {
+            Destroy(gameObject);
+        }
+        //DontDestroyOnLoad(this.gameObject);
     }
 
     // Update is called once per frame

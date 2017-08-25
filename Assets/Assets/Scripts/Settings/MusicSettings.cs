@@ -24,7 +24,6 @@ public class MusicSettings : MonoBehaviour {
     }
 	public static IEnumerator TurnOffMusic()
     {
-        print("yes");
         while (au.volume > 0)
         {
             yield return new WaitForSeconds(.1f);

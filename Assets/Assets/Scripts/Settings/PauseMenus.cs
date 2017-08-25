@@ -63,7 +63,7 @@ public class PauseMenus : MonoBehaviour {
         curMenu = CurMenu.Pause;
         //just to avoid any null references for the static variable, we're going to find the audio source
         _audio = gameObject.GetComponent<AudioSource>();
-        AudioSource music = GameObject.Find("Audio Manager/Music").GetComponent<AudioSource>();
+        AudioSource music = GameObject.Find("AudioManager/Music").GetComponent<AudioSource>();
         MusicScript.auSource = music;
 
         //setting defaults
@@ -355,13 +355,14 @@ public class PauseMenus : MonoBehaviour {
             }
         }
     }
+    //this is the mouse hovering over the UI menu buttons for the in-game HUD
     public void MainMenuOn()
-    {
+    {//this is when the mosue hovers over
         Transform t = GameObject.Find("Canvas/HUDButtons/PauseButton").GetComponent<Transform>();
         t.transform.localScale = new Vector3(1.05f, 1.05f, 1.05f);
     }
     public void MainMenuOff()
-    {
+    {//this is when the mouse hovers off
         Transform t = GameObject.Find("Canvas/HUDButtons/PauseButton").GetComponent<Transform>();
         t.transform.localScale = new Vector3(1, 1, 1);
     }
