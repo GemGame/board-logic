@@ -15,6 +15,6 @@ public class gemUpgrade
     public gemUpgrade(int combo, int reward)
     {
         comboCount = combo;
-        gemReward = reward;
+        gemReward = reward;     
     }
 }

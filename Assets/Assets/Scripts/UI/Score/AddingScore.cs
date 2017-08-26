@@ -15,6 +15,8 @@ public class AddingScore : MonoBehaviour
     [SerializeField]
     AudioClip taDa;
     [SerializeField]
+    AudioClip collectSound;
+    [SerializeField]
     Animator scoreBar;
     [SerializeField]
     Animator scoreBarText;
@@ -242,6 +244,7 @@ public class AddingScore : MonoBehaviour
                 Debug.LogError("Unrecognizable color. Be sure you're not using any capitalization.");
                 break;
         }
+        au.PlayOneShot(collectSound,PauseMenus.SFXvolume);
     }
 }
 

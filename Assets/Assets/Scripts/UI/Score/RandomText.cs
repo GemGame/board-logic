@@ -16,7 +16,6 @@ public class RandomText : MonoBehaviour {
     {
 
         int temp = Random.Range(0, 3);
-        print(temp + " " + message);
         switch (temp)
         {
             default:
