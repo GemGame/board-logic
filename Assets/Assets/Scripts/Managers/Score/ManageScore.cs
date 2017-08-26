@@ -23,13 +23,16 @@ public class ManageScore : MonoBehaviour {
 
     public static int highestScore = 2428;
 
+    [HideInInspector]
     public int completedGoals;
     public int totalGoals;
-    public int destroyedTopaz = 0;
-    public int destroyedRuby = 0;
-    public int destroyedEmerald = 0;
-    public int destroyedsaphire = 0;
-    public int destroyedAmethyst = 0;
+    public int totalYellow = 0;
+    public int totalRed = 0;
+    public int totalGreen = 0;
+    public int totalOrange = 0;
+    public int totalPurple = 0;
+    public int totalBlue = 0;
+    public int totalTeal = 0;
 
     public GameObject results;
 

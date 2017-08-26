@@ -27,6 +27,7 @@ public class boardManager : MonoBehaviour
     int tempScore = 0;
     GameObject boardGO;
     List<List<boardSquare>> moveList = new List<List<boardSquare>>();
+    RandomText randomText;
 
     //Properties
     //public int TempScore { get { return tempScore; } set { tempScore = value; } }
@@ -36,6 +37,7 @@ public class boardManager : MonoBehaviour
     //Methods
     private void Start()
     {
+        randomText = GameObject.Find("RandomText").GetComponent<RandomText>();
         SetUpDefaultUpgrades();
         if (Application.isPlaying)
             countDownScript = GameObject.Find("CountDownText").GetComponent<CountDownScript>();
@@ -133,13 +135,62 @@ public class boardManager : MonoBehaviour
             //add seconds if the score that is earned is high enough
             if (tempScore > 500)
             {
-                countDownScript.AddTime((int)(tempScore / 100));
+                countDownScript.AddTime((int)(tempScore / 500));
+            }
+            //here we are going to randomize the text based on what score the player got, afterwards we will return a random, rewarding message for the player
+            //-Koester
+            int random = (Random.Range(0, 4));
+            if (tempScore > 2000)
+            {
+                switch (random)
+                {
+                    default:
+                        randomText.Cogratulate("Excellent!");
+                        break;
+                    case 1:
+                        randomText.Cogratulate("Outstanding!");
+                        break;
+                    case 2:
+                        randomText.Cogratulate("Awesome!");
+                        break;
+                }
+            }
+            else if (tempScore > 1000)
+            {
+                switch (random)
+                {
+                    default:
+                        randomText.Cogratulate("Nice!");
+                        break;
+                    case 1:
+                        randomText.Cogratulate("Awesome!");
+                        break;
+                    case 2:
+                        randomText.Cogratulate("Kudos!");
+                        break;
+                }
+            }
+            else
+            {
+                switch (random)
+                {
+                    default:
+                        randomText.Cogratulate("Good!");
+                        break;
+                    case 1:
+                        randomText.Cogratulate("Not too Shabby!");
+                        break;
+                    case 2:
+                        randomText.Cogratulate("Not bad!");
+                        break;
+                }
             }
             GameObject.Find("Score").GetComponent<AddingScore>().AddScore(tempScore);
             tempScore = 0;
         }
-
     }
+
+
     bool MoveAnimationEnded(List<boardSquare> move)
     {
         foreach (boardSquare bs in move)

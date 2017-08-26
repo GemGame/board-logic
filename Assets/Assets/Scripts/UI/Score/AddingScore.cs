@@ -23,6 +23,36 @@ public class AddingScore : MonoBehaviour
     [SerializeField]
     ResultsScript resultScript;
 
+    //gem collections
+    [Header("Gem Collections")]
+    [SerializeField]
+    Animator redImage;
+    [SerializeField]
+    Text redText;
+    [SerializeField]
+    Animator blueImage;
+    [SerializeField]
+    Text blueText;
+    [SerializeField]
+    Animator tealImage;
+    [SerializeField]
+    Text tealText;
+    [SerializeField]
+    Animator yellowImage;
+    [SerializeField]
+    Text yellowText;
+    [SerializeField]
+    Animator greenImage;
+    [SerializeField]
+    Text greenText;
+    //streaks
+    [Header("Streaks")]
+    [SerializeField]
+    Text streakText;
+    [SerializeField]
+    Animator streakAnim;
+
+    [Header("Goals Text")]
     [SerializeField]
     Text goal1;
     [SerializeField]
@@ -45,6 +75,11 @@ public class AddingScore : MonoBehaviour
         goal1.text = manageScoreScript.goal1.ToString("n0");
         goal2.text = manageScoreScript.goal2.ToString("n0");
         goal3.text = manageScoreScript.goal3.ToString("n0");
+
+
+
+        //Streak(5);
+        // AddGem("blue", 1);
     }
     public void AddScore(int score)
     {
@@ -135,11 +170,15 @@ public class AddingScore : MonoBehaviour
                 goal3.gameObject.GetComponent<Outline>().enabled = true;
                 goal3.gameObject.GetComponent<Animator>().Play("GoalHit", 0, 0);
                 goal3Reached = true;
-                au.PlayOneShot(taDa, PauseMenus.SFXvolume*.2f);
+                au.PlayOneShot(taDa, PauseMenus.SFXvolume * .2f);
             }
             myScore.text = "Score: " + manageScoreScript.score.ToString("n0").Replace(manageScoreScript.score.ToString("n0"), "<color=#C5FFC3FF>" + manageScoreScript.score.ToString("n0") + "</color>");
             ScoreBar.UpdateBar();
             yield return new WaitForSeconds(.016f);
+            //ending the game -Koester
+            //if (manageScoreScript.PlayerTurns == 0 || manageScoreScript.countDownTime == 0)
+            //     manageScoreScript.results.SetActive(true);//enabling the gameobject, reults, which ultimately ends the game -Koester
+
         }
         if (playAnim)
         {
@@ -152,6 +191,57 @@ public class AddingScore : MonoBehaviour
             playAnim = false;
         }
         resultScript.isWaiting = false;
+    }
+
+    public void Streak(int streakNumber)
+    {
+        streakAnim.Play("Streaks",0,0);
+        streakText.text = "x"+streakNumber.ToString()+" Streak";
+    }
+
+    public void AddGem(string color,int value)
+    {
+        switch(color)
+        {
+            case "red":
+                redImage.Play("AddGem",0,0);
+                manageScoreScript.totalRed += value;
+                redText.text = "x" + manageScoreScript.totalRed.ToString();
+                break;
+            case "blue":
+                blueImage.Play("AddGem", 0, 0);
+                manageScoreScript.totalBlue += value;
+                blueText.text = "x" + manageScoreScript.totalBlue.ToString();
+                break;
+            case "teal":
+                tealImage.Play("AddGem", 0, 0);
+                manageScoreScript.totalTeal += value;
+                tealText.text = "x" + manageScoreScript.totalTeal.ToString();
+                break;
+            //case "orange":
+            //    orangeImage.Play("AddGem",0,0);
+            //    manageScoreScript.totalOrage += value;
+            //    orangeText.text = "x"+manageScoreScript.totalOrange.ToString();
+            //    break;
+            case "yellow":
+                yellowImage.Play("AddGem", 0, 0);
+                manageScoreScript.totalYellow += value;
+                yellowText.text = "x" + manageScoreScript.totalYellow.ToString();
+                break;
+            case "green":
+                greenImage.Play("AddGem", 0, 0);
+                manageScoreScript.totalGreen += value;
+                greenText.text = "x"+manageScoreScript.totalGreen.ToString();
+                break;
+            //case "purple":
+            //    purpleImage.Play("AddGem",0,0);
+            //    manageScoreScript.totalPurple += value;
+            //    redText.text = "x"+manageScoreScript.totalPurple.ToString();
+            //    break;
+            default:
+                Debug.LogError("Unrecognizable color. Be sure you're not using any capitalization.");
+                break;
+        }
     }
 }
 

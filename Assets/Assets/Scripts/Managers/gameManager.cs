@@ -61,14 +61,14 @@ public class gameManager : MonoBehaviour
             countDownScript.SetTurns(-1);
         }
     }
-    bool CheckGameOver()
+    public bool CheckGameOver()
     {
-        //ending the game
+        //ending the game -Koester
         if (countDownScript.Turns == 0 || countDownScript.CountDowTimer == 0)
         {
             ManageScore ms = GameObject.Find("Canvas").GetComponent<ManageScore>();
             if (ms != null)
-                ms.results.SetActive(true);//enabling the gameobject, reults, which ultimately ends the game
+                ms.results.SetActive(true);//enabling the gameobject, reults, which ultimately ends the game -Koester
             return true;
         }
         return false;

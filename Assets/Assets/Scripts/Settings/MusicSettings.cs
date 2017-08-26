@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MusicSettings : MonoBehaviour {
     static AudioSource au;
+    public static bool isTuning;
 	// Use this for initialization
 	void Start () {
         au = gameObject.GetComponent<AudioSource>();
@@ -24,7 +25,7 @@ public class MusicSettings : MonoBehaviour {
     }
 	public static IEnumerator TurnOffMusic()
     {
-        while (au.volume > 0)
+        while (au != null && au.volume > 0)
         {
             yield return new WaitForSeconds(.1f);
             au.volume -= .01f;
@@ -33,7 +34,7 @@ public class MusicSettings : MonoBehaviour {
 
     public static IEnumerator TurnOnMusic()
     {
-        while (au.volume < PauseMenus.BGMvolume)
+        while (au != null && au.volume < PauseMenus.BGMvolume)
         {
             yield return new WaitForSeconds(.1f);
             au.volume += .01f;

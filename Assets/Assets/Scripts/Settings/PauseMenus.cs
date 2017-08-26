@@ -242,6 +242,15 @@ public class PauseMenus : MonoBehaviour {
             StartCoroutine(Resetting());
         }
     }
+
+    public void LoadMainMenu()
+    {
+        gamePaused = false;
+        Animator effect = GameObject.Find("Canvas/ScreenEffect").GetComponent<Animator>();
+        effect.Play("TransitionOut");
+        StartCoroutine(FadeOut(1f));
+    }
+
     IEnumerator Resetting()
     {
         yield return new WaitForSecondsRealtime(1f);
@@ -639,7 +648,7 @@ public class PauseMenus : MonoBehaviour {
     IEnumerator QuitTime(float wait)
     {
         float start = Time.realtimeSinceStartup;
-        while (Time.realtimeSinceStartup < start + wait)
+        while ((Time.realtimeSinceStartup < start + wait))
         {
             yield return null;
         }
