@@ -38,7 +38,7 @@ public class boardManager : MonoBehaviour
     //Methods
     private void Start()
     {
-        randomText = gameObject.AddComponent<RandomText>();
+        randomText = gameObject.AddComponent<RandomText>(); //goig to just set this up at the start of the game -Koester
         SetUpDefaultUpgrades();
         if (Application.isPlaying)
             countDownScript = GameObject.Find("CountDownText").GetComponent<CountDownScript>();

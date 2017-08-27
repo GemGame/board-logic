@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gem Quest", "Gem Quest.csproj", "{EE96B359-98EF-F98C-61A7-C7395E313E9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gem Quest.Editor", "Gem Quest.Editor.csproj", "{6938653F-EE2F-CD07-69CA-CDD7C0402739}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EE96B359-98EF-F98C-61A7-C7395E313E9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE96B359-98EF-F98C-61A7-C7395E313E9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE96B359-98EF-F98C-61A7-C7395E313E9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE96B359-98EF-F98C-61A7-C7395E313E9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6938653F-EE2F-CD07-69CA-CDD7C0402739}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6938653F-EE2F-CD07-69CA-CDD7C0402739}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6938653F-EE2F-CD07-69CA-CDD7C0402739}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6938653F-EE2F-CD07-69CA-CDD7C0402739}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

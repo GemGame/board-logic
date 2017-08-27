@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 public class RandomTextGenerator {
 
-    string[] randomStatements = { "Excellent", "Outstanding", "Awesome", "Kudos" };
+    string[] randomStatements = { "Not too shabby!", "Not bad!", "Looking Good!", "Alright!", "Keep at it!", //poor combo score
+            "Great!", "Nice!", "Well Done!", "Wow!", "Kudos!", "Awesome!", //decent combo score
+            "Excellent!", "Outstanding!", "Astonishing!", "Amazing!", "Marvelous!", "Unbelievable!" }; //great combo score
+
 	public RandomTextGenerator()
     {
 
