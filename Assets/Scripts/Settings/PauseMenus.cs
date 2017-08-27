@@ -251,11 +251,19 @@ public class PauseMenus : MonoBehaviour {
         StartCoroutine(FadeOut(1f));
     }
 
-    IEnumerator Resetting()
+    IEnumerator Resetting() //Reload delays belong in the scene controller. Then this probably can just be a method - CC
     {
+        yield return null;
+        ScreenEffect.resetLevel = true;
+        Debug.Log("Preload");
+        sceneController sc = GameObject.Find("SceneManager").GetComponent<sceneController>();
+        StartCoroutine(sc.PrepareAndLoadCurrentScene());
+        Debug.Log("Postload");
+        /*
         yield return new WaitForSecondsRealtime(1f);
         ScreenEffect.resetLevel = true;
         SceneManager.LoadScene("Level01");
+        */
     }
 
     //sends the player to the audio options
@@ -652,7 +660,8 @@ public class PauseMenus : MonoBehaviour {
         {
             yield return null;
         }
-        SceneManager.LoadScene("MainLobby");
+        sceneController sc = GameObject.Find("SceneManager").GetComponent<sceneController>();
+        StartCoroutine(sc.PrepareAndLoadMainMenu());
     }
 
     IEnumerator WaitTime(float wait, string anim)

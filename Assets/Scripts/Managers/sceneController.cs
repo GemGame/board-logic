@@ -17,17 +17,29 @@ public class sceneController : MonoBehaviour
     {
         if (freshScene && !IsStartingScene())
         {
-            Debug.Log("Attempting to load scene " + GetNextScene(GetCurrentSceneIndex()));
-            PrepareNextSceneAsync();
+            //Debug.Log("Attempting to load scene " + GetNextScene(GetCurrentSceneIndex()));
+            //PrepareNextSceneAsync();
         }
         else if(Input.GetKeyDown(KeyCode.Space))    //No loading when it hasn't had the chance to prep
         {
-            Debug.Log(TryLoadPreparedScene());
-            freshScene = true;
+            //Debug.Log(TryLoadPreparedScene());
+            //freshScene = true;
         }
     }
 
     //Public Controls -- Make Sure to prepare a scene before loading
+    public IEnumerator PrepareAndLoadCurrentScene()
+    {
+        if (!sceneCurrentlyLoading)
+        {
+            PrepareCurrentLevelAsynch();
+        }
+
+        while (!TryLoadPreparedScene())
+        {
+            yield return null;
+        }
+    }
     public IEnumerator PrepareAndLoadNextScene(bool arcadeMode)
     {
 
@@ -50,6 +62,17 @@ public class sceneController : MonoBehaviour
             }
         }
         yield return null;// new WaitForSeconds(3.0f);  //Can insert wait for seconds to leave a load screen up for example
+        while (!TryLoadPreparedScene())
+        {
+            yield return null;
+        }
+    }
+    public IEnumerator PrepareAndLoadMainMenu()
+    {
+        if (!sceneCurrentlyLoading)
+        {
+            PrepareMainMenuAsynch();
+        }
         while (!TryLoadPreparedScene())
         {
             yield return null;

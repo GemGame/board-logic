@@ -3,6 +3,7 @@
 //The master manager through which all other managers are interacted with. 
 //Contains the main game loop & controls the flow / updating of the game
 using UnityEngine;
+using System.Collections;
 
 [System.Serializable]
 public class gameManager : MonoBehaviour
@@ -50,6 +51,11 @@ public class gameManager : MonoBehaviour
             UpdateBoard();
             //Display Game Over Here
         }
+    }
+    IEnumerator DelayedSceneChange(float timeDelay)
+    {
+        yield return new WaitForSeconds(timeDelay);
+        GameObject.Find("SceneManager").GetComponent<sceneController>().TryLoadPreparedScene();
     }
     void UpdateBoard()
     {

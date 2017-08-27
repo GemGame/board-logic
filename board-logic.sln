@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "board-logic", "board-logic.csproj", "{EB984005-BA8F-6E90-DC28-7C02783EF32A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "board-logic.Editor", "board-logic.Editor.csproj", "{FC8A222B-E582-44D6-EBB0-B0BE813E8E41}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB984005-BA8F-6E90-DC28-7C02783EF32A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB984005-BA8F-6E90-DC28-7C02783EF32A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB984005-BA8F-6E90-DC28-7C02783EF32A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB984005-BA8F-6E90-DC28-7C02783EF32A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC8A222B-E582-44D6-EBB0-B0BE813E8E41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC8A222B-E582-44D6-EBB0-B0BE813E8E41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC8A222B-E582-44D6-EBB0-B0BE813E8E41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC8A222B-E582-44D6-EBB0-B0BE813E8E41}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
