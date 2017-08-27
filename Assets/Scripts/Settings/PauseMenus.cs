@@ -254,11 +254,12 @@ public class PauseMenus : MonoBehaviour {
     IEnumerator Resetting() //Reload delays belong in the scene controller. Then this probably can just be a method - CC
     {
         yield return null;
+        yield return new WaitForSecondsRealtime(1f);
         ScreenEffect.resetLevel = true;
-        Debug.Log("Preload");
+        //Debug.Log("Preload");
         sceneController sc = GameObject.Find("SceneManager").GetComponent<sceneController>();
         StartCoroutine(sc.PrepareAndLoadCurrentScene());
-        Debug.Log("Postload");
+        //Debug.Log("Postload");
         /*
         yield return new WaitForSecondsRealtime(1f);
         ScreenEffect.resetLevel = true;
