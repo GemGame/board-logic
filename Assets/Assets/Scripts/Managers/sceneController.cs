@@ -7,26 +7,17 @@ public class sceneController : MonoBehaviour
     public int scenesUntilFirstLevel = 1;
     AsyncOperation ao;
     bool sceneCurrentlyLoading = false;    
-    public bool freshScene = true;
-    public int currentScene = 0;
-    // Use this for initialization
-    void Awake()    //Keep all scenes
+    bool freshScene = true;
+    
+    void Awake()
     {
-        DontDestroyOnLoad(this);
-        //checking to see if more than one instace exist. If so, we destroy it. -Koester
-        if (FindObjectsOfType(GetType()).Length > 1)
-        {
-            Destroy(gameObject);
-        }
-        //DontDestroyOnLoad(this.gameObject);
-    }
-
-    // Update is called once per frame
+        DisableDestroyOnLoad();
+    }   
     void Update()
     {
-        if (freshScene)
+        if (freshScene && !IsStartingScene())
         {
-            Debug.Log("Attempting to load scene " + GetNextScene());
+            Debug.Log("Attempting to load scene " + GetNextScene(GetCurrentSceneIndex()));
             PrepareNextSceneAsync();
         }
         else if(Input.GetKeyDown(KeyCode.Space))    //No loading when it hasn't had the chance to prep
@@ -36,13 +27,35 @@ public class sceneController : MonoBehaviour
         }
     }
 
-   
-    bool IsStartingScene()
+    //Public Controls -- Make Sure to prepare a scene before loading
+    public IEnumerator PrepareAndLoadNextScene(bool arcadeMode)
     {
-        if (SceneManager.GetActiveScene().buildIndex == 0) return true;
-        return false;
+
+        if (!sceneCurrentlyLoading)
+        {
+            if (!arcadeMode)
+            {
+                if (GetCurrentSceneIndex() < scenesUntilFirstLevel)
+                {
+                    PrepareFirstLevelAsynch();
+                }
+                else
+                {
+                    PrepareNextSceneAsync();
+                }
+            }
+            else 
+            {
+                PrepareNextSceneAsync();
+            }
+        }
+        yield return null;  //Can insert wait for seconds to leave a load screen up for example
+        while (!TryLoadPreparedScene())
+        {
+            yield return null;
+        }
     }
-    public bool TryLoadPreparedScene()
+    public bool TryLoadPreparedScene()  //Try to launch the background load
     {
         if (ao.progress == 0.9f)    //Async Operation Completed
         {
@@ -52,70 +65,109 @@ public class sceneController : MonoBehaviour
         }
         return false;
     }
-    void LoadSceneByName(string name)
-    {
-        SceneManager.LoadScene(name);
-    }
-    void LoadSceneByIndex(int sceneIndex)
-    {
-        SceneManager.LoadScene(sceneIndex);
-    }
-    public void LoadFirstLevel()
-    {
-        currentScene = scenesUntilFirstLevel;
-        freshScene = true;
-        SceneManager.LoadScene(currentScene);
-    }
-    void PrepareMainMenuAsynch()
-    {
-        if (!sceneCurrentlyLoading)
-        {
-            sceneCurrentlyLoading = true;
-            StartCoroutine(PrepareSceneAsync(0));
-        }
-    }
-    void PrepareRandomSceneFromMainMenu()
-    {
-        if (!sceneCurrentlyLoading)
-        {
-            if (IsStartingScene())
-            {
-                PrepareRandomAsyncScene();
-            }
-        }
-    }
     public void PrepareFirstLevelAsynch()
     {
         if (!sceneCurrentlyLoading)
         {
             sceneCurrentlyLoading = true;
             StartCoroutine(PrepareSceneAsync(scenesUntilFirstLevel));
-            currentScene = scenesUntilFirstLevel;
         }
-    } 
-    void PrepareNextSceneAsync()
+    }
+    public void PrepareCurrentLevelAsynch()
+    {
+        if (!sceneCurrentlyLoading)
+        {
+            sceneCurrentlyLoading = true;
+            StartCoroutine(PrepareSceneAsync(GetCurrentSceneIndex()));
+        }
+    }
+    public void LoadFirstLevel()    //Non asynch -- Called from main menu until level select set up
+    {
+        freshScene = true;
+        SceneManager.LoadScene(scenesUntilFirstLevel);
+    }    
+
+    //Scene Loading   
+    IEnumerator PrepareSceneAsync(int buildIndex)   //Background scene loader
+    {
+        yield return null;
+
+        ao = SceneManager.LoadSceneAsync(buildIndex);
+        ao.allowSceneActivation = false;
+        bool finished = false;
+        while (!ao.isDone)
+        {
+            // [0, 0.9] > [0, 1]
+            float progress = Mathf.Clamp01(ao.progress / 0.9f);
+            //Debug.Log("Loading progress: " + (progress * 100) + "%");
+
+            // Loading completed
+            if (ao.progress == 0.9f && !finished)
+            {
+                finished = true;
+                Debug.Log("Scene " + buildIndex + " Done Loading");
+                //ao.allowSceneActivation = true;                
+            }
+            yield return null;
+        }
+        sceneCurrentlyLoading = false;
+    }
+    void PrepareNextSceneAsync()    //Based off current scene index
     {
         freshScene = false;
-        currentScene = GetNextScene();
-        StartCoroutine(PrepareSceneAsync(currentScene));
+        StartCoroutine(PrepareSceneAsync(GetNextScene(GetCurrentSceneIndex())));
     }
-    
-    int GetNextScene()
+    void LoadSceneByName(string name)   //Non asynch
+    {
+        SceneManager.LoadScene(name);
+    }
+    void LoadSceneByIndex(int sceneIndex)   //Non asynch
+    {
+        SceneManager.LoadScene(sceneIndex);
+    }   
+
+    //Helper Methods
+    bool IsStartingScene()
+    {
+        if (SceneManager.GetActiveScene().buildIndex == 0) return true;
+        return false;
+    }
+    int GetNextScene(int currentScene)
     {
         const int defaultScene = 0;
         int numScenes = SceneManager.sceneCountInBuildSettings;
         int potentialNextScene = currentScene + 1;
-        
-        if (potentialNextScene < numScenes)
+
+        if (potentialNextScene < numScenes && potentialNextScene > scenesUntilFirstLevel)
         {
             return potentialNextScene;
         }
+        else if (potentialNextScene < scenesUntilFirstLevel)
+        {
+            return defaultScene + 1;
+        }
         else
         {
+            EnableDestroyOnLoad();
             return defaultScene;
         }
+    }    
+    int GetCurrentSceneIndex()
+    {
+        return SceneManager.GetActiveScene().buildIndex;
     }
-    void PrepareRandomAsyncScene()
+    void DisableDestroyOnLoad()
+    {
+        DontDestroyOnLoad(this);
+    }
+    void EnableDestroyOnLoad()
+    {
+        GameObject tempParent = new GameObject("Score Manager Time Bomb");
+        this.transform.SetParent(tempParent.transform);
+    }    
+
+    //Unused Methods
+    void PrepareRandomAsyncScene()  //Unused
     {
         int numScenes = SceneManager.sceneCountInBuildSettings;
         int rndLevelIndex = Random.Range(scenesUntilFirstLevel, numScenes);
@@ -126,28 +178,23 @@ public class sceneController : MonoBehaviour
             StartCoroutine(PrepareSceneAsync(rndLevelIndex));
         }
     }
-    IEnumerator PrepareSceneAsync(int buildIndex)
+    void PrepareMainMenuAsynch()    //Background load scene 0 -- Unused
     {
-        yield return null;
-
-        ao = SceneManager.LoadSceneAsync(buildIndex);
-        ao.allowSceneActivation = false;
-
-        while (!ao.isDone)
+        if (!sceneCurrentlyLoading)
         {
-            // [0, 0.9] > [0, 1]
-            float progress = Mathf.Clamp01(ao.progress / 0.9f);
-             //Debug.Log("Loading progress: " + (progress * 100) + "%");
-
-            // Loading completed
-            if (ao.progress == 0.9f)
-            {
-                 Debug.Log("Scene " + buildIndex + " Done Loading");
-                //ao.allowSceneActivation = true;
-            }
-            yield return null;
+            sceneCurrentlyLoading = true;
+            StartCoroutine(PrepareSceneAsync(0));
         }
-        sceneCurrentlyLoading = false;
     }
+    void PrepareRandomSceneFromMainMenu()   //Asynchronous -- Unused
+    {
+        if (!sceneCurrentlyLoading)
+        {
+            if (IsStartingScene())
+            {
+                PrepareRandomAsyncScene();
+            }
+        }
+    }    
 }
 

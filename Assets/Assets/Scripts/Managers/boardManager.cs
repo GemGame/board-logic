@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 
+[System.Serializable]
 public class boardManager : MonoBehaviour
 {
     //Public Variables   
@@ -37,7 +38,7 @@ public class boardManager : MonoBehaviour
     //Methods
     private void Start()
     {
-        randomText = GameObject.Find("RandomText").GetComponent<RandomText>();
+        randomText = gameObject.AddComponent<RandomText>();
         SetUpDefaultUpgrades();
         if (Application.isPlaying)
             countDownScript = GameObject.Find("CountDownText").GetComponent<CountDownScript>();
@@ -109,99 +110,7 @@ public class boardManager : MonoBehaviour
                 }
             }
         }
-    }
-    int AddMoveListValue(List<List<boardSquare>> moveList)
-    {
-        int totalScore = 0;
-        foreach (List<boardSquare> move in moveList)
-        {
-            foreach (boardSquare bs in move)
-            {
-                totalScore += bs.GemScript.value;
-            }
-        }
-        return totalScore;
-    }
-
-    IEnumerator UpdateScore()
-    {
-        while (board.HasEmptySquares)
-        {
-            yield return null;
-        }
-        yield return null;
-        if (tempScore > 0)
-        {
-            //add seconds if the score that is earned is high enough
-            if (tempScore > 500)
-            {
-                countDownScript.AddTime((int)(tempScore / 500));
-            }
-            //here we are going to randomize the text based on what score the player got, afterwards we will return a random, rewarding message for the player
-            //-Koester
-            int random = (Random.Range(0, 4));
-            if (tempScore > 2000)
-            {
-                switch (random)
-                {
-                    default:
-                        randomText.Cogratulate("Excellent!");
-                        break;
-                    case 1:
-                        randomText.Cogratulate("Outstanding!");
-                        break;
-                    case 2:
-                        randomText.Cogratulate("Awesome!");
-                        break;
-                }
-            }
-            else if (tempScore > 1000)
-            {
-                switch (random)
-                {
-                    default:
-                        randomText.Cogratulate("Nice!");
-                        break;
-                    case 1:
-                        randomText.Cogratulate("Awesome!");
-                        break;
-                    case 2:
-                        randomText.Cogratulate("Kudos!");
-                        break;
-                }
-            }
-            else
-            {
-                switch (random)
-                {
-                    default:
-                        randomText.Cogratulate("Good!");
-                        break;
-                    case 1:
-                        randomText.Cogratulate("Not too Shabby!");
-                        break;
-                    case 2:
-                        randomText.Cogratulate("Not bad!");
-                        break;
-                }
-            }
-            GameObject.Find("Score").GetComponent<AddingScore>().AddScore(tempScore);
-            tempScore = 0;
-        }
-    }
-
-
-    bool MoveAnimationEnded(List<boardSquare> move)
-    {
-        foreach (boardSquare bs in move)
-        {
-            if (bs.AnimPlaying)
-            {
-                return false;
-            }
-        }
-        return true;
-    }
+    }   
     public void DestroyComboableSquares()   //Runtime
     {
         OptimizeMoveList();
@@ -269,8 +178,7 @@ public class boardManager : MonoBehaviour
         {
             TryDestroyGem(bs, true);
         }
-    }
-   
+    }   
     public void DestroyAllSquares() //Untested
     {
         List<List<boardSquare>> tempMoveList = new List<List<boardSquare>>();
@@ -297,6 +205,51 @@ public class boardManager : MonoBehaviour
     {
         boardAnalyzer bA = new boardAnalyzer(board, currentDirection);
         return bA.RecurseToNextGem((int)square.transform.position.x, (int)square.transform.position.y, bA.DirectionX, bA.DirectionY);
+    }
+    int AddMoveListValue(List<List<boardSquare>> moveList)
+    {
+        int totalScore = 0;
+        foreach (List<boardSquare> move in moveList)
+        {
+            foreach (boardSquare bs in move)
+            {
+                totalScore += bs.GemScript.value;
+            }
+        }
+        return totalScore;
+    }
+    IEnumerator UpdateScore()
+    {
+        while (board.HasEmptySquares)
+        {
+            yield return null;
+        }
+        yield return null;
+        if (tempScore > 0)
+        {
+            //add seconds if the score that is earned is high enough
+            if (tempScore > 500)
+            {
+                countDownScript.AddTime((int)(tempScore / 500));
+            }
+            //here we are going to randomize the text based on what score the player got, afterwards we will return a random, rewarding message for the player
+            //-Koester
+            int random = (Random.Range(0, 4));
+            randomText.Congradulate();
+            GameObject.Find("Score").GetComponent<AddingScore>().AddScore(tempScore);
+            tempScore = 0;
+        }
+    }
+    bool MoveAnimationEnded(List<boardSquare> move)
+    {
+        foreach (boardSquare bs in move)
+        {
+            if (bs.AnimPlaying)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     //List Management -- I should make a list sort library for board games or at least another class

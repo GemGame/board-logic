@@ -220,7 +220,7 @@ public class BasicMenusScript : MonoBehaviour
         title.Play("Crumble", 0, 0);
         yield return new WaitForSecondsRealtime(2.5f);
         sceneController sc = GameObject.Find("SceneManager").GetComponent<sceneController>();
-        sc.LoadFirstLevel();
+        StartCoroutine(sc.PrepareAndLoadNextScene(false));
         //.PrepareFirstLevelAsynch();
         //sc.TryLoadPreparedScene();
     }
@@ -256,7 +256,7 @@ public class BasicMenusScript : MonoBehaviour
         title.Play("Break", 0, 0);
         yield return new WaitForSecondsRealtime(.5f);
         //SceneManager.LoadScene("ArcadeMode");
-        sc.TryLoadPreparedScene();
+        StartCoroutine(sc.PrepareAndLoadNextScene(true));
     }
 
     public void Credits()

@@ -16,7 +16,6 @@ public class gameManager : MonoBehaviour
     animationManager animationManager;
     bool moveMade = false;
     bool gameOver = false;
-    [SerializeField]
     CountDownScript countDownScript;
 
 
@@ -36,7 +35,7 @@ public class gameManager : MonoBehaviour
         animationManager = this.gameObject.AddComponent<animationManager>();
         animationManager.GemFallingSpeed = boardManager.board.gemFallingSpeed;
         inputManager.AnimationManager = animationManager;
-        countDownScript = GameObject.Find("CountDownText").GetComponent<CountDownScript>();
+        countDownScript = GameObject.FindGameObjectWithTag("CountDownText").GetComponent<CountDownScript>();
     }
     private void Update()   //Main game loop
     {
@@ -45,6 +44,11 @@ public class gameManager : MonoBehaviour
             UpdateBoard();
             UpdateTurnCount(AcceptInput());
             gameOver = CheckGameOver();
+        }
+        else
+        {
+            UpdateBoard();
+            //Display Game Over Here
         }
     }
     void UpdateBoard()
@@ -80,7 +84,7 @@ public class gameManager : MonoBehaviour
             boardSquare square = inputManager.GetInput();
             if (square != null)
             {
-                Debug.Log("Trying to boom");   
+                //Debug.Log("Trying to boom");   
                 square.DestroyGem(false);
                 return true;
             }

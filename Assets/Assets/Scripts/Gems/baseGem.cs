@@ -32,9 +32,9 @@ public abstract class baseGem : MonoBehaviour
 
 
     //Private Variables
-    [SerializeField]
+    [SerializeField, HideInInspector]
     public Object basePrefab;
-    [SerializeField]
+    [SerializeField, HideInInspector]
     GameObject gemGO;
 
     //Properties

@@ -12,18 +12,7 @@ public class defaultGem : baseGem {
 
     public override void PreDestroy()
     {
-        //Debug.Log("PreDestroy()");
-        //StartCoroutine(WaitTime());
-        if (Application.isPlaying && Time.time > 1.0f)  //Not in editor mode
-        {
-            GameObject clone = explosionPrefab;
-            Destroy(Instantiate(clone, transform.position, transform.rotation), 1);
-            floatingTextValue.text = "+" + value.ToString();
-            clone = floatingTextPrefab;
-            Instantiate(clone, transform.position, transform.rotation);
-            Destroy(gameObject);
-
-        }
+        PlayDestroyEffects();        
     }
 
     public override void PostDestroy()
@@ -38,6 +27,22 @@ public class defaultGem : baseGem {
         }  
     }
 
+    void PlayDestroyEffects()
+    {
+        if (Application.isPlaying && Time.time > 1.0f)  //Not in editor mode
+        {
+            Vector3 position = transform.position;
+            Quaternion rotation = transform.rotation;
+            Transform explosionParent = GameObject.FindGameObjectWithTag("Gem Pool").transform;
+            Transform floatingTextParent = this.gameObject.transform;
+            gemExplosion ge = gameObject.AddComponent<gemExplosion>();
+
+            ge.SpawnEffect(explosionPrefab, 1.0f, position, rotation, explosionParent);
+            floatingTextValue.text = "+" + value.ToString();
+            ge.SpawnEffect(floatingTextPrefab, 60.0f, position, rotation, floatingTextParent);
+            Destroy(gameObject);
+        }
+    }
     public override void UpgradeGem()
     {
         //Debug.Log("PostDestroy()");
