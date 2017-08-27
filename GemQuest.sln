@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GemQuest", "GemQuest.csproj", "{19A008F6-A278-C641-ACE5-B2F7350F3BE4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GemQuest.Editor", "GemQuest.Editor.csproj", "{8084F7CD-C27A-534D-B280-A50A98E01177}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19A008F6-A278-C641-ACE5-B2F7350F3BE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19A008F6-A278-C641-ACE5-B2F7350F3BE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19A008F6-A278-C641-ACE5-B2F7350F3BE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19A008F6-A278-C641-ACE5-B2F7350F3BE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8084F7CD-C27A-534D-B280-A50A98E01177}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8084F7CD-C27A-534D-B280-A50A98E01177}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8084F7CD-C27A-534D-B280-A50A98E01177}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8084F7CD-C27A-534D-B280-A50A98E01177}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
