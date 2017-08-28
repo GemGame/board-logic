@@ -65,7 +65,7 @@ public class ResultsScript : MonoBehaviour {
         infoText.text = "	Quests Completed " + manageScoreScript.completedGoals + "/" + manageScoreScript.totalGoals + "\r\n"
             + "\r\n"
             + "Game: "+manageScoreScript.gameRules + "\r\n"
-            + "Difficulty: " + PauseMenus.difficulty + "\r\n"
+            + "Difficulty: " + manageScoreScript.difficulty + "\r\n"
             + "Stars Earned: " + "2" + "\r\n"
             + "Total Stars: " + "6" + "\r\n"
             + "Highest Combo: " + manageScoreScript.combos + "\r\n"

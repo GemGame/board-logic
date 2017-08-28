@@ -14,6 +14,8 @@ public class boardSquare : MonoBehaviour
     //Private
     [SerializeField, HideInInspector]
     GameObject gem;
+    //[SerializeField, HideInInspector]
+    //GameObject slot;
     [SerializeField, HideInInspector]
     baseGem gemScript;
     bool comboable = false;

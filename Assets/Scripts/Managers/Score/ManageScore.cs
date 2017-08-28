@@ -13,6 +13,7 @@ public class ManageScore : MonoBehaviour {
     [HideInInspector]
     public int PlayerTurns = 1;//current turns for player
     public int startingTurns = 8;//the startig turns for player
+    public string difficulty;
 
     public int score = 0;
     public int goal1 = 4000;
@@ -41,5 +42,25 @@ public class ManageScore : MonoBehaviour {
         ResultsScript.isGameOver = false;
         PlayerTurns = startingTurns;
         gameLength = Time.time;
+        difficulty = PauseMenus.difficulty.ToString();
+
+        //setting game time and turns
+        if (gameType == GameType.Arcade)
+           // if(gameRules == GameRules.TimeAttack)
+                switch(PauseMenus.difficulty)
+                {
+                    case PauseMenus.Difficulty.Easy:
+                        countDownTime = 120;
+                        startingTurns = 16;
+                    break;
+                    case PauseMenus.Difficulty.Normal:
+                        countDownTime = 90;
+                        startingTurns = 12;
+                    break;
+                    case PauseMenus.Difficulty.Hard:
+                        countDownTime = 60;
+                        startingTurns = 8;
+                    break;
+                }
     }
 }
