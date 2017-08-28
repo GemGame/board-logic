@@ -134,8 +134,25 @@ public class board : MonoBehaviour
         SpawnRandomGem(square, x, y);
         square.gemX = x;
         square.gemY = y;
+
+        //****Koester's addition
+        if (y != 9 && y != -2 && x != 13 && x != -2)
+        {//making sure the squares aren't any of the four corners
+            AddSprite(sq);
+        }
+        //****Koester's addition
         return square;
     }
+
+    //**Koester's function for adding the sprites to the squares
+    void AddSprite(GameObject sq)
+    {//the function that adds the sprite to all squares (assuming they are not a part of the top, bottom, left, or right rows)
+        sq.AddComponent<SpriteRenderer>();//added this for the grid -Koester
+        SpriteRenderer mySprite = sq.GetComponent<SpriteRenderer>();
+        mySprite.sprite = Resources.Load<Sprite>("Art/Backgrounds/Gem Slots/1/Slot");
+        mySprite.sortingOrder = -1;//setting the layer to render behind the gems
+    }
+
     public void InitializeOuterRows()   //Outside core squares
     {
         //Width dependent
