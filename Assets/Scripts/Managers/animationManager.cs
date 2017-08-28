@@ -47,8 +47,7 @@ public class animationManager : MonoBehaviour
             StartCoroutine(DelayedGemFallingAnimation(square, squares.IndexOf(square), delay));
         }
     }
-
-   
+ 
     IEnumerator GemFallingAnimation(boardSquare square, int index)
     {
         if (square != null && square.Gem != null && !square.AnimPlaying)

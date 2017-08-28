@@ -28,7 +28,7 @@ public abstract class baseGem : MonoBehaviour
     [SerializeField]
     public AudioClip upgradeSound;
     [SerializeField]
-    public Animator mySprite;
+    public Animator mySprite; //on the prefab, this is disabled by default
 
 
     //Private Variables

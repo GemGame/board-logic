@@ -9,6 +9,8 @@ using UnityEngine.UI;
 
 [System.Serializable]
 public class defaultGem : baseGem {
+    //just a friendly reminder, the gem's animator is off by default. You must enable the animator, if you 
+    //want to animate a gem -Koester
 
     public override void PreDestroy()
     {

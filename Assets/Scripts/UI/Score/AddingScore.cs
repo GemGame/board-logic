@@ -96,6 +96,7 @@ public class AddingScore : MonoBehaviour
     //tallying up the score
     public IEnumerator Score()
     {
+        resultScript.isWaiting = true;
         if (manageScoreScript.score < manageScoreScript.goal3)
         {
             if (!playAnim)
