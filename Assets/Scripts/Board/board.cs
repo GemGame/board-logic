@@ -136,7 +136,7 @@ public class board : MonoBehaviour
         square.gemY = y;
 
         //****Koester's addition
-        if (y != 9 && y != -2 && x != 13 && x != -2)
+        if (y != 8 && y != -1 && x != 12 && x != -1)
         {//making sure the squares aren't any of the four corners
             AddSprite(sq);
         }
@@ -165,9 +165,9 @@ public class board : MonoBehaviour
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < rowCount; y++)
-            {
-                topSquares[x] = InitializeSquare(topSquares[x], x, y + height + offset, tSquaresGO);
-                bottomSquares[x] = InitializeSquare(bottomSquares[x], x, -y - 1 - offset, bSquaresGO);
+            {                                                                                       //Koester's modifications
+                topSquares[x] = InitializeSquare(topSquares[x], x, y + height, tSquaresGO); //originally (topSquares[x], x, y + height + offset, tSquaresGO);
+                bottomSquares[x] = InitializeSquare(bottomSquares[x], x, -y - 1, bSquaresGO); //originally (bottomSquares[x], x, -y - 1 - offset, bSquaresGO)
                 GameObject topGO = topSquares[x].Gem;
                 GameObject botGO = bottomSquares[x].Gem;
                 if (!showOuterGems && botGO && topGO)
@@ -184,9 +184,9 @@ public class board : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 // X & Y reversed
-                int leftIndex = y;//Get1DIndexFrom2D(x, y, width);
-                leftSquares[leftIndex] = InitializeSquare(leftSquares[leftIndex], -x - 1 - offset, y, lSquaresGO);
-                rightSquares[y] = InitializeSquare(rightSquares[y], x + width + offset, y, rSquaresGO);
+                int leftIndex = y;//Get1DIndexFrom2D(x, y, width);                                      //Koester's modifications
+                leftSquares[leftIndex] = InitializeSquare(leftSquares[leftIndex], -x - 1, y, lSquaresGO);//originally (leftSquares[leftIndex], -x - 1 - offset, y, lSquaresGO);
+                rightSquares[y] = InitializeSquare(rightSquares[y], x + width, y, rSquaresGO);//originally (rightSquares[y], x + width + offset, y, rSquaresGO);
                 GameObject leftGO = leftSquares[x].Gem;
                 GameObject rightGO = rightSquares[x].Gem;
                 if (!showOuterGems && leftGO && rightGO)
