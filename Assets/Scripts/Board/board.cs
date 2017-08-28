@@ -136,7 +136,7 @@ public class board : MonoBehaviour
         square.gemY = y;
 
         //****Koester's addition
-        if (y != 8 && y != -1 && x != 12 && x != -1)
+        if (y != height && y != -1 && x != width && x != -1)
         {//making sure the squares aren't any of the four corners
             AddSprite(sq);
         }
