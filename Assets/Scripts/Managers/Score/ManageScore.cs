@@ -26,7 +26,9 @@ public class ManageScore : MonoBehaviour {
 
     [HideInInspector]
     public int completedGoals;
-    public int totalGoals;
+    public int completedQuests;
+    public int totalQuest;
+    public static int totalStars;
     public int totalYellow = 0;
     public int totalRed = 0;
     public int totalGreen = 0;

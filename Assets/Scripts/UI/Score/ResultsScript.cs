@@ -6,11 +6,11 @@ using UnityEngine.UI;
 public class ResultsScript : MonoBehaviour {
     public static bool isGameOver;//this is set to true when game is over
     [SerializeField]
-    GameObject Star1;
+    Image Star1;
     [SerializeField]
-    GameObject Star2;
+    Image Star2;
     [SerializeField]
-    GameObject Star3;
+    Image Star3;
     [SerializeField]
     Text infoText;
     [SerializeField]
@@ -61,13 +61,27 @@ public class ResultsScript : MonoBehaviour {
                 levelCompletedText.text = "Level Complete";
             else
                 levelCompletedText.text = "Level Failed";
+        //setting the stars
+        if (manageScoreScript.score >= manageScoreScript.goal1)
+        {
+            Star1.sprite = Resources.Load<Sprite>("Art/Backgrounds/HUD/Images/Star");
+        }
+        if (manageScoreScript.score >= manageScoreScript.goal2)
+        {
+            Star2.sprite = Resources.Load<Sprite>("Art/Backgrounds/HUD/Images/Star");
+        }
+        if (manageScoreScript.score >= manageScoreScript.goal3)
+        {
+            Star3.sprite = Resources.Load<Sprite>("Art/Backgrounds/HUD/Images/Star");
+        }
 
-        infoText.text = "	Quests Completed " + manageScoreScript.completedGoals + "/" + manageScoreScript.totalGoals + "\r\n"
+
+        infoText.text = "	Quests Completed " + manageScoreScript.completedQuests + "/" + manageScoreScript.totalQuest + "\r\n"
             + "\r\n"
             + "Game: "+manageScoreScript.gameRules + "\r\n"
             + "Difficulty: " + manageScoreScript.difficulty + "\r\n"
-            + "Stars Earned: " + "2" + "\r\n"
-            + "Total Stars: " + "6" + "\r\n"
+            + "Stars Earned: " + manageScoreScript.completedGoals+ "/" +3 + "\r\n"
+            + "Total Stars: " + ManageScore.totalStars + "\r\n"
             + "Highest Combo: " + manageScoreScript.combos + "\r\n"
             + "Largest Streak: " + manageScoreScript.streaks + "\r\n"
             + "Total Time: " + format + "\r\n"

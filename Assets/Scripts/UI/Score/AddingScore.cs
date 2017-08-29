@@ -158,6 +158,7 @@ public class AddingScore : MonoBehaviour
                 goal1.gameObject.GetComponent<Animator>().Play("GoalHit", 0, 0);
                 goal1Reached = true;
                 au.PlayOneShot(taDa, PauseMenus.SFXvolume * .3f);
+                manageScoreScript.completedGoals++;
             }
             else if (manageScoreScript.score >= manageScoreScript.goal2 && !goal2Reached)
             {
@@ -166,6 +167,7 @@ public class AddingScore : MonoBehaviour
                 goal2.gameObject.GetComponent<Animator>().Play("GoalHit", 0, 0);
                 goal2Reached = true;
                 au.PlayOneShot(taDa, PauseMenus.SFXvolume * .3f);
+                manageScoreScript.completedGoals++;
             }
             else if (manageScoreScript.score >= manageScoreScript.goal3 && !goal3Reached)
             {
@@ -174,6 +176,7 @@ public class AddingScore : MonoBehaviour
                 goal3.gameObject.GetComponent<Animator>().Play("GoalHit", 0, 0);
                 goal3Reached = true;
                 au.PlayOneShot(taDa, PauseMenus.SFXvolume * .2f);
+                manageScoreScript.completedGoals++;
             }
             myScore.text = "Score: " + manageScoreScript.score.ToString("n0").Replace(manageScoreScript.score.ToString("n0"), "<color=#C5FFC3FF>" + manageScoreScript.score.ToString("n0") + "</color>");
             ScoreBar.UpdateBar();
