@@ -235,7 +235,7 @@ public class boardManager : MonoBehaviour
             //here we are going to randomize the text based on what score the player got, afterwards we will return a random, rewarding message for the player
             //-Koester
             int random = (Random.Range(0, 4));
-            randomText.Congradulate();
+            randomText.Congradulate(tempScore);
             GameObject.Find("Score").GetComponent<AddingScore>().AddScore(tempScore);
             tempScore = 0;
         }

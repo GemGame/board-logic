@@ -9,9 +9,15 @@ public class RandomTextGenerator {
     {
 
     }
-    public string GetRandomStatement()
+    public string GetRandomStatement(int score)
     {
-        int randomIndex = Random.Range(0, randomStatements.Length);
+        int randomIndex = Random.Range(11, randomStatements.Length);
+        if(score >= 2000)//lvl 3 text
+            randomIndex = Random.Range(11, randomStatements.Length);
+        else if(score >= 1000)//lvl 2 text
+            randomIndex = Random.Range(5, 10);
+        else//lvl 1 text
+            randomIndex = Random.Range(0, 4);
         return randomStatements[randomIndex];
     }
     public string GetStatementBasedOnScore(int score)

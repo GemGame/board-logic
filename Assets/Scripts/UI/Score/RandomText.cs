@@ -28,14 +28,15 @@ public class RandomText : MonoBehaviour {
         text6 = GameObject.Find("Text6").GetComponent<Text>();
     }
 
-    public void Congradulate()
+    public void Congradulate(int score)
     {
         RandomTextGenerator rtg = new RandomTextGenerator();
-        string message = rtg.GetRandomStatement();
+        string message = rtg.GetRandomStatement(score);
         int temp = Random.Range(0, 6);
+        //checking to see if the temp variable was previously used, if so, we are assigning it a different value
         while (temp == previousNumber)
             temp = Random.Range(0, 6);
-        previousNumber = temp;
+        previousNumber = temp;//memorizing the last value used for temp
 
         switch (temp)
         {
