@@ -53,6 +53,18 @@ public class AddingScore : MonoBehaviour
     Text streakText;
     [SerializeField]
     Animator streakAnim;
+    [Header("Gem Collections")]
+    [Tooltip("The children of Canvas>UIText>GemCollections")]
+    [SerializeField]
+    Image  colorFillRed;
+    [SerializeField]
+    Image colorFillBlue;
+    [SerializeField]
+    Image colorFillTeal;
+    [SerializeField]
+    Image colorFillYellow;
+    [SerializeField]
+    Image colorFillGreen;
 
     [Header("Goals Text")]
     [SerializeField]
@@ -213,41 +225,56 @@ public class AddingScore : MonoBehaviour
                 redImage.Play("AddGem",0,0);
                 manageScoreScript.totalRed += value;
                 redText.text = "x" + manageScoreScript.totalRed.ToString();
+                manageScoreScript.totalRed++;
                 break;
             case "blue":
                 blueImage.Play("AddGem", 0, 0);
                 manageScoreScript.totalBlue += value;
                 blueText.text = "x" + manageScoreScript.totalBlue.ToString();
+                manageScoreScript.totalBlue++;
                 break;
             case "teal":
                 tealImage.Play("AddGem", 0, 0);
                 manageScoreScript.totalTeal += value;
                 tealText.text = "x" + manageScoreScript.totalTeal.ToString();
+                manageScoreScript.totalTeal++;
                 break;
-            //case "orange":
-            //    orangeImage.Play("AddGem",0,0);
-            //    manageScoreScript.totalOrage += value;
-            //    orangeText.text = "x"+manageScoreScript.totalOrange.ToString();
+                //case "orange":
+                //    orangeImage.Play("AddGem",0,0);
+                //    manageScoreScript.totalOrage += value;
+                //    orangeText.text = "x"+manageScoreScript.totalOrange.ToString();
+               // manageScoreScript.totalOrange++;
             //    break;
             case "yellow":
                 yellowImage.Play("AddGem", 0, 0);
                 manageScoreScript.totalYellow += value;
                 yellowText.text = "x" + manageScoreScript.totalYellow.ToString();
+                manageScoreScript.totalYellow++;
                 break;
             case "green":
                 greenImage.Play("AddGem", 0, 0);
                 manageScoreScript.totalGreen += value;
                 greenText.text = "x"+manageScoreScript.totalGreen.ToString();
+                manageScoreScript.totalGreen++;
                 break;
-            //case "purple":
-            //    purpleImage.Play("AddGem",0,0);
-            //    manageScoreScript.totalPurple += value;
-            //    redText.text = "x"+manageScoreScript.totalPurple.ToString();
+                //case "purple":
+                //    purpleImage.Play("AddGem",0,0);
+                //    manageScoreScript.totalPurple += value;
+                //    redText.text = "x"+manageScoreScript.totalPurple.ToString();
+                //    manageScoreScript.totalPurple++;
             //    break;
             default:
                 Debug.LogError("Unrecognizable color. Be sure you're not using any capitalization.");
                 break;
         }
+        //filling gem ammount
+        colorFillBlue.fillAmount = (float)manageScoreScript.totalBlue/manageScoreScript.goalBlue;
+        colorFillYellow.fillAmount = (float)manageScoreScript.totalYellow/manageScoreScript.goalYellow;
+        colorFillGreen.fillAmount = (float)manageScoreScript.totalGreen/manageScoreScript.goalGreen;
+        colorFillRed.fillAmount = (float)manageScoreScript.totalRed/manageScoreScript.goalRed;
+        colorFillTeal.fillAmount = (float)manageScoreScript.totalTeal/manageScoreScript.goalTeal;
+        // colorFillPurple.fillAmount = (float)manageScoreScript.totalPurple / manageScoreScript.goalPurple;
+        // colorFillOrange.fillAmount = (float)manageScoreScript.totalOrange / manageScoreScript.goalOrange;
         au.PlayOneShot(collectSound,PauseMenus.SFXvolume);
     }
 }
