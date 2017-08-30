@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ManageScore : MonoBehaviour {
-    public enum GameType {Arcade, Quest};
+    public enum GameType { Arcade, Quest };
     public GameType gameType;
     public enum GameRules { TimeAttack, TurnBase };
     public GameRules gameRules;
@@ -29,13 +29,28 @@ public class ManageScore : MonoBehaviour {
     public int completedQuests;
     public int totalQuest;
     public static int totalStars;
+    [HideInInspector]
     public int totalYellow = 0;
+    [HideInInspector]
     public int totalRed = 0;
+    [HideInInspector]
     public int totalGreen = 0;
+    [HideInInspector]
     public int totalOrange = 0;
+    [HideInInspector]
     public int totalPurple = 0;
+    [HideInInspector]
     public int totalBlue = 0;
+    [HideInInspector]
     public int totalTeal = 0;
+    [Header("Maximum Goal for Gem Colors")]
+    public int goalYellow = 10;
+    public int goalRed = 10;
+    public int goalGreen = 10;
+    public int goalOrange = 10;
+    public int goalPurple = 10;
+    public int goalBlue = 10;
+    public int goalTeal = 10;
 
     public GameObject results;
 
