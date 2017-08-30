@@ -17,7 +17,9 @@ public class gameManager : MonoBehaviour
     animationManager animationManager;
     bool moveMade = false;
     bool gameOver = false;
+    bool nextLevelUnlocked = false;
     CountDownScript countDownScript;
+    sceneController sc;
 
 
 
@@ -49,8 +51,26 @@ public class gameManager : MonoBehaviour
         else
         {
             UpdateBoard();
+            if (!nextLevelUnlocked)
+            {
+                if (GameObject.Find("SceneManager"))
+                {
+                    sc = GameObject.Find("SceneManager").GetComponent<sceneController>();
+                    nextLevelUnlocked = true;
+                    UnlockNextLevel();
+                }
+            }
             //Display Game Over Here
         }
+    }
+    void UnlockNextLevel()
+    {
+        int nextLevel = (sc.GetNextScene(sc.GetCurrentSceneIndex()) - 2);
+        Debug.Log(nextLevel + " unlocked");
+        
+            level.SetLevelUnlocked(nextLevel, true);
+            Debug.Log("New level unlocked");
+        
     }
     IEnumerator DelayedSceneChange(float timeDelay)
     {

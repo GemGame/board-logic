@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor;
+//using UnityEditor;
 
 [System.Serializable]
 public abstract class baseGem : MonoBehaviour

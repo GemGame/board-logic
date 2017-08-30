@@ -42,7 +42,7 @@ public class inputManager : MonoBehaviour
             return GetSquareOnClick();
         return null;
     }
-    public bool DetectMenuHover()
+    public bool DetectMenuHover()   //What the heck are these next two methods? - CC
     {
         return false;
     }
@@ -50,6 +50,7 @@ public class inputManager : MonoBehaviour
     {
         return false;
     }
+    
 
     boardSquare GetSquareOnTap()    //Android
     {

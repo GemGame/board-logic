@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class sceneController : MonoBehaviour
 {
     public int scenesUntilFirstLevel = 1;
+    public int levelSelectBuildIndex = 1;
     AsyncOperation ao;
     bool sceneCurrentlyLoading = false;    
     bool freshScene = true;
@@ -28,6 +29,17 @@ public class sceneController : MonoBehaviour
     }
 
     //Public Controls -- Make Sure to prepare a scene before loading
+    public IEnumerator PrepareAndLoadLevelNumber(int levelNumber)
+    {
+        if (!sceneCurrentlyLoading)
+        {
+            StartCoroutine(PrepareSceneAsync(scenesUntilFirstLevel + levelNumber - 1));
+        }
+        while (!TryLoadPreparedScene())
+        {
+            yield return null;            
+        }
+    }
     public IEnumerator PrepareAndLoadCurrentScene()
     {
         if (!sceneCurrentlyLoading)
@@ -49,7 +61,7 @@ public class sceneController : MonoBehaviour
             {
                 if (GetCurrentSceneIndex() < scenesUntilFirstLevel)
                 {
-                    PrepareFirstLevelAsynch();
+                    PrepareLevelSelectAsynch();
                 }
                 else
                 {
@@ -88,12 +100,12 @@ public class sceneController : MonoBehaviour
         }
         return false;
     }
-    public void PrepareFirstLevelAsynch()
+    public void PrepareLevelSelectAsynch()
     {
         if (!sceneCurrentlyLoading)
         {
             sceneCurrentlyLoading = true;
-            StartCoroutine(PrepareSceneAsync(scenesUntilFirstLevel));
+            StartCoroutine(PrepareSceneAsync(levelSelectBuildIndex));
         }
     }
     public void PrepareCurrentLevelAsynch()
@@ -155,7 +167,7 @@ public class sceneController : MonoBehaviour
         if (SceneManager.GetActiveScene().buildIndex == 0) return true;
         return false;
     }
-    int GetNextScene(int currentScene)
+    public int GetNextScene(int currentScene)
     {
         const int defaultScene = 0;
         int numScenes = SceneManager.sceneCountInBuildSettings;
@@ -167,7 +179,7 @@ public class sceneController : MonoBehaviour
         }
         else if (potentialNextScene < scenesUntilFirstLevel)
         {
-            return defaultScene + 1;
+            return scenesUntilFirstLevel - 1;
         }
         else
         {
@@ -175,7 +187,7 @@ public class sceneController : MonoBehaviour
             return defaultScene;
         }
     }    
-    int GetCurrentSceneIndex()
+    public int GetCurrentSceneIndex()
     {
         return SceneManager.GetActiveScene().buildIndex;
     }

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GemSelect : MonoBehaviour
 {
@@ -30,11 +28,12 @@ public class GemSelect : MonoBehaviour
 #elif UNITY_ANDROID
             android = true;
 #endif
+        currentScale = this.transform.localScale;
+        oldScale = currentScale;
     }
     private void Start()
     {
-        currentScale = this.transform.localScale;
-        oldScale = currentScale;
+        
     }
     private void Update()//this is causing an isue at the moment - Koester
     {
