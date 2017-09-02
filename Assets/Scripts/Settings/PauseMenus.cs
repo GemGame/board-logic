@@ -35,6 +35,12 @@ public class PauseMenus : MonoBehaviour {
     [SerializeField]
     Animator screenEffect;
 
+    [SerializeField]
+    Image muted;
+    [SerializeField]
+    Image unmuted;
+
+
     bool mute = false;//determiens whether or not all music/sounds are muted
     public static bool gamePaused;
 
@@ -204,13 +210,15 @@ public class PauseMenus : MonoBehaviour {
             gameObject.GetComponent<AudioSource>().mute = mute;
             _audio.pitch = 1.2f;
             _audio.PlayOneShot(select, SFXvolume);
-            image.sprite = Resources.Load<Sprite>("Art/HUD/Buttons/normal/volume");
+            //image.sprite = Resources.Load<Sprite>("Art/HUD/Buttons/normal/volume");
+            image.sprite = unmuted.sprite;
         }
         else
         {
             mute = true;
-            gameObject.GetComponent<AudioSource>().mute = true;     
-            image.sprite = Resources.Load<Sprite>("Art/HUD/Buttons/lock/volume");
+            gameObject.GetComponent<AudioSource>().mute = true;
+            //image.sprite = Resources.Load<Sprite>("Art/HUD/Buttons/lock/volume");
+            image.sprite = muted.sprite;
         }
         sounds.mute = mute;
         sounds2.mute = mute;

@@ -39,9 +39,7 @@ public class ResultsScript : MonoBehaviour {
     IEnumerator Display()
     {
         float temp = Time.time - manageScoreScript.gameLength;
-        print(Time.time);
         print(manageScoreScript.gameLength);
-        print(Time.time - manageScoreScript.gameLength);
         if (temp >= 3600)
             temp = 3600;
         string format = (temp / 60).ToString("00") + ":" + (temp % 60).ToString("00");
