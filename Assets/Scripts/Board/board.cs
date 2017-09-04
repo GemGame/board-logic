@@ -140,7 +140,11 @@ public class board : MonoBehaviour
         {//making sure the squares aren't any of the four corners
             AddSprite(sq);
         }
-        //****Koester's addition
+        else
+            square.invalid = true;
+
+
+
         return square;
     }
 

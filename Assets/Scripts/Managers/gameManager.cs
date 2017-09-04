@@ -42,7 +42,7 @@ public class gameManager : MonoBehaviour
     }
     private void Update()   //Main game loop
     {
-        if (!gameOver)
+        if (!gameOver && Time.timeScale > 0)
         {
             UpdateBoard();
             UpdateTurnCount(AcceptInput());

@@ -22,6 +22,7 @@ public class boardSquare : MonoBehaviour
     bool destructable = false;
     bool animPlaying = false;
     bool occupied = false;
+    public bool invalid = false;
     public static bool wasClicked = false;
 
 
@@ -114,7 +115,8 @@ public class boardSquare : MonoBehaviour
     {
         try
         {
-            gemScript.gemSelect.Enter(wasClicked);
+            if (Time.timeScale > 0 && !invalid)
+                gemScript.gemSelect.Enter(wasClicked);
         }
         catch
         {
@@ -125,7 +127,8 @@ public class boardSquare : MonoBehaviour
     {
         try
         {
-            gemScript.gemSelect.Exit();
+            if (Time.timeScale > 0 && !invalid)
+                gemScript.gemSelect.Exit();
         }
         catch
         {
@@ -135,6 +138,7 @@ public class boardSquare : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (Time.timeScale > 0)
         wasClicked = true;
     }
 

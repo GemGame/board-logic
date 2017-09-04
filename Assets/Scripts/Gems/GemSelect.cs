@@ -79,8 +79,6 @@ public class GemSelect : MonoBehaviour
             }
             else
                 boardSquare.wasClicked = false;
-            print(wasClicked);
-
             // transform.parent.GetComponent<BoxCollider>().enabled = true;
             currentlySelected = true;   //CC
         }
