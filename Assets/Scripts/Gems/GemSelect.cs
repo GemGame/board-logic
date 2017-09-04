@@ -15,6 +15,7 @@ public class GemSelect : MonoBehaviour
 
     bool currentlySelected = false;
 
+
     private void Awake()    //Preprocess Platform Determination
     {
 #if UNITY_EDITOR
@@ -63,7 +64,7 @@ public class GemSelect : MonoBehaviour
         }
         return false;
     }
-    private void OnMouseEnter()
+    public void Enter(bool wasClicked)
     {
         if (ResultsScript.isGameOver)
             return;
@@ -72,13 +73,20 @@ public class GemSelect : MonoBehaviour
             currentScale += (currentScale * scaleIncreasePercent);
             gameObject.transform.localScale = currentScale;
             //print(gameObject.transform.localScale);
-            Sound.SelectGem();
+            if (!wasClicked)
+            {
+                Sound.SelectGem();
+            }
+            else
+                boardSquare.wasClicked = false;
+            print(wasClicked);
+
             // transform.parent.GetComponent<BoxCollider>().enabled = true;
             currentlySelected = true;   //CC
         }
     }
 
-    private void OnMouseExit()
+    public void Exit()
     {
         if (ResultsScript.isGameOver)
             return;

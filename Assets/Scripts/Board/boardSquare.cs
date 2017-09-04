@@ -22,6 +22,8 @@ public class boardSquare : MonoBehaviour
     bool destructable = false;
     bool animPlaying = false;
     bool occupied = false;
+    public static bool wasClicked = false;
+
 
     //Properties
     public baseGem GemScript { get { return gemScript; } }
@@ -106,4 +108,34 @@ public class boardSquare : MonoBehaviour
             StartCoroutine(gemScript.DestroyGem(isCombo));
         }
     }
+    //checking to see if the mouse entered or exited the square
+    //Koester
+    private void OnMouseOver()
+    {
+        try
+        {
+            gemScript.gemSelect.Enter(wasClicked);
+        }
+        catch
+        {
+
+        }
+    }
+    private void OnMouseExit()
+    {
+        try
+        {
+            gemScript.gemSelect.Exit();
+        }
+        catch
+        {
+
+        }
+    }
+
+    private void OnMouseDown()
+    {
+        wasClicked = true;
+    }
+
 }
