@@ -113,8 +113,8 @@ public class boardManager : MonoBehaviour
     }   
     public void DestroyComboableSquares()   //Runtime
     {
+        gameManager.canSelect = false;
         OptimizeMoveList();
-
         for(int x = 0; x < moveList.Count; x++) //For each move
         {            
             if (MoveAnimationEnded(moveList[x]))

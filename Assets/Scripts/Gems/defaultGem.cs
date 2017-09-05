@@ -14,19 +14,13 @@ public class defaultGem : baseGem {
 
     public override void PreDestroy()
     {
-        PlayDestroyEffects();        
+        mySprite.enabled = true;
+        StartCoroutine (WaitTime());
     }
 
     public override void PostDestroy()
     {
-        try
-        {
-            Sound.sound.PlayOneShot(explosionSound, PauseMenus.SFXvolume);
-        }
-        catch
-        {
-
-        }  
+        PlayDestroyEffects();
     }
 
     void PlayDestroyEffects()
@@ -45,6 +39,15 @@ public class defaultGem : baseGem {
             ge.SpawnEffect(explosionPrefab, 1.0f, position, rotation, explosionParent);
             floatingTextValue.text = "+" + value.ToString();
             ge.SpawnEffect(floatingTextPrefab, 1.0f, position, rotation, floatingTextParent);
+            try
+            {
+                if (runningCor == 0)
+                    Sound.sound.PlayOneShot(explosionSound, PauseMenus.SFXvolume);
+            }
+            catch
+            {
+
+            }
             Destroy(gameObject);
         }
     }
@@ -58,14 +61,16 @@ public class defaultGem : baseGem {
 
     private IEnumerator WaitTime()
     {
-        //mySprite.Play("ChargeUp", 0, 0);
-        yield return null;
-        //yield return new WaitForSeconds(1f);
-        GameObject clone = explosionPrefab;
-        Destroy(Instantiate(clone, transform.position, transform.rotation), 1);
-        floatingTextValue.text = value.ToString();
-        clone = floatingTextPrefab;
-        Destroy(Instantiate(clone, transform.position, transform.rotation), 4);
-        Destroy (gameObject);
+        mySprite.Play("ChargeUp", 0, 0);
+        //adding to the amout of curotines that are running. We will need to keep track of this number
+        runningCor++;
+        yield return new WaitForSeconds(1.5f);
+        //once courotine is done, we will subtract
+        runningCor--;//assigning the boolean, canSelect, to the value of runningCor, if running cor is 0 canSelect will be set to true
+        if (runningCor <= 0)
+            runningCor = 0;
+        gameManager.canSelect = (runningCor == 0); //this bool, "gameManager.canSelect gets set to true in boardManager
+        //in the function DestroyComboableSquares()
+        PlayDestroyEffects();
     }
 }

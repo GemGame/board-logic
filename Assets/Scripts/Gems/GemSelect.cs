@@ -15,9 +15,21 @@ public class GemSelect : MonoBehaviour
 
     bool currentlySelected = false;
 
+    private void OnEnable()
+    {
+        //subscribe the function, Exit, to the event in the PauseMenus.sc
+        PauseMenus.exitGem += Exit;
+    }
+
+    private void OnDisable()
+    {
+        //unsubscribe the function, Exit, from the event in the PauseMenus.sc
+        PauseMenus.exitGem -= Exit;
+    }
 
     private void Awake()    //Preprocess Platform Determination
     {
+
 #if UNITY_EDITOR
         editMode = true;
 #elif UNITY_IPHONE
@@ -32,10 +44,7 @@ public class GemSelect : MonoBehaviour
         currentScale = this.transform.localScale;
         oldScale = currentScale;
     }
-    private void Start()
-    {
-        
-    }
+
     private void Update()//this is causing an isue at the moment - Koester
     {
         //if (CheckTouching())

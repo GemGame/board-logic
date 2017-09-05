@@ -21,14 +21,16 @@ public class gameManager : MonoBehaviour
     CountDownScript countDownScript;
     sceneController sc;
 
-
+    public static bool canSelect = true;
 
     //Properties
     public boardManager BoardManager { get { return boardManager; } }
 
+
     //Methods
     private void Start()
     {
+        gameManager.canSelect = true;
         ConfigureComponents();
     }
     private void ConfigureComponents()
@@ -42,11 +44,10 @@ public class gameManager : MonoBehaviour
     }
     private void Update()   //Main game loop
     {
-        if (!gameOver && Time.timeScale > 0)
+        if (!gameOver && canSelect && Time.timeScale > 0)
         {
             UpdateBoard();
             UpdateTurnCount(AcceptInput());
-            gameOver = CheckGameOver();
         }
         else
         {
@@ -60,9 +61,9 @@ public class gameManager : MonoBehaviour
                     UnlockNextLevel();
                 }
             }
-            //Display Game Over Here
         }
     }
+
     void UnlockNextLevel()
     {
         int nextLevel = (sc.GetNextScene(sc.GetCurrentSceneIndex()) - 2);
@@ -107,6 +108,7 @@ public class gameManager : MonoBehaviour
     {
         if (!animationManager.CheckAnimationsPlaying())
         {
+            gameOver = CheckGameOver();
             boardSquare square = inputManager.GetInput();
             if (square != null)
             {

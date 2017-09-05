@@ -7,6 +7,10 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(AudioSource))]
 public class PauseMenus : MonoBehaviour {
 
+    //my delegates for when a mouse hovers off gems
+    public delegate void ExitGem();
+    public static event ExitGem exitGem;
+
     [SerializeField]
     GameObject pause;
     [SerializeField]
@@ -101,19 +105,27 @@ public class PauseMenus : MonoBehaviour {
             {
                 pause.SetActive(true);
                 pauseButton.SetActive(false);
-                Time.timeScale = 0;
+                StartCoroutine(PauseEnd(0));
             }
             else
             {
                 pause.SetActive(false);
                 pauseButton.SetActive(true);
-                Time.timeScale = scaleTime;
                 Transform t = GameObject.Find("Canvas/HUDButtons/PauseButton").GetComponent<Transform>();
                 t.transform.localScale = new Vector3(1, 1, 1);
+                //firing all subscriptions
+                exitGem();
+                StartCoroutine(PauseEnd(scaleTime));
             }
             _audio.pitch = 1.2f;
             _audio.PlayOneShot(select, SFXvolume);
         }
+    }
+    //registers next frame - prevents bug that causes gems to destroy when game is unpaused.
+    IEnumerator PauseEnd(float time)
+    {
+        yield return null;
+        Time.timeScale = time;
     }
 
     //sends the player to the video options

@@ -31,6 +31,8 @@ public abstract class baseGem : MonoBehaviour
     public Animator mySprite; //on the prefab, this is disabled by default
     [SerializeField]
     public GemSelect gemSelect;
+    private static bool playSound;
+    public int runningCor = 0; //the amount of corouties that are running
 
 
 
@@ -46,6 +48,11 @@ public abstract class baseGem : MonoBehaviour
     public int Y { get { return (int)transform.position.y; } }
 
     //Methods
+    private void Start()
+    {
+        runningCor = 0;
+    }
+
     public void SetGemProperties(Vector3 position, GameObject gem, Transform parent)   //Use before spawning
     {
         gemGO.transform.parent = parent;
@@ -61,13 +68,24 @@ public abstract class baseGem : MonoBehaviour
     public IEnumerator DestroyGem(bool isCombo)    //Includes pre and post
     {
         if (isCombo)
-            yield return null;//new WaitForSeconds(2.0f);
+        {
+            try
+            {
+                if (runningCor == 0)
+                    Sound.sound.PlayOneShot(upgradeSound, PauseMenus.SFXvolume);
+            }
+            catch
+            {
+
+            }
+            yield return null;//new WaitForSeconds(2.0f)
+        }
+        else
+            PostDestroy();
+
         PreDestroy();
         DisableGameObject();
-        PostDestroy();
         Destroy();
-
-
     }
     void DisableGameObject()
     {
@@ -80,6 +98,7 @@ public abstract class baseGem : MonoBehaviour
 
     void Destroy()  //Destroy gem objects gem game object
     {
+        if(!Application.isPlaying)
         DestroyImmediate(gemGO);
     }
     public abstract void PreDestroy();

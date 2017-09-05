@@ -12,6 +12,7 @@ public class animationManager : MonoBehaviour
     float gemFallingSpeed = 0.5f;
     float gemFallingDelay = 1f;
 
+
     //Private Variables
     List<boardSquare> animationsPlaying = new List<boardSquare>();
 
