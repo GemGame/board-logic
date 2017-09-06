@@ -108,7 +108,8 @@ public class gameManager : MonoBehaviour
     {
         if (!animationManager.CheckAnimationsPlaying())
         {
-            gameOver = CheckGameOver();
+            if (canSelect)
+                gameOver = CheckGameOver();
             boardSquare square = inputManager.GetInput();
             if (square != null)
             {

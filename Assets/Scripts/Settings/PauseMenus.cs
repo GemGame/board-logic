@@ -94,6 +94,11 @@ public class PauseMenus : MonoBehaviour {
             Pause();
         }
     }
+    //gets the gem to unscale
+    public static void ExitMyGem()
+    {
+        exitGem();
+    }
 
     //Pauses the game or resumes the game if it's already paused
     public void Pause()

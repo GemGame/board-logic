@@ -25,6 +25,8 @@ public class AddingScore : MonoBehaviour
     [SerializeField]
     ResultsScript resultScript;
 
+    public static AddingScore addingScore;
+
     //gem collections
     [Header("Gem Collections")]
     [SerializeField]
@@ -82,9 +84,14 @@ public class AddingScore : MonoBehaviour
     bool goal3Reached;
     bool playAnim;
 
+    private void Awake()
+    {
+        addingScore = gameObject.GetComponent<AddingScore>();
+        myScore = gameObject.GetComponent<Text>();
+    }
+
     private void Start()
     {
-        myScore = gameObject.GetComponent<Text>();
         _score = Score();
         goal1.text = manageScoreScript.goal1.ToString("n0");
         goal2.text = manageScoreScript.goal2.ToString("n0");
@@ -163,40 +170,10 @@ public class AddingScore : MonoBehaviour
                 add -= 1;
                 manageScoreScript.score += 1;
             }
-            if (manageScoreScript.score >= manageScoreScript.goal1 && !goal1Reached)
-            {
-                goal1.color = Color.green;
-                goal1.gameObject.GetComponent<Outline>().enabled = true;
-                goal1.gameObject.GetComponent<Animator>().Play("GoalHit", 0, 0);
-                goal1Reached = true;
-                au.PlayOneShot(taDa, PauseMenus.SFXvolume * .3f);
-                manageScoreScript.completedGoals++;
-            }
-            else if (manageScoreScript.score >= manageScoreScript.goal2 && !goal2Reached)
-            {
-                goal2.color = Color.green;
-                goal2.gameObject.GetComponent<Outline>().enabled = true;
-                goal2.gameObject.GetComponent<Animator>().Play("GoalHit", 0, 0);
-                goal2Reached = true;
-                au.PlayOneShot(taDa, PauseMenus.SFXvolume * .3f);
-                manageScoreScript.completedGoals++;
-            }
-            else if (manageScoreScript.score >= manageScoreScript.goal3 && !goal3Reached)
-            {
-                goal3.color = Color.green;
-                goal3.gameObject.GetComponent<Outline>().enabled = true;
-                goal3.gameObject.GetComponent<Animator>().Play("GoalHit", 0, 0);
-                goal3Reached = true;
-                au.PlayOneShot(taDa, PauseMenus.SFXvolume * .2f);
-                manageScoreScript.completedGoals++;
-            }
+            CheckGoal();
             myScore.text = "Score: " + manageScoreScript.score.ToString("n0").Replace(manageScoreScript.score.ToString("n0"), "<color=#C5FFC3FF>" + manageScoreScript.score.ToString("n0") + "</color>");
             ScoreBar.UpdateBar();
             yield return new WaitForSeconds(.016f);
-            //ending the game -Koester
-            //if (manageScoreScript.PlayerTurns == 0 || manageScoreScript.countDownTime == 0)
-            //     manageScoreScript.results.SetActive(true);//enabling the gameobject, reults, which ultimately ends the game -Koester
-
         }
         if (playAnim)
         {
@@ -276,6 +253,45 @@ public class AddingScore : MonoBehaviour
         // colorFillPurple.fillAmount = (float)manageScoreScript.totalPurple / manageScoreScript.goalPurple;
         // colorFillOrange.fillAmount = (float)manageScoreScript.totalOrange / manageScoreScript.goalOrange;
         au.PlayOneShot(collectSound,PauseMenus.SFXvolume);
+    }
+
+    public void UpdateScore(int addPoints)
+    {
+        manageScoreScript.score += addPoints;
+        myScore.text = "Score: " + manageScoreScript.score.ToString("n0").Replace(manageScoreScript.score.ToString("n0"), "<color=#C5FFC3FF>" + manageScoreScript.score.ToString("n0") + "</color>");
+        ScoreBar.UpdateBar();
+        CheckGoal();
+    }
+
+    void CheckGoal()
+    {
+        if (manageScoreScript.score >= manageScoreScript.goal1 && !goal1Reached)
+        {
+            goal1.color = Color.green;
+            goal1.gameObject.GetComponent<Outline>().enabled = true;
+            goal1.gameObject.GetComponent<Animator>().Play("GoalHit", 0, 0);
+            goal1Reached = true;
+            au.PlayOneShot(taDa, PauseMenus.SFXvolume * .3f);
+            manageScoreScript.completedGoals++;
+        }
+        else if (manageScoreScript.score >= manageScoreScript.goal2 && !goal2Reached)
+        {
+            goal2.color = Color.green;
+            goal2.gameObject.GetComponent<Outline>().enabled = true;
+            goal2.gameObject.GetComponent<Animator>().Play("GoalHit", 0, 0);
+            goal2Reached = true;
+            au.PlayOneShot(taDa, PauseMenus.SFXvolume * .3f);
+            manageScoreScript.completedGoals++;
+        }
+        else if (manageScoreScript.score >= manageScoreScript.goal3 && !goal3Reached)
+        {
+            goal3.color = Color.green;
+            goal3.gameObject.GetComponent<Outline>().enabled = true;
+            goal3.gameObject.GetComponent<Animator>().Play("GoalHit", 0, 0);
+            goal3Reached = true;
+            au.PlayOneShot(taDa, PauseMenus.SFXvolume * .2f);
+            manageScoreScript.completedGoals++;
+        }
     }
 }
 

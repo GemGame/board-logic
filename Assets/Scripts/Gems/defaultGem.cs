@@ -14,22 +14,35 @@ public class defaultGem : baseGem {
 
     public override void PreDestroy()
     {
-        mySprite.enabled = true;
-        StartCoroutine (WaitTime());
+        arcadeManager am = null;
+        if (GameObject.Find("ArcadeManager"))
+            am = GameObject.Find("ArcadeManager").GetComponent<arcadeManager>();
+        if (Application.isPlaying && ((am != null && !am.wakingUp) || (am == null)))  //Not in editor mode
+        {
+            PauseMenus.ExitMyGem();
+            mySprite.enabled = true;
+            mySprite.Play("ChargeUp", 0, 0);
+            StartCoroutine(WaitTime());
+        }
+        else
+            Destroy(gameObject);
+
     }
 
     public override void PostDestroy()
     {
-        PlayDestroyEffects();
+        PlayDestroyEffects(value);
     }
 
-    void PlayDestroyEffects()
+    void PlayDestroyEffects(int addScore)
     {
         arcadeManager am = null;
         if (GameObject.Find("ArcadeManager"))
             am = GameObject.Find("ArcadeManager").GetComponent<arcadeManager>();
         if (Application.isPlaying && ((am != null && !am.wakingUp)||(am == null)))  //Not in editor mode
         {
+            if (addScore > 0)
+                AddingScore.addingScore.UpdateScore(addScore);
             Vector3 position = transform.position;
             Quaternion rotation = transform.rotation;
             Transform explosionParent = GameObject.FindGameObjectWithTag("Gem Pool").transform;
@@ -53,29 +66,25 @@ public class defaultGem : baseGem {
     }
     public override void UpgradeGem()
     {
-    
+        //StopAllCoroutines();
+        //mySprite.enabled = true;
+        //mySprite.Play("ChargeUp2", 0, 0);
     }
 
     private IEnumerator WaitTime()
     {
-        mySprite.Play("ChargeUp", 0, 0);
         //adding to the amout of curotines that are running. We will need to keep track of this number
         runningCor++;
-        #region bug issue
-        //the issue is both, predestroy() and post destroy(), are being called simultaneously in baseGem.sc, 
-        //so in theory, the game object is being destroyed before the corotine can finish thus "runningCor" never gets subtracted.
-        //-Koester
-        #endregion
         yield return new WaitForSeconds(1.5f);
         //once courotine is done, we will subtract
         runningCor--;//assigning the boolean, canSelect, to the value of runningCor, if running cor is 0 canSelect will be set to true
         if (runningCor <= 0)
         {
             runningCor = 0;
-            gameManager.canSelect = true;
+            gameManager.canSelect = true;//setting this to false in boardSquare.sc UpgradeGem();
         }
-       // gameManager.canSelect = (runningCor == 0); //this bool, "gameManager.canSelect gets set to true in boardManager
+       // gameManager.canSelect = (runningCor == 0);
         //in the function DestroyComboableSquares()
-        PlayDestroyEffects();
+        PlayDestroyEffects(0);
     }
 }

@@ -63,6 +63,7 @@ public abstract class baseGem : MonoBehaviour
         basePrefab = baseGemPrefab;
         //GameObject tempGO = (GameObject)PrefabUtility.InstantiatePrefab(gemPrefab);
         //tempGO.GetComponent<baseGem>().SetGemProperties(Vector3.zero, tempGO, parent);
+        mySprite.gameObject.GetComponent<SpriteRenderer>().enabled = false;
         return Instantiate(gemPrefab, parent.position, parent.rotation, parent);
     }
     public IEnumerator DestroyGem(bool isCombo)    //Includes pre and post

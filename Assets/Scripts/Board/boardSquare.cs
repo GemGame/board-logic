@@ -92,12 +92,14 @@ public class boardSquare : MonoBehaviour
     }
     public void UpgradeGem()
     {
+        gameManager.canSelect = false;//this gets set to true in defaultGem.cs
         if (gemScript.UpgradedPrefab != null)
         {
             StartCoroutine(gemScript.DestroyGem(true));
             if (gemScript.basePrefab == null) Debug.Log("Base Prefab Null");
             if (gemScript.UpgradedPrefab == null) Debug.Log("Upgraded Prefab Null");
             Gem = gemScript.SpawnGemCopy(this.transform, gemScript.UpgradedPrefab, gemScript.basePrefab);
+            Gem.GetComponent<baseGem>().mySprite.gameObject.GetComponent<SpriteRenderer>().enabled = true;
             if (Gem)
                 gemScript.SetGemProperties(this.transform.position, gem, this.transform);
 
@@ -117,7 +119,7 @@ public class boardSquare : MonoBehaviour
     {
         try
         {
-            if (Time.timeScale > 0 && !invalid)
+            if (Time.timeScale > 0 && !invalid && gameManager.canSelect)
                 gemScript.gemSelect.Enter(wasClicked);
         }
         catch
@@ -140,7 +142,7 @@ public class boardSquare : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (Time.timeScale > 0)
+        if (Time.timeScale > 0 && gameManager.canSelect)
         wasClicked = true;
     }
 
