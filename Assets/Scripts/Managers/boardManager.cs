@@ -38,7 +38,7 @@ public class boardManager : MonoBehaviour
     //Methods
     private void Start()
     {
-        randomText = gameObject.AddComponent<RandomText>(); //goig to just set this up at the start of the game -Koester
+        randomText = gameObject.AddComponent<RandomText>(); //going to just set this up at the start of the game -Koester
         SetUpDefaultUpgrades();
         if (Application.isPlaying)
             countDownScript = GameObject.Find("CountDownText").GetComponent<CountDownScript>();
@@ -113,7 +113,7 @@ public class boardManager : MonoBehaviour
     }   
     public void DestroyComboableSquares()   //Runtime
     {
-        gameManager.canSelect = false;
+        gameManager.canSelect = false;//this gets set to true in defaultGem.cs
         OptimizeMoveList();
         for(int x = 0; x < moveList.Count; x++) //For each move
         {            

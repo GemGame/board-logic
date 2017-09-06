@@ -53,10 +53,7 @@ public class defaultGem : baseGem {
     }
     public override void UpgradeGem()
     {
-        //Debug.Log("PostDestroy()");
-        //creating upgrade effect -Koester
-        //GameObject clone = upgradeEffectPrefab;
-        //Destroy(Instantiate(clone, transform.position, transform.rotation), 1);
+    
     }
 
     private IEnumerator WaitTime()
@@ -64,12 +61,20 @@ public class defaultGem : baseGem {
         mySprite.Play("ChargeUp", 0, 0);
         //adding to the amout of curotines that are running. We will need to keep track of this number
         runningCor++;
+        #region bug issue
+        //the issue is both, predestroy() and post destroy(), are being called simultaneously in baseGem.sc, 
+        //so in theory, the game object is being destroyed before the corotine can finish thus "runningCor" never gets subtracted.
+        //-Koester
+        #endregion
         yield return new WaitForSeconds(1.5f);
         //once courotine is done, we will subtract
         runningCor--;//assigning the boolean, canSelect, to the value of runningCor, if running cor is 0 canSelect will be set to true
         if (runningCor <= 0)
+        {
             runningCor = 0;
-        gameManager.canSelect = (runningCor == 0); //this bool, "gameManager.canSelect gets set to true in boardManager
+            gameManager.canSelect = true;
+        }
+       // gameManager.canSelect = (runningCor == 0); //this bool, "gameManager.canSelect gets set to true in boardManager
         //in the function DestroyComboableSquares()
         PlayDestroyEffects();
     }

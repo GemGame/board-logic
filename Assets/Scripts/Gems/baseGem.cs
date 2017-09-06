@@ -99,7 +99,7 @@ public abstract class baseGem : MonoBehaviour
     void Destroy()  //Destroy gem objects gem game object
     {
         if(!Application.isPlaying)
-        DestroyImmediate(gemGO);
+            DestroyImmediate(gemGO);
     }
     public abstract void PreDestroy();
     public abstract void PostDestroy();

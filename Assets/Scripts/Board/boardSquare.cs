@@ -100,6 +100,8 @@ public class boardSquare : MonoBehaviour
             Gem = gemScript.SpawnGemCopy(this.transform, gemScript.UpgradedPrefab, gemScript.basePrefab);
             if (Gem)
                 gemScript.SetGemProperties(this.transform.position, gem, this.transform);
+
+            gemScript.UpgradeGem();
         }
     }
     public void DestroyGem(bool isCombo)

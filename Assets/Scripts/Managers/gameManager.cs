@@ -80,7 +80,7 @@ public class gameManager : MonoBehaviour
     }
     void UpdateBoard()
     {
-            boardManager.UpdateComboableSquares();
+        boardManager.UpdateComboableSquares();
             if (boardManager.Board.DetectComboableSquares())
                 boardManager.DestroyComboableSquares();
             animationManager.PlayFallingAnimations(boardManager.GetFallingGemsList());            
