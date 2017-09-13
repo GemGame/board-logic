@@ -22,6 +22,8 @@ public class boardAnalyzer
     public int DirectionX { get { return directions[currentDirection, xCoordIndex]; } }
     public int DirectionY { get { return directions[currentDirection, yCoordIndex]; } }
 
+
+
     //Constructor
     public boardAnalyzer(board boardInstance, int direction)  //Overridden constructor -- boardAnalyzer.directionIndex
     {

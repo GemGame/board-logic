@@ -11,6 +11,11 @@ using UnityEngine.UI;
 public class defaultGem : baseGem {
     //just a friendly reminder, the gem's animator is off by default. You must enable the animator, if you 
     //want to animate a gem -Koester
+    int originalValue;
+    private void Start()
+    {
+        originalValue = value;
+    }
 
     public override void PreDestroy()
     {
@@ -51,7 +56,7 @@ public class defaultGem : baseGem {
 
             ge.SpawnEffect(explosionPrefab, 1.0f, position, rotation, explosionParent);
             floatingTextValue.text = "+" + value.ToString();
-            ge.SpawnEffect(floatingTextPrefab, 1.0f, position, rotation, floatingTextParent);
+            ge.SpawnEffect(floatingTextPrefab, 2.3f, position, rotation, floatingTextParent);
             try
             {
                 if (runningCor == 0)
@@ -61,6 +66,7 @@ public class defaultGem : baseGem {
             {
 
             }
+            value = originalValue;
             Destroy(gameObject);
         }
     }

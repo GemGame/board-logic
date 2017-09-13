@@ -19,10 +19,10 @@ public class ManageScore : MonoBehaviour {
     public int goal1 = 4000;
     public int goal2 = 8000;
     public int goal3 = 12000;
-    public int streaks = 0;
-    public int combos = 0;
 
     public static int highestScore = 2428;
+    public static int largestCombo = 0;
+    public static int highestStreak = 0;
 
     [HideInInspector]
     public int completedGoals;
@@ -56,7 +56,10 @@ public class ManageScore : MonoBehaviour {
 
     private void Start()
     {
-        ResultsScript.isGameOver = false;
+        largestCombo = 0;
+        highestStreak = 0;
+
+    ResultsScript.isGameOver = false;
         PlayerTurns = startingTurns;
         gameLength = Time.time;
         difficulty = PauseMenus.difficulty.ToString();

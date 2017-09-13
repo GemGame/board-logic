@@ -79,8 +79,8 @@ public class ResultsScript : MonoBehaviour {
             + "Difficulty: " + manageScoreScript.difficulty + "\r\n"
             + "Stars Earned: " + manageScoreScript.completedGoals+ "/" +3 + "\r\n"
             + "Total Stars: " + ManageScore.totalStars + "\r\n"
-            + "Highest Combo: " + manageScoreScript.combos + "\r\n"
-            + "Largest Streak: " + manageScoreScript.streaks + "\r\n"
+            + "Highest Combo: " + ManageScore.largestCombo + "\r\n"
+            + "Largest Streak: " + ManageScore.highestStreak + "\r\n"
             + "Total Time: " + format + "\r\n"
             + "\r\n"
             + "		Score: " + manageScoreScript.score.ToString("n0") + " Points"+"\r\n";

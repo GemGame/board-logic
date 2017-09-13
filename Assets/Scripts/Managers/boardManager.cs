@@ -196,7 +196,8 @@ public class boardManager : MonoBehaviour
     public void UpdateComboableSquares()
     {
         boardAnalyzer bA = new boardAnalyzer(board, currentDirection);
-        board = bA.CheckAllSquaresForCombo();
+        if (!board.HasEmptySquares)
+            board = bA.CheckAllSquaresForCombo();
         moveList = new List<List<boardSquare>>();
         moveList = bA.MovesList;
     }
