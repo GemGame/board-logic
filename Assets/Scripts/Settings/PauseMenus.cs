@@ -55,7 +55,7 @@ public class PauseMenus : MonoBehaviour {
     public static AudioSettings audioSettings;
     public enum Difficulty { Easy, Normal, Hard }
     public static Difficulty difficulty;
-    public enum Quality { Poor, Good, High }
+    public enum Quality { High, Good, Poor }
     public static Quality quality;
     public enum GameSpeed { Slowest, Slow, Normal, Fast, Fastest }
     public static GameSpeed gameSpeed;

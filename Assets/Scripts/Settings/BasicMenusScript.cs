@@ -40,6 +40,8 @@ public class BasicMenusScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        Time.timeScale = PauseMenus.scaleTime;
+
         SaveLoadPrefs.Load();
         canSelect = true;
         au.volume = PauseMenus.SFXvolume;
