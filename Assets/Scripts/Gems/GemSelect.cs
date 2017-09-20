@@ -78,29 +78,25 @@ public class GemSelect : MonoBehaviour
         if (ResultsScript.isGameOver)
             return;
         if (Time.timeScale > 0 && !currentlySelected) //What is this for? - CC
-        {
+        {//this allows the gem to be selecetd or hovered over if the game is either 1). not over or 2). not paused
             currentScale += (currentScale * scaleIncreasePercent);
             gameObject.transform.localScale = currentScale;
-            //print(gameObject.transform.localScale);
             if (!wasClicked)
-            {
+            {//play sound if hovered over
                 Sound.SelectGem();
             }
             else
                 boardSquare.wasClicked = false;
-            // transform.parent.GetComponent<BoxCollider>().enabled = true;
             currentlySelected = true;   //CC
         }
     }
 
     public void Exit()
-    {
+    {//if the moue exits the gem
         if (ResultsScript.isGameOver)
-            return;
+            return;//returns to normal scale if game is not over
         currentScale = oldScale;
         gameObject.transform.localScale = currentScale;
         currentlySelected = false;  //CC
-        //print(gameObject.transform.localScale);
-        //transform.parent.GetComponent<BoxCollider>().enabled = false;
     }
 }

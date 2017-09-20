@@ -59,7 +59,7 @@ public class defaultGem : baseGem {
             ge.SpawnEffect(floatingTextPrefab, 2.3f, position, rotation, floatingTextParent);
             try
             {
-                if (runningCor == 0)
+                //if (runningCor == 0)
                     Sound.sound.PlayOneShot(explosionSound, PauseMenus.SFXvolume);
             }
             catch
@@ -80,15 +80,15 @@ public class defaultGem : baseGem {
     private IEnumerator WaitTime()
     {
         //adding to the amout of curotines that are running. We will need to keep track of this number
-        runningCor++;
+       // runningCor++;
         yield return new WaitForSeconds(1.5f);
         //once courotine is done, we will subtract
         runningCor--;//assigning the boolean, canSelect, to the value of runningCor, if running cor is 0 canSelect will be set to true
-        if (runningCor <= 0)
-        {
-            runningCor = 0;
-            gameManager.canSelect = true;//setting this to false in boardSquare.sc UpgradeGem();
-        }
+        //if (runningCor <= 0)
+        //{
+        //    runningCor = 0;
+        //    //gameManager.canSelect = true;//setting this to false in boardSquare.sc UpgradeGem();
+        //}
        // gameManager.canSelect = (runningCor == 0);
         //in the function DestroyComboableSquares()
         PlayDestroyEffects(0);

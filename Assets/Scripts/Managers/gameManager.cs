@@ -20,8 +20,11 @@ public class gameManager : MonoBehaviour
     bool nextLevelUnlocked = false;
     CountDownScript countDownScript;
     sceneController sc;
+    bool isDelaying; //used to determine whether or not an inumerator is running
+    bool comboDetected; //checking to see if a combo was detected
 
-    public static bool canSelect = true;
+    public static bool canSelect = true;//determines whether or not the player can select a gem
+    float sinceLast; //time since last select
 
     //Properties
     public boardManager BoardManager { get { return boardManager; } }
@@ -44,7 +47,13 @@ public class gameManager : MonoBehaviour
     }
     private void Update()   //Main game loop
     {
-        if (!gameOver && canSelect && Time.timeScale > 0)
+        if (!boardManager.Board.HasEmptySquares && !boardManager.Board.DetectComboableSquares() && !comboDetected && !canSelect)
+        {
+            if (Time.time > sinceLast +.1f)//checking to when the last time a gem was selected. This acts like a fire rate and prevents known glitch where multiple gems ca be selecetd while gems are still falling.
+                canSelect = true;//allowing the player to select the next game -CK
+        }
+
+           if (!gameOver && canSelect && Time.timeScale > 0)
         {
             UpdateBoard();
             UpdateTurnCount(AcceptInput());
@@ -82,13 +91,40 @@ public class gameManager : MonoBehaviour
     {
         boardManager.UpdateComboableSquares();
             if (boardManager.Board.DetectComboableSquares())
-                boardManager.DestroyComboableSquares();
-            animationManager.PlayFallingAnimations(boardManager.GetFallingGemsList());            
+        {
+            boardManager.DestroyComboableSquares();
+            comboDetected = true;
+        }
+        else if (comboDetected && boardManager.Board.HasEmptySquares && !isDelaying)//if no combos exist, then and only then should the gems fall
+        { //-CK   
+            canSelect = false;
+            sinceLast = Time.time+1f;
+            isDelaying = true;
+            StartCoroutine(DelayGemFall(1f));//going to wait for a second before they do fall
+        }
+            else if (!comboDetected)//otherwise, setting gems to fall instantly if no combo exist
+                animationManager.PlayFallingAnimations(boardManager.GetFallingGemsList());
     }
+
+    IEnumerator DelayGemFall(float delay)
+    {//pausing for delay and then waiting until the board to fill
+        yield return new WaitForSeconds(delay);
+        while(boardManager.Board.HasEmptySquares || boardManager.Board.DetectComboableSquares())
+        {
+            animationManager.PlayFallingAnimations(boardManager.GetFallingGemsList());
+            yield return null;
+        }
+            comboDetected = false;
+            isDelaying= false;
+            sinceLast = Time.time;
+    }
+
     void UpdateTurnCount(bool inputDetected)
     {
         if (inputDetected)
         {
+            sinceLast = Time.time;
+            canSelect = false;
             countDownScript.SetTurns(-1);
         }
     }

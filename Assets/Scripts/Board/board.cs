@@ -44,7 +44,7 @@ public class board : MonoBehaviour
 {
 
     //Public Variables
-    public float gemFallingSpeed = 3.25f;
+    public float gemFallingSpeed = 4f;
     public bool showOuterGems = false;
     //Private Variables - Loads of serialization due to being created in editor
     [SerializeField, HideInInspector]
