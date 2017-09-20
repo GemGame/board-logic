@@ -26,4 +26,8 @@ public class nukeGem : baseGem
     {
 
     }
+    public override void HintGem()
+    {
+
+    }
 }

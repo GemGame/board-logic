@@ -3,6 +3,7 @@
 //The default gem inheriting from base gem
 //No special functionality built in. 
 //Methods declared just to make class functional.
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +16,21 @@ public class defaultGem : baseGem {
     private void Start()
     {
         originalValue = value;
+    }
+    public override void HintGem()
+    {
+        mySprite.enabled = true; //turning the animator on befoe playing the animation
+        mySprite.Play("Hint", 0, 0);
+        //play sound
+        //waiting before turning the animaiton off
+        StartCoroutine(HintOff());
+
+    }
+    IEnumerator HintOff()
+    {
+        yield return new WaitForSeconds(1f);
+        //truning the animator off
+        mySprite.enabled = false;
     }
 
     public override void PreDestroy()
@@ -79,18 +95,8 @@ public class defaultGem : baseGem {
 
     private IEnumerator WaitTime()
     {
-        //adding to the amout of curotines that are running. We will need to keep track of this number
-       // runningCor++;
         yield return new WaitForSeconds(1.5f);
-        //once courotine is done, we will subtract
-        runningCor--;//assigning the boolean, canSelect, to the value of runningCor, if running cor is 0 canSelect will be set to true
-        //if (runningCor <= 0)
-        //{
-        //    runningCor = 0;
-        //    //gameManager.canSelect = true;//setting this to false in boardSquare.sc UpgradeGem();
-        //}
        // gameManager.canSelect = (runningCor == 0);
-        //in the function DestroyComboableSquares()
         PlayDestroyEffects(0);
     }
 }

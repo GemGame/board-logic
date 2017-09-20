@@ -35,6 +35,9 @@ public class boardManager : MonoBehaviour
     public int CurrentDirection { get { return currentDirection; } set { currentDirection = value; } }
     public board Board { get { return board; } }
 
+    public static int bonusPoints;//bonus points are used in gameManager to display the amount
+    //of bonus points earned from high streaks
+
     //Methods
     private void Start()
     {
@@ -236,7 +239,9 @@ public class boardManager : MonoBehaviour
             //-Koester
             int random = (Random.Range(0, 4));
             randomText.Congradulate(tempScore);
-            GameObject.Find("Score").GetComponent<AddingScore>().AddScore(tempScore);
+            float bonus = (gameManager.streak) * .25f * (tempScore);//adding the bonus points to the total score
+            bonusPoints += (int)bonus;
+            GameObject.Find("Score").GetComponent<AddingScore>().AddScore(tempScore+(int)bonus);
             tempScore = 0;
         }
     }

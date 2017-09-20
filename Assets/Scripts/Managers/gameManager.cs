@@ -28,12 +28,17 @@ public class gameManager : MonoBehaviour
 
     //Properties
     public boardManager BoardManager { get { return boardManager; } }
+    AddingScore addingScore;
+
+    public static int streak;//number of streaks in a row  -CK
+    //its static so that boardManager.cs can access it and apply its bonus points
 
 
     //Methods
     private void Start()
     {
         gameManager.canSelect = true;
+        addingScore = GameObject.Find("Score").GetComponent<AddingScore>();
         ConfigureComponents();
     }
     private void ConfigureComponents()
@@ -50,7 +55,16 @@ public class gameManager : MonoBehaviour
         if (!boardManager.Board.HasEmptySquares && !boardManager.Board.DetectComboableSquares() && !comboDetected && !canSelect)
         {
             if (Time.time > sinceLast +.1f)//checking to when the last time a gem was selected. This acts like a fire rate and prevents known glitch where multiple gems ca be selecetd while gems are still falling.
+            {
                 canSelect = true;//allowing the player to select the next game -CK
+                //resetting the streaks
+                if (streak >= 2)
+                {
+                    addingScore.ShowStreak(streak, boardManager.bonusPoints);
+                    boardManager.bonusPoints = 0;
+                }
+                streak = 0;
+            }
         }
 
            if (!gameOver && canSelect && Time.timeScale > 0)
@@ -100,6 +114,11 @@ public class gameManager : MonoBehaviour
             canSelect = false;
             sinceLast = Time.time+1f;
             isDelaying = true;
+            //adding the the number of streaks
+            streak++;
+            //setting the highest streak earned if the current streak exceeds the previous record
+            if (streak > ManageScore.highestStreak)
+                ManageScore.highestStreak = streak;
             StartCoroutine(DelayGemFall(1f));//going to wait for a second before they do fall
         }
             else if (!comboDetected)//otherwise, setting gems to fall instantly if no combo exist

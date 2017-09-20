@@ -51,7 +51,6 @@ public class inputManager : MonoBehaviour
         return false;
     }
     
-
     boardSquare GetSquareOnTap()    //Android
     {
         foreach (Touch touch in Input.touches)

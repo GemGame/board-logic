@@ -105,4 +105,5 @@ public abstract class baseGem : MonoBehaviour
     public abstract void PreDestroy();
     public abstract void PostDestroy();
     public abstract void UpgradeGem();
+    public abstract void HintGem();
 }

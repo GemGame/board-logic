@@ -102,6 +102,12 @@ public class AddingScore : MonoBehaviour
         //Streak(5);
         // AddGem("blue", 1);
     }
+    public void ShowStreak(int highStreak, int bonus)
+    {
+        streakAnim.Play("Streaks",0,0);
+        streakText.text = "Streak x" + highStreak+ "\n" + "+" + bonus.ToString("n0") +" pts";
+    }
+
     public void AddScore(int score)
     {
         resultScript.isWaiting = true;
