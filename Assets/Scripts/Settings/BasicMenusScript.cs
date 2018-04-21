@@ -248,7 +248,8 @@ public class BasicMenusScript : MonoBehaviour
         GameObject.Find("Canvas/Menus/Basic/Campaign").GetComponent<Text>().color = c;
         GameObject.Find("Canvas/Menus/Basic/Leaderboards").GetComponent<Text>().color = c;
         GameObject.Find("Canvas/Menus/Basic/Arcade").GetComponent<Text>().color = c;
-        StartCoroutine(StartArcade());
+        //StartCoroutine(StartArcade());
+        StartCoroutine(MyCor());
     }
     public IEnumerator StartArcade()
     {

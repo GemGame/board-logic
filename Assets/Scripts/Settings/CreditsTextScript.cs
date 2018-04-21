@@ -17,39 +17,39 @@ public class CreditsTextScript : MonoBehaviour
         switch (title)
         {
             case true:
-                Transform temp = transform.FindChild("G");
+                Transform temp = transform.Find("G");
                 temp.gameObject.GetComponent<Text>().text = "G";
-                temp = transform.FindChild("e");
+                temp = transform.Find("e");
                 temp.gameObject.GetComponent<Text>().text = "e";
-                temp = transform.FindChild("m");
+                temp = transform.Find("m");
                 temp.gameObject.GetComponent<Text>().text = "m";
-                temp = transform.FindChild("Q");
+                temp = transform.Find("Q");
                 temp.gameObject.GetComponent<Text>().text = "Q";
-                temp = transform.FindChild("u");
+                temp = transform.Find("u");
                 temp.gameObject.GetComponent<Text>().text = "u";
-                temp = transform.FindChild("e(1)");
+                temp = transform.Find("e(1)");
                 temp.gameObject.GetComponent<Text>().text = "e";
-                temp = transform.FindChild("s");
+                temp = transform.Find("s");
                 temp.gameObject.GetComponent<Text>().text = "s";
-                temp = transform.FindChild("t");
+                temp = transform.Find("t");
                 temp.gameObject.GetComponent<Text>().text = "t";
                 break;
             case false:
-                temp = transform.FindChild("G");
+                temp = transform.Find("G");
                 temp.gameObject.GetComponent<Text>().text = "C";
-                temp = transform.FindChild("e");
+                temp = transform.Find("e");
                 temp.gameObject.GetComponent<Text>().text = "r";
-                temp = transform.FindChild("m");
+                temp = transform.Find("m");
                 temp.gameObject.GetComponent<Text>().text = "e";
-                temp = transform.FindChild("Q");
+                temp = transform.Find("Q");
                 temp.gameObject.GetComponent<Text>().text = "d";
-                temp = transform.FindChild("u");
+                temp = transform.Find("u");
                 temp.gameObject.GetComponent<Text>().text = "i";
-                temp = transform.FindChild("e(1)");
+                temp = transform.Find("e(1)");
                 temp.gameObject.GetComponent<Text>().text = "t";
-                temp = transform.FindChild("s");
+                temp = transform.Find("s");
                 temp.gameObject.GetComponent<Text>().text = "s";
-                temp = transform.FindChild("t");
+                temp = transform.Find("t");
                 temp.gameObject.GetComponent<Text>().text = " ";
                 break;
           
